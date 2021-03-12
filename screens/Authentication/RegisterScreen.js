@@ -48,7 +48,7 @@ export default class RegisterScreen extends React.Component {
 				attributes: {
 					name,
 					email: username,
-					phone_number: '+' + phone,
+					phone_number: "+1" + phone.replace(/\D/g,''),
 					address: street,
 					'custom:city': city,
 					'custom:state': state
