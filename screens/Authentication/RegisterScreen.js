@@ -37,9 +37,11 @@ export default class RegisterScreen extends React.Component {
 		this.setState({ message: '' });
 		this.setState({ isLoading: true });
 		const { username, password, name, phone, street, city, state } = this.state;
+		const passwordRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
 		if (this.state.name === '') this.setState({ errorMessage: 'Missing name' });
 		else if (this.state.username === '') this.setState({ errorMessage: 'Missing email address' });
 		else if (this.state.password === '') this.setState({ errorMessage: 'Missing password' });
+		else if (passwordRegex.test(this.state.password) == false) this.setState({errorMessage: 'Password Must contain 8 characters, a number, a symbol, an upper case letter, and a lower case letter'})
 		else {
 			console.log(username, password, name);
 			const response = await Auth.signUp({
@@ -147,6 +149,44 @@ export default class RegisterScreen extends React.Component {
 			);
 		}
 
+		// checks the password complexity as it is being filled
+		let passwordErrorElement = null;
+		if (this.state.password) {
+			// regex for all five complexity requirements
+			let passwordPolicy = [
+				RegExp(".{8,}$","g"),
+				RegExp("[A-Z]","g"),
+				RegExp("[a-z]","g"),
+				RegExp("[0-9]","g"),
+				RegExp("\\W","g")
+			];
+			// matching error messages
+			let passwordPolicyMessages = [
+				" * Must contain atleast 8 characters",
+				" * Must contain atleast 1 upper case character",
+				" * Must contain atleast 1 lower case character",
+				" * Must contain atleast 1 number",
+				" * Must contain atleast 1 symbol"
+			];
+			// empty string to hold the error messages put to the screen
+			var passwordPolicyErrorString = ''
+
+			for(var i = 0;  i < passwordPolicy.length; i++){
+				if(!passwordPolicy[i].test(this.state.password)){
+					passwordPolicyErrorString += passwordPolicyMessages[i] + '\n';
+				}
+			}
+
+			console.log(passwordPolicyMessages)
+			if (passwordPolicyErrorString != '')
+				passwordErrorElement = (
+					<Text style={{color: 'red'}}>
+						{passwordPolicyErrorString}
+					</Text>
+				);
+		}
+
+
 		return (
 			<KeyboardAvoidingView enabled={true} behavior="height" style={authStyle.container}>
 				<ScrollView style={authStyle.container} bounces={false}>
@@ -200,6 +240,9 @@ export default class RegisterScreen extends React.Component {
 								placeholder="Password"
 							></TextInput>
 						</View>
+
+						{/* Interactive line password policy checker*/}
+						{passwordErrorElement}
 
 						<View>
 							<TextInput
