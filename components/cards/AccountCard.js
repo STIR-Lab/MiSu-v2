@@ -12,6 +12,7 @@ class AccountCard extends Component {
   state = {
     registering: false,
     registered: false,
+    adr: undefined,
   };
 
   UNSAFE_componentWillReceiveProps(props) {
@@ -27,14 +28,21 @@ class AccountCard extends Component {
     if (props.registerData.success) {
       //close bar and show success
     }
+
+    if (props.user.address) {
+      console.log('hsdhsd');
+      this.setState({ adr: props.user.address });
+    }
   }
 
   crazyCheck() {
     console.log('INTO CRAZYCHECk');
-
-    if (typeof this.props.user.city === 'undefined') {
-      console.log('Something funky');
-    }
+    console.log('- Address: ' + this.props.user.address);
+    console.log(
+      '- City, State: ' + this.props.user.city,
+      this.props.user.state
+    );
+    console.log(this.state.adr);
   }
 
   render() {
@@ -48,23 +56,37 @@ class AccountCard extends Component {
         <AppHeaderText style={style.name}>{this.props.user.name}</AppHeaderText>
         <AppText>{this.props.user.phone}</AppText>
 
+        {this.crazyCheck()}
+
         <AppText>
-          {typeof this.props.user.address === ('undefined' || 'null')
-            ? ''
-            : this.props.user.address}
+          {this.props.user.address === undefined ? (
+            <></>
+          ) : (
+            this.props.user.address
+          )}
         </AppText>
 
         {/* Weird undefined behavior w/ city, state */}
         <AppText>
-          {typeof this.props.user.city === ('undefined' || 'null')
-            ? ''
-            : this.props.user.city + ', '}
-          {this.crazyCheck()}
+          {this.props.user.city ===
+          (undefined || null || '' || 'undefined' || 'null') ? (
+            <></>
+          ) : (
+            this.props.user.city
+          )}
 
-          {/* propsValid(this.props.user.city) ? 'Pr' : this.props.user.city */}
-          {typeof this.props.user.state !== 'string'
-            ? ''
-            : this.props.user.state}
+          {this.props.user.state ===
+          (undefined || null || '' || 'undefined' || 'null') ? (
+            <></>
+          ) : (
+            this.props.user.state
+          )}
+
+          {/* propsValid(this.props.user.city) ? '' : this.props.user.city */}
+
+          {/*this.props.user.state === 'undefined'
+            ? ' Wow'
+        : this.props.user.state*/}
         </AppText>
 
         {/* Show RegisterHubPopup when registering */}
