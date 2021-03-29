@@ -37,6 +37,7 @@ Amplify.configure(config);
 
 const store = createStore(appDataReducer, applyMiddleware(thunk));
 
+
 const AppStack = createStackNavigator(
 	{
 		Home: HomeScreen,
@@ -83,7 +84,7 @@ const AuthStack = createStackNavigator(
 				transitionConfig: customAnimationFunc
 			}
 		)
-	}
+	},
 );
 
 // Create App Navigator
