@@ -37,56 +37,6 @@ Amplify.configure(config);
 
 const store = createStore(appDataReducer, applyMiddleware(thunk));
 
-<<<<<<< HEAD
-
-const AppStack = createStackNavigator(
-	{
-		Home: HomeScreen,
-		Account: AccountScreen,
-		Device: DeviceScreen,
-		User: UserScreen,
-		Log: LogScreen
-	},
-	{
-		mode: 'card',
-		navigationOptions: (params) => (
-			{
-				gesturesEnabled: true,
-				gesturesDirection: 'inverted',
-				headerMode: 'float'
-			},
-			{
-				transitionConfig: customAnimationFunc
-			}
-		)
-	}
-);
-
-const customAnimationFunc = () => ({
-	screenInterpolator: (sceneProps) => {
-		return CardStackStyleInterpolator.forHorizontal(sceneProps);
-	}
-});
-
-const AuthStack = createStackNavigator(
-	{
-		Login: LoginScreen,
-		Register: RegisterScreen
-	},
-	{
-		mode: 'card',
-		navigationOptions: (params) => (
-			{
-				gesturesEnabled: true,
-				gesturesDirection: 'inverted',
-				headerMode: 'float'
-			},
-			{
-				transitionConfig: customAnimationFunc
-			}
-		)
-	},
-=======
 const AppStack = createStackNavigator(
   {
     Home: HomeScreen,
@@ -135,63 +85,10 @@ const AuthStack = createStackNavigator(
       }
     ),
   }
->>>>>>> 92b8422c44bad0ad90e412a09cc60c63f7fa08d0
 );
 
 // Create App Navigator
 const AppContainer = createAppContainer(
-<<<<<<< HEAD
-	createSwitchNavigator(
-		{
-			Loading: LoadingScreen,
-			Auth: AuthStack,
-			App: AppStack
-		},
-		{
-			// Starts the app off on the loading screen?
-			initialRouteName: 'Loading'
-		}
-	)
-);
-
-export default class App extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			loading: false
-		};
-	}
-
-	setLoadingTrue() {
-		this.setState({ loading: true });
-	}
-
-	setLoadingFalse() {
-		this.setState({ loading: false });
-	}
-
-	render() {
-		return (
-			<Provider store={store}>
-				<View style={{ flex: 1 }}>
-					<Spinner
-						visible={this.state.loading}
-						textContent={'Loading...'}
-						textStyle={{
-							color: '#FFF'
-						}}
-					/>
-					<AppContainer
-						screenProps={{
-							setLoadingFalse: this.setLoadingFalse.bind(this),
-							setLoadingTrue: this.setLoadingTrue.bind(this)
-						}}
-					/>
-				</View>
-			</Provider>
-		);
-	}
-=======
   createSwitchNavigator(
     {
       Loading: LoadingScreen,
@@ -242,5 +139,4 @@ export default class App extends Component {
       </Provider>
     );
   }
->>>>>>> 92b8422c44bad0ad90e412a09cc60c63f7fa08d0
 }
