@@ -13,16 +13,29 @@
     "@react-native-community/datetimepicker": "^3.0.6",
     "@react-native-community/masked-view": "0.1.6",
     "@react-native-community/netinfo": "5.5.1",
+<<<<<<< HEAD
     "@types/react": "^16.9.41",
     "apollo-boost": "^0.4.9",
     "apollo-client": "^2.6.10",
     "aws-amplify": "1.2.4",
+=======
+    "@react-native-community/picker": "^1.8.1",
+    "@react-native-picker/picker": "^1.12.0",
+    "@types/react": "^16.9.41",
+    "apollo-boost": "^0.4.9",
+    "apollo-client": "^2.6.10",
+    "aws-amplify": "^3.3.26",
+>>>>>>> 92b8422c44bad0ad90e412a09cc60c63f7fa08d0
     "aws-amplify-react-native": "^4.2.1",
     "aws-appsync": "^3.0.4",
     "aws-appsync-react": "^3.0.4",
     "aws-sdk": "^2.702.0",
     "datetimepicker": "^0.1.39",
+<<<<<<< HEAD
     "expo": "~37.0.3",
+=======
+    "expo": "^40.0.0",
+>>>>>>> 92b8422c44bad0ad90e412a09cc60c63f7fa08d0
     "graphql": "^15.1.0",
     "moment": "^2.29.1",
     "react": "~16.9.0",
@@ -30,8 +43,13 @@
     "react-devtools": "3",
     "react-devtools-core": "^4.7.0",
     "react-dom": "~16.9.0",
+<<<<<<< HEAD
     "react-icons": "^4.2.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
+=======
+    "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.0.tar.gz",
+    "react-native-animated-multistep": "^1.1.1",
+>>>>>>> 92b8422c44bad0ad90e412a09cc60c63f7fa08d0
     "react-native-gesture-handler": "^1.6.1",
     "react-native-loading-spinner-overlay": "^2.0.0",
     "react-native-reanimated": "~1.7.0",
@@ -46,7 +64,11 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@babel/core": "^7.8.6",
+=======
+    "@babel/core": "^7.13.14",
+>>>>>>> 92b8422c44bad0ad90e412a09cc60c63f7fa08d0
     "@types/react-native": "^0.62.13",
     "@types/react-test-renderer": "^16.9.2",
     "babel-plugin-graphql-tag": "^2.5.0",
