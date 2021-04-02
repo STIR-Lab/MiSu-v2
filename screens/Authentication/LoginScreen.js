@@ -1,6 +1,6 @@
 import { Auth } from 'aws-amplify';
 import React from 'react';
-import { ActivityIndicator, Image, Text, TextInput, TouchableOpacity, View, TouchableWithoutFeedback, StyleSheet, } from 'react-native';
+import { ActivityIndicator, Image, Text, TextInput, TouchableOpacity, View, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { currentSessionAction } from '../../redux/Action/currentSessionAction';
 import appStyle from '../../styles/AppStyle';
@@ -8,13 +8,8 @@ import authStyle from '../../styles/AuthStyle';
 import ConfirmCodePopup from '../../components/popup/ConfirmCodePopup';
 import ForgotPasswordPopup from '../../components/popup/ForgotPasswordPopup';
 import ForgotPasswordConfirmPopup from '../../components/popup/ForgotPasswordConfirmPopup';
-import { Keyboard } from 'react-native';
 
 class LoginScreen extends React.Component {
-	static navigationOptions = {
-		header: () => false,
-		/* No more header config here! */
-	};
 	state = {
 		username: '', // 'secondary@example.com'
 		password: '',
@@ -181,189 +176,108 @@ class LoginScreen extends React.Component {
 		}
 
 		return (
-			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-				<View style={styles.container}>
-					{/* Render the app icon */}
-					<View style={styles.iconHolder}>
-						<Image style={styles.icon} source={require('../../assets/MISU.png')} />
-					</View>
-
-					{/* Render the greeting */}
-					<Text style={[styles.greeting]}>
-						Welcome to
-						<Text style={styles.appName}> MiSu</Text>
-					</Text>
-
-					{/* Render the login form */}
-					<View style={styles.authForm}>
-						<View style={styles.iconAndInput}>
-							<View style={styles.iconInput}>
-								<Image source={require('../../assets/icons/email-icon.png')} />
-							</View>
-							<TextInput
-								style={styles.formInput}
-								autoCapitalize="none"
-								onChangeText={(username) => this.setState({ username })}
-								value={this.state.username}
-								placeholder="Email Address"
-								placeholderTextColor = "#808080"
-							></TextInput>
-						</View>
-
-						<View style={styles.iconAndInput}>
-							<View style={styles.iconInput}>
-								<Image source={require('../../assets/icons/lock.png')} />
-							</View>
-							<TextInput
-								style={styles.formInput}
-								secureTextEntry
-								autoCapitalize="none"
-								onChangeText={(password) => this.setState({ password })}
-								value={this.state.password}
-								placeholder="Password"
-								placeholderTextColor = "#808080"
-							></TextInput>
-						</View>
-					</View>
-
-					{/* Render the forgot password btn */}
-					<View>
-						<TouchableOpacity
-							style={{ alignSelf: 'center', marginTop: 0 }}
-							onPress={() => {
-								this.setState({ forgotPassword: true });
-							}}
-						>
-							<Text style={{ color: '#414959', fontSize: 13 }} Password>
-								Forgot your password? <Text style={{ color: '#71ccf0', fontWeight: '500' }}>Get code</Text>
-							</Text>
-						</TouchableOpacity>
-					</View>
-
-					{/* Render the submit button */}
-					<View style={authStyle.authFormButtonHolder}>
-						<TouchableOpacity style={styles.loginButton} onPress={this.handleLogin}>
-							<Text style={{ color: '#FFF', fontSize: 25 }}>Login</Text>
-						</TouchableOpacity>
-					</View>
-
-					{/* Render the error message */}
-					{errorElement}
-
-					{/* Render the message */}
-					{messageElement}
-
-					{/* Render the forgot popup */}
-					{forgotPasswordPopupElement}
-
-					{/* Render the forgot confirm popup */}
-					{forgotPasswordConfirmPopupElement}
-
-					{/* Render the register toggle */}
-					<View>
-						<TouchableOpacity
-							style={{ alignSelf: 'center', marginTop: 40 }}
-							onPress={() => this.props.navigation.navigate('Register')}
-						>
-							<Text style={{ color: '#414959', fontSize: 13 }} Password>
-								Need an account? <Text style={{ color: '#71ccf0', fontWeight: '500' }}>Sign up</Text>
-							</Text>
-						</TouchableOpacity>
-					</View>
-
-					{/* Render the confirm forgot password confirm btn */}
-					<View>
-						<TouchableOpacity
-							style={{ alignSelf: 'center', marginTop: 2 }}
-							onPress={() => {
-								this.setState({ forgotPasswordConfirm: true });
-							}}
-						>
-							<Text style={{ color: '#414959', fontSize: 13 }} Password>
-								Have a forgot password confirm code?{' '}
-								<Text style={{ color: '#71ccf0', fontWeight: '500' }}>Confirm</Text>
-							</Text>
-						</TouchableOpacity>
-					</View>
-
-					{/* Render the loading element */}
-					{loadingElement}
+			<View style={authStyle.container}>
+				{/* Render the app icon */}
+				<View style={authStyle.iconHolder}>
+					<Image style={authStyle.icon} source={require('../../assets/MISU.png')} />
 				</View>
-			</TouchableWithoutFeedback>
+
+				{/* Render the greeting */}
+				<Text style={[authStyle.greeting]}>
+					{`Login to`}
+					<Text style={authStyle.appName}> {'MiSu'} </Text>
+				</Text>
+
+				{/* Render the login form */}
+				<View style={authStyle.authForm}>
+					<View>
+						<TextInput
+							style={authStyle.authFormInput}
+							autoCapitalize="none"
+							onChangeText={(username) => this.setState({ username })}
+							value={this.state.username}
+							placeholder="Email"
+						></TextInput>
+					</View>
+
+					<View>
+						<TextInput
+							style={authStyle.authFormInput}
+							secureTextEntry
+							autoCapitalize="none"
+							onChangeText={(password) => this.setState({ password })}
+							value={this.state.password}
+							placeholder="Password"
+						></TextInput>
+					</View>
+				</View>
+
+				{/* Render the submit button */}
+				<View style={authStyle.authFormButtonHolder}>
+					<TouchableOpacity style={authStyle.authFormButton} onPress={this.handleLogin}>
+						<Text style={{ color: '#FFF', fontWeight: '500' }}>Sign in</Text>
+					</TouchableOpacity>
+				</View>
+
+				{/* Render the error message */}
+				{errorElement}
+
+				{/* Render the message */}
+				{messageElement}
+
+				{/* Render the forgot popup */}
+				{forgotPasswordPopupElement}
+
+				{/* Render the forgot confirm popup */}
+				{forgotPasswordConfirmPopupElement}
+
+				{/* Render the forgot password btn */}
+				<View>
+					<TouchableOpacity
+						style={{ alignSelf: 'center', marginTop: 16 }}
+						onPress={() => {
+							this.setState({ forgotPassword: true });
+						}}
+					>
+						<Text style={{ color: '#414959', fontSize: 13 }} Password>
+							Forgot your password? <Text style={{ color: '#71ccf0', fontWeight: '500' }}>Get code</Text>
+						</Text>
+					</TouchableOpacity>
+				</View>
+
+				{/* Render the confirm forgot password confirm btn */}
+				<View>
+					<TouchableOpacity
+						style={{ alignSelf: 'center', marginTop: 2 }}
+						onPress={() => {
+							this.setState({ forgotPasswordConfirm: true });
+						}}
+					>
+						<Text style={{ color: '#414959', fontSize: 13 }} Password>
+							Have a forgot password confirm code?{' '}
+							<Text style={{ color: '#71ccf0', fontWeight: '500' }}>Confirm</Text>
+						</Text>
+					</TouchableOpacity>
+				</View>
+
+				{/* Render the register toggle */}
+				<View>
+					<TouchableOpacity
+						style={{ alignSelf: 'center', marginTop: 16 }}
+						onPress={() => this.props.navigation.navigate('Register')}
+					>
+						<Text style={{ color: '#414959', fontSize: 13 }} Password>
+							Need an account? <Text style={{ color: '#71ccf0', fontWeight: '500' }}>Sign Up</Text>
+						</Text>
+					</TouchableOpacity>
+				</View>
+
+				{/* Render the loading element */}
+				{loadingElement}
+			</View>
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	appName: {
-		fontWeight: 'bold'
-	},
-	authForm: {
-		marginTop : 60,
-		marginBottom: 15,
-		marginHorizontal: 30
-	},
-	container: {
-		flex : 1,
-		backgroundColor : '#FFFFFF',
-		paddingTop : 60
-	},
-	formInput: {
-		fontSize: 15,
-		marginLeft: 20
-	},
-	greeting: {
-		fontSize: 20,
-		textAlign: 'center',
-		fontWeight: '100',
-		marginLeft: -15
-	},
-	icon: {
-		height: 285,
-		width: 285,
-		marginBottom: -65,
-		marginTop: -45
-	},
-	iconInput: {
-		width: 20,
-		marginLeft: 20,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	iconHolder: {
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	iconAndInput: {
-		flexDirection: 'row',
-		borderRadius: 10,
-		backgroundColor: '#F3F3F3',
-		borderColor: '#D6D6D6',
-		borderWidth: 1,
-		height: 50,
-		marginTop: 30,
-		alignItems: 'center',
-		shadowColor: '#000',
-    	shadowOffset: { width: 0, height: 1 },
-    	shadowOpacity: 0.8,
-    	shadowRadius: 1, 
-		elevation: 3,
-	},
-	loginButton: {
-		backgroundColor: '#008CFF',
-		marginTop: 20,
-		borderRadius: 10,
-		height: 60,
-		width: 200,
-		alignItems: 'center',
-		justifyContent: 'center',
-		shadowColor: '#000',
-    	shadowOffset: { width: 0, height: 1 },
-    	shadowOpacity: 0.8,
-    	shadowRadius: 1, 
-		elevation: 10
-	},
-  });
 
 const mapDispatchToProps = (dispatch) => {
 	return {
