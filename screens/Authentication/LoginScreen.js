@@ -358,6 +358,8 @@ const styles = StyleSheet.create({
   formInput: {
     fontSize: 15,
     marginLeft: 20,
+    height: 50,
+    width: 280,
   },
   greeting: {
     fontSize: 20,

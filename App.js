@@ -11,11 +11,13 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import config from './aws-exports';
+import HubCardSharedUsersListEntry from './components/cards/ListEntries/HubCardSharedUsersListEntry';
 import appDataReducer from './redux/AppDataReducer';
 import AccountScreen from './screens/Application/AccountScreen';
 import DeviceScreen from './screens/Application/DeviceScreen';
 import LogScreen from './screens/Application/LogScreen';
 import UserScreen from './screens/Application/UserScreen';
+import HubScreen from './screens/Application/HubScreen';
 //************************************************** */
 // Auth Stack ************************************** */
 //************************************************** */
@@ -44,6 +46,7 @@ const AppStack = createStackNavigator(
     Device: DeviceScreen,
     User: UserScreen,
     Log: LogScreen,
+    Hub: HubScreen,
   },
   {
     mode: 'card',
