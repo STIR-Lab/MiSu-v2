@@ -30,14 +30,14 @@ function AccountScreen(props) {
 
 	// Signs the user out and sends them back to the login screen
 	signOut = async () => {
-		props.screenProps.setLoadingTrue();
+		// props.screenProps.setLoadingTrue();
 		ToastAndroid.show('Signing out!', ToastAndroid.LONG);
 		Auth.signOut()
 			.then(() => {
-				props.screenProps.setLoadingFalse();
+				// props.screenProps.setLoadingFalse();
 			})
 			.then(() => {
-				props.navigation.navigate('Auth');
+				props.navigation.navigate('Login');
 			});
 	};
 

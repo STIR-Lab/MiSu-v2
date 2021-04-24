@@ -33,6 +33,7 @@ class LoginScreen extends React.Component {
     rememberMe: false,
   };
 
+
   handleLogin = async () => {
     this.setState({ errorMessage: '' });
     const { username, password } = this.state;
@@ -43,7 +44,7 @@ class LoginScreen extends React.Component {
       this.setState({ errorMessage: 'Missing password' });
     else {
       try {
-        this.props.screenProps.setLoadingTrue();
+        this.props.route.params.setLoadingTrue();
 
         const user = await Auth.signIn(username, password)
           .then(async (user) => {
@@ -55,21 +56,23 @@ class LoginScreen extends React.Component {
 
             await this.props.getSession();
 
-            this.props.screenProps.setLoadingFalse();
+            this.props.route.params.setLoadingFalse();
 
+            this.props.route.params.setGoToAppTrue();
+            // this.props.route.params.setGoToAuthFalse();
             this.props.navigation.navigate('App');
           })
           .catch((err) => {
             this.setState({ errorMessage: err.message });
             this.setState({ message: '' });
             this.setState({ isLoading: false });
-            this.props.screenProps.setLoadingFalse();
+            this.props.route.params.setLoadingFalse();
           });
       } catch (error) {
         this.setState({ errorMessage: error.message });
         this.setState({ message: '' });
         this.setState({ isLoading: false });
-        this.props.screenProps.setLoadingFalse();
+        this.props.params.setLoadingFalse();
       }
       this.setState({ isLoading: false });
     }
@@ -153,6 +156,7 @@ class LoginScreen extends React.Component {
   };
 
   render() {
+    // console.log(this.props);
     // The loading element will restrict input during networked operations
     let loadingElement = null;
     if (this.state.isLoading) {

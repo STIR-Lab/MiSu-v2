@@ -18,6 +18,7 @@ class HomeScreen extends React.Component {
 		ToastAndroid.show(text, ToastAndroid.LONG);
 	};
 
+	// This might be able to be deleted
 	static navigationOptions = ({ navigate, navigation }) => ({
 		headerTitle: 'Home',
 		headerRight: () => (
@@ -112,7 +113,7 @@ class HomeScreen extends React.Component {
 			this.setState({
 				loading: true
 			});
-			this.props.screenProps.setLoadingTrue();
+			// this.props.route.params.setLoadingTrue();
 		}
 
 		if (
@@ -124,7 +125,7 @@ class HomeScreen extends React.Component {
 			this.setState({
 				loading: false
 			});
-			this.props.screenProps.setLoadingFalse();
+			// this.props.route.params.setLoadingFalse();
 		}
 	}
 
@@ -260,8 +261,8 @@ class HomeScreen extends React.Component {
 				<ShareModal
 					onRefresh={this.onRefresh}
 					ModalRef={this.ModalRef}
-					setLoadingTrue={this.props.screenProps.setLoadingTrue}
-					setLoadingFalse={this.props.screenProps.setLoadingFalse}
+					setLoadingTrue={this.props.setLoadingTrue}
+					setLoadingFalse={this.props.setLoadingFalse}
 					canEditUser={true}
 				/>
 			</View>

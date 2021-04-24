@@ -30,7 +30,9 @@ class DeviceScreen extends React.Component {
 	}
 
 	componentWillMount() {
-		const device = this.props.navigation.getParam('device', null);
+		console.log("DeviceScreen Props", this.props);
+		const device = this.props.route.params.device;
+		// const device = this.props.navigation.getParam('device', null);
 		this.setState({
 			device
 		});
@@ -42,6 +44,8 @@ class DeviceScreen extends React.Component {
 		}
 	}
 
+
+
 	render() {
 		return (
 			<View style={appStyle.container}>
@@ -52,7 +56,8 @@ class DeviceScreen extends React.Component {
 								device={this.state.device}
 								deviceList={this.props.sharedDevicesData}
 								IdToken={this.props.sessionData.idToken}
-								owner={this.props.navigation.getParam('owner', null)}
+								owner ={this.props.route.params.owner}
+								// owner={this.props.navigation.getParam('owner', null)}
 							/>
 						</ScrollView>
 					</View>

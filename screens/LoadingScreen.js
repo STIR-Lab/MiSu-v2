@@ -7,7 +7,8 @@ export default class LoadingScreen extends React.Component {
 			const user = await Auth.currentAuthenticatedUser();
 			this.props.navigation.navigate('App', { user: user });
 		} catch (err) {
-			this.props.navigation.navigate('Auth');
+			this.props.setGoToAuthTrue();
+			// this.props.navigation.navigate('Auth');
 		}
 	}
 
