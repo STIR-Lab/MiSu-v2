@@ -17,7 +17,6 @@ import authStyle from '../../styles/AuthStyle';
 import ConfirmCodePopup from '../../components/popup/ConfirmCodePopup';
 import ForgotPasswordPopup from '../../components/popup/ForgotPasswordPopup';
 import ForgotPasswordConfirmPopup from '../../components/popup/ForgotPasswordConfirmPopup';
-import { Keyboard } from 'react-native';
 
 class LoginScreen extends React.Component {
   static navigationOptions = {

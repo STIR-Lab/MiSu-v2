@@ -99,6 +99,7 @@ function AppNavBar() {
   )
 }
 
+
 const customAnimationFunc = () => ({
   screenInterpolator: (sceneProps) => {
     return CardStackStyleInterpolator.forHorizontal(sceneProps);
@@ -125,6 +126,7 @@ const customAnimationFunc = () => ({
 //     ),
 //   }
 // );
+
 
 const Auth = createStackNavigator();
  const AuthStack = (props) => (
