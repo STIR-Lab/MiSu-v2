@@ -50,6 +50,7 @@
     "react-redux": "^7.2.1",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "redux-thunk": "^2.3.0"
+    
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
