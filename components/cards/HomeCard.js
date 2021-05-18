@@ -73,7 +73,7 @@ class HomeCard extends React.Component {
 							{/* Left Column */}
 							<View style={appStyle.columnLeft}>
 								{col2.map((device, index) => {
-									console.log("In HomeCard.js ", device);
+									// console.log("In HomeCard.js ", device);
 									return (
 										<HomeCardDeviceEntry
 											navigation={this.props.navigation}
