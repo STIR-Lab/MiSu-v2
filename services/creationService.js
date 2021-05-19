@@ -58,18 +58,25 @@ export const createHub = async ({
   hub_email,
   hub_password
 },idToken) => {
+  // console.log('Bearer ' + idToken)
+  // console.log(JSON.stringify({
+  //   hub_url: hub_url,
+  //   hub_email: hub_email,
+  //   hub_password: hub_password}))
   const response = await fetch('https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/updatehubinfo', {
     method: 'POST',
     headers: 
     {
         Authorization: 'Bearer ' + idToken,
+        'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       hub_url: hub_url,
       hub_email: hub_email,
       hub_password: hub_password
   })
-})
+}).catch(err => console.log(err));
+  console.log("finished")
   return  response.json()
 }
 

@@ -8,7 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 const windowHeight = Dimensions.get('window').height;
 
 function HubScreen(props) {
-    console.log(props);
+    // console.log(props);
 
     const [url, setUrl] = useState(null);
     const [email, setEmail] = useState(null);
@@ -23,11 +23,12 @@ function HubScreen(props) {
         }
         else
         {
-            props.register({
+            const state = props.register({
                 hub_url: url, 
                 hub_email: email,
                 hub_password: password},
-                props.idToken)
+                props.sessionData.idToken);
+            setError('It probably worked..');
         }
     }
 
