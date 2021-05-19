@@ -12,6 +12,9 @@ import { getHubInfoAction } from '../../redux/Action/getHubInfoAction';
 import { registerHubAction } from '../../redux/Action/registerHubAction';
 import appStyle from '../../styles/AppStyle';
 
+// Testing GPS Component
+import GPS from '../../components/GPS.js'
+
 function AccountScreen(props) {
 	// static navigationOptions = ({ navigate, navigation }) => ({
 	// 	headerTitle: 'Account',
@@ -70,11 +73,14 @@ function AccountScreen(props) {
 				navigation={props.navigation}
 			/>
 			<SettingsCard />
+			<GPS/>
 			<TouchableOpacity
 				style={[{ marginHorizontal: 50, marginBottom: 10 }, appStyle.redButton]}
 				onPress={signOut}
 			>
 				<AppText style={{ color: 'white' }}>Log out</AppText>
+
+
 			</TouchableOpacity>
 		</View>
     );
