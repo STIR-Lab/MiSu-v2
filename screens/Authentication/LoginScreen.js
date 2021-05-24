@@ -33,6 +33,8 @@ function LoginScreen(props) {
   const [forgotPasswordState, setForgotPasswordState] = useState(false);
   const [forgotPasswordConfirmState, setForgotPasswordConfirmState] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [confirmCode, setConfirmCode] = useState('');
+  const [confirmingCode, setConfirmingCode] = useState(false);
 
   handleLogin = async () => {
     setErrorMessage('');
@@ -77,6 +79,38 @@ function LoginScreen(props) {
     }
   };
 
+  // Verify sign up code
+  confirmSignUp = async () => {
+    setErrorMessage('');
+    setMessage('');
+
+    console.log("Inside confirmSignUp")
+    // Form validation
+    if (username == '') {
+      setMessage("Please enter the email you're verifying");
+      setErrorMessage('');
+    } else if (confirmCode == '') {
+      setMessage('Please enter the code sent to your email');
+      setErrorMessage('');
+    } else {
+      setIsLoading(true);
+      const user = await Auth.confirmSignUp(username, confirmCode)
+        .then(async (user) => {
+          console.log('confirmed sign up successful!');
+
+          setErrorMessage('');
+          setMessage('Confirm successful, please sign in.');
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setErrorMessage(err.Message);
+          setMessage('');
+          setIsLoading(false);
+        });
+    }
+    setConfirmingCode(false);
+  };
+
   // Complete the forgot password auth
   forgotPassword = async (username) => {
     setErrorMessage('');
@@ -109,16 +143,15 @@ function LoginScreen(props) {
   };
 
   // Complete the forgot password auth
-  forgotPasswordConfirm = async (username, code, password) => {
+  forgotPasswordConfirm = async () => {
     setErrorMessage('');
     setMessage('');
-    setForgotPasswordConfirmState(false);
 
     console.log(
       'attempting to confirm password ' +
         username +
         ', ' +
-        code +
+        confirmCode +
         ', ' +
         password
     );
@@ -128,7 +161,7 @@ function LoginScreen(props) {
       setErrorMessage('');
     } else {
       setIsLoading(true);
-      const user = await Auth.forgotPasswordSubmit(username, code, password)
+      const user = await Auth.forgotPasswordSubmit(username, confirmCode, password)
         .then(async (user) => {
           console.log('forgot password successful!');
 
@@ -143,6 +176,7 @@ function LoginScreen(props) {
         });
       setIsLoading(false);
     }
+    setForgotPasswordConfirmState(false);
   };
 
   // console.log(this.props);
@@ -169,16 +203,16 @@ function LoginScreen(props) {
   }
 
   // The confirm code popup will appear if there is actually an error
-  let forgotPasswordConfirmPopupElement = null;
-  if (forgotPasswordConfirmState) {
-    forgotPasswordConfirmPopupElement = (
-      <ForgotPasswordConfirmPopup
-        onCancel={() => setForgotPasswordConfirmState(false)}
-        onSubmit={forgotPasswordConfirm}
-        username={username}
-      />
-    );
-  }
+  // let forgotPasswordConfirmPopupElement = null;
+  // if (forgotPasswordConfirmState) {
+  //   forgotPasswordConfirmPopupElement = (
+  //     <ForgotPasswordConfirmPopup
+  //       onCancel={() => setForgotPasswordConfirmState(false)}
+  //       onSubmit={forgotPasswordConfirm}
+  //       username={username}
+  //     />
+  //   );
+  // }
 
   // The message element will be set if there is actually an error
   let messageElement = null;
@@ -239,20 +273,37 @@ function LoginScreen(props) {
             ></TextInput>
           </View>
 
-          <View style={styles.iconAndInput}>
-            <View style={styles.iconInput}>
-              <Image source={require('../../assets/icons/lock.png')} />
-            </View>
-            <TextInput
-              style={styles.formInput}
-              secureTextEntry
-              autoCapitalize="none"
-              onChangeText={(password) => setPassword(password)}
-              value={password}
-              placeholder="Password"
-              placeholderTextColor="#808080"
-            ></TextInput>
-          </View>
+          {!confirmingCode && (
+            <View style={styles.iconAndInput}>
+              <View style={styles.iconInput}>
+                <Image source={require('../../assets/icons/lock.png')} />
+              </View>
+              <TextInput
+                style={styles.formInput}
+                secureTextEntry
+                autoCapitalize="none"
+                onChangeText={(password) => setPassword(password)}
+                value={password}
+                placeholder="Password"
+                placeholderTextColor="#808080"
+              ></TextInput>
+            </View>)}
+
+          { (confirmingCode || forgotPasswordConfirmState) && (
+            <View style={styles.iconAndInput}>
+              <View style={styles.iconInput}>
+                <Image source={require('../../assets/icons/lock.png')} />
+              </View>
+              <TextInput
+                style={styles.formInput}
+                keyboardType='numeric'
+                autoCapitalize="none"
+                onChangeText={(confirmCode) => setConfirmCode(confirmCode)}
+                value={confirmCode}
+                placeholder="Confirm Code"
+                placeholderTextColor="#808080"
+              ></TextInput>
+           </View>)}
         </View>
 
         {/* Render the forgot password btn */}
@@ -276,9 +327,9 @@ function LoginScreen(props) {
         <View style={authStyle.authFormButtonHolder}>
           <TouchableOpacity
             style={styles.loginButton}
-            onPress={handleLogin}
+            onPress={confirmingCode ? confirmSignUp : (forgotPasswordConfirmState ? forgotPasswordConfirm : handleLogin)}
           >
-            <Text style={{ color: '#FFF', fontSize: 25 }}>Login</Text>
+            <Text style={{ color: '#FFF', fontSize: 25 }}>{confirmingCode ? 'Confirm' : (forgotPasswordConfirmState ? 'Reset' : 'Login')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -292,7 +343,7 @@ function LoginScreen(props) {
         {forgotPasswordPopupElement}
 
         {/* Render the forgot confirm popup */}
-        {forgotPasswordConfirmPopupElement}
+        {/* {forgotPasswordConfirmPopupElement} */}
 
         {/* Render the register toggle */}
         <View>
@@ -314,13 +365,33 @@ function LoginScreen(props) {
           <TouchableOpacity
             style={{ alignSelf: 'center', marginTop: 2 }}
             onPress={() => {
-              setForgotPasswordConfirmState(true);
+              confirmingCode ?
+                setConfirmingCode(false) : setConfirmingCode(true);
+              setForgotPasswordConfirmState(false);
             }}
           >
             <Text style={{ color: '#414959', fontSize: 13 }} Password>
-              Have a forgot password confirm code?{' '}
+              {confirmingCode ? 'Already Confirmed? ':'Have an Account Verification code? '}
               <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
-                Confirm
+                Click Here
+              </Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View>
+          <TouchableOpacity
+            style={{ alignSelf: 'center', marginTop: 2 }}
+            onPress={() => {
+              forgotPasswordConfirmState ?
+                setForgotPasswordConfirmState(false) : setForgotPasswordConfirmState(true);
+              setConfirmingCode(false);
+            }}
+          >
+            <Text style={{ color: '#414959', fontSize: 13 }} Password>
+              {forgotPasswordConfirmState ? 'Go back to Login ':'Have a Password reset code? '}
+              <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
+                Click Here
               </Text>
             </Text>
           </TouchableOpacity>
