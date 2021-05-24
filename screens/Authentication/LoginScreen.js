@@ -289,7 +289,7 @@ function LoginScreen(props) {
               ></TextInput>
             </View>)}
 
-          { confirmingCode && (
+          { (confirmingCode || forgotPasswordConfirmState) && (
             <View style={styles.iconAndInput}>
               <View style={styles.iconInput}>
                 <Image source={require('../../assets/icons/lock.png')} />
@@ -327,9 +327,9 @@ function LoginScreen(props) {
         <View style={authStyle.authFormButtonHolder}>
           <TouchableOpacity
             style={styles.loginButton}
-            onPress={confirmingCode ? confirmSignUp : handleLogin}
+            onPress={confirmingCode ? confirmSignUp : (forgotPasswordConfirmState ? forgotPasswordConfirm : handleLogin)}
           >
-            <Text style={{ color: '#FFF', fontSize: 25 }}>{confirmingCode ? 'Confirm' : 'Login'}</Text>
+            <Text style={{ color: '#FFF', fontSize: 25 }}>{confirmingCode ? 'Confirm' : (forgotPasswordConfirmState ? 'Reset' : 'Login')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -367,10 +367,29 @@ function LoginScreen(props) {
             onPress={() => {
               confirmingCode ?
                 setConfirmingCode(false) : setConfirmingCode(true);
+              setForgotPasswordConfirmState(false);
             }}
           >
             <Text style={{ color: '#414959', fontSize: 13 }} Password>
               {confirmingCode ? 'Already Confirmed? ':'Have an Account Verification code? '}
+              <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
+                Click Here
+              </Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View>
+          <TouchableOpacity
+            style={{ alignSelf: 'center', marginTop: 2 }}
+            onPress={() => {
+              forgotPasswordConfirmState ?
+                setForgotPasswordConfirmState(false) : setForgotPasswordConfirmState(true);
+              setConfirmingCode(false);
+            }}
+          >
+            <Text style={{ color: '#414959', fontSize: 13 }} Password>
+              {forgotPasswordConfirmState ? 'Go back to Login ':'Have a Password reset code? '}
               <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
                 Click Here
               </Text>
