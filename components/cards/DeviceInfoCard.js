@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View, Text, TouchableWithoutFeedback } from 'react-native';
 import Collapsible from 'react-native-collapsible';
+import SampleDeviceList from '../../components/cards/ListEntries/SampleDeviceList';
+import LastActionCard from '../../components/cards/LastActionCard';
+
 
 function DeviceInfoCard(props) {
     const [expanded, setExpanded] = useState(true);
@@ -8,7 +11,14 @@ function DeviceInfoCard(props) {
     const alter = () => {
         setExpanded(!expanded);
     }
+    
+    let list;
+    if (props.type == "GuestCard")
+        list = <SampleDeviceList />
+    else
+        list = <Text>Render Guests Here</Text>
 
+    
     const panel = (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -16,7 +26,7 @@ function DeviceInfoCard(props) {
 
                 </View>
                 <View>
-                    <Text>Device name</Text>
+                    <Text>{props.title}</Text>
                 </View>
                 <TouchableOpacity
                         style={styles.dropDownButtom}
@@ -26,18 +36,19 @@ function DeviceInfoCard(props) {
             </View>
             <Collapsible collapsed={expanded} style={styles.expanded}>
                 <View style={styles.activeGuests}>
-                    <Text style={styles.text}>Active Guests</Text>
+                    <Text style={styles.text}>{props.type == "GuestCard" ? "Devices" : "Active Guests"}</Text>
                 </View>
                 <View style={styles.guestList}>
-
+                    {list}
                 </View>
+                <LastActionCard/>
             </Collapsible>
         </View>);
 
     return (
         <View>
             <TouchableWithoutFeedback>
-            {panel}
+                {panel}
             </TouchableWithoutFeedback>
         </View>     
     );
