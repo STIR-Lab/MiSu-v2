@@ -34,7 +34,7 @@ import RegisterScreen from './screens/Authentication/RegisterScreen';
 // Routing container which swaps screens and adds them to the navigation stack(back button function properly on Android)
 import LoadingScreen from './screens/LoadingScreen';
 import DevicesScreen from './screens/Application/DevicesScreen';
-import GuestsScreen from './screens/Application/GuestsScreen';
+import GuestsScreen from './screens/index';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -92,7 +92,9 @@ const NavBar = createBottomTabNavigator();
 
 function AppNavBar() {
   return(
-    <NavBar.Navigator>
+    <NavBar.Navigator tabBarOptions={{
+      keyboardHidesTabBar: true
+   }} >
       <NavBar.Screen name="Guests" component={HomeStack} />
       <NavBar.Screen name="Devices" component={DevicesScreen} />
       <NavBar.Screen name="Logs" component={LogScreen} />

@@ -82,9 +82,9 @@ const styles = StyleSheet.create({
         elevation: 6
     },
     guestList: {
-        height: "45%",
         width: "100%",
-        backgroundColor: "yellow"
+        backgroundColor: "white",
+        alignItems: "center"
     },
     dropDownButtom: {
         backgroundColor: "#FFFFFF",
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     },
     expanded: {
         backgroundColor: "#FFFFFF",
-        height: 300,
+        // height: 300,
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5
     },
