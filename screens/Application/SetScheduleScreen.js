@@ -8,6 +8,9 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DateTimePicker from '@react-native-community/datetimepicker';
 //const weekdays = ['Monday', 'Tuesday', 'Wednesday', "Thursday", "Friday", "Saturday", "Sunday"];
 
+//Import Header Component
+import Header from "../../components/app/Header.js"
+
 const SetScheduleScreen = () => {
     return (
        <View style={styles.screen}>
@@ -34,23 +37,7 @@ const SetScheduleScreen = () => {
     )
 }
 
-const Header = ({title}) => 
-{
-    return (
-        <View style={styles.header}>
-            <View>
-            <Image
-                style={styles.tinyLogo}
-                source={require('../../assets/MISUv2.png')}
-            />
-            
-            </View>
-            <Text style={styles.headerText}>
-                {title}
-            </Text>
-        </View>
-    )
-}
+
 
 const NameBadge = ({name}) => {
     return(
@@ -301,25 +288,7 @@ const styles = StyleSheet.create({
         backgroundColor:"#F1F1F1",
         width: "100%",
     },
-    header: {
-        flex: .14,
-        backgroundColor: "white",
-        justifyContent: "flex-start",
-        alignItems: "flex-end",
-        flexDirection: "row",
-    },
-    headerText: {
-        fontSize: 30,
-        fontWeight: "bold",
-        textAlign: "center",
-        marginLeft: 25
-    },
-    tinyLogo: {
-        marginBottom: -10,
-        marginLeft: 10,
-        width: 90,
-        height: 90,
-      },
+
       info: {
           backgroundColor: "transparent",
           flexDirection: "row",
