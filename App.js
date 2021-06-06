@@ -35,6 +35,8 @@ import RegisterScreen from './screens/Authentication/RegisterScreen';
 import LoadingScreen from './screens/LoadingScreen';
 import DevicesScreen from './screens/Application/DevicesScreen';
 import GuestsScreen from './screens/index';
+// import HomeScreen from './screens/index';
+
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';

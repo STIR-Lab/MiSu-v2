@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import DeviceElement from '../../DeviceElement';
+import GuestElement from '../../GuestElement';
 
 function SampleDeviceList(props) {
     const [deviceList, setDeviceList] = useState({
@@ -14,7 +16,7 @@ function SampleDeviceList(props) {
             // {deviceName: "Sengled Lightbulb", id:3},
             // {deviceName: "Wyze Smart Camera", id:4},
             // {deviceName: "Schlate Smart Lock", id:5},
-            {deviceName: "Ring Doorbell", id:2},
+            // {deviceName: "Ring Doorbell", id:2},
             // {deviceName: "Sengled Lightbulb", id:3},
             // {deviceName: "Wyze Smart Camera", id:4},
             // {deviceName: "Schlate Smart Lock", id:5},
@@ -26,16 +28,12 @@ function SampleDeviceList(props) {
         ]
     });
 
-    const elementNum = deviceList.devices.length; 
-    const rowNum = (Math.ceil(elementNum / 4));
-    // const padding = 4 - (elementNum % 4);
 
     return (
         <View style={styles.container}>
             {deviceList.devices.map((d) => 
                 <View style={styles.iconAndName} key={d.id}>
-                    <View style={styles.iconHolder}></View>
-                    <Text style={styles.text}>{d.deviceName} </Text>
+                    <GuestElement deviceName={d.deviceName}/>
                 </View>
             )}
         </View>     

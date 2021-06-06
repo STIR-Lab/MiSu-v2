@@ -28,7 +28,7 @@ function AccountScreen(props) {
 	// 	headerRight: () => <View></View>
 	// });
 
-	console.log(props);
+	// console.log(props);
 	// Signs the user out and sends them back to the login screen
 	signOut = async () => {
 		// props.screenProps.setLoadingTrue();
