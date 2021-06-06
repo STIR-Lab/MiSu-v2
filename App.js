@@ -38,6 +38,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+
 Amplify.configure(config);
 
 const store = createStore(appDataReducer, applyMiddleware(thunk));
@@ -95,6 +96,7 @@ function AppNavBar() {
       <NavBar.Screen name="Devices" component={DeviceScreen} />
       <NavBar.Screen name="Logs" component={LogScreen} />
       <NavBar.Screen name="Profile" component={ProfileStack} />
+
     </NavBar.Navigator>
   )
 }
