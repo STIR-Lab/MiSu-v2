@@ -27,12 +27,16 @@ import RegisterScreen from './screens/Authentication/RegisterScreen';
 // App Stack *************************************** */
 //************************************************** */
 // Main screen holding all the logic essentially
-import HomeScreen from './screens/index';
+// import HomeScreen from './screens/index';
 //************************************************** */
 // Loading Stack *********************************** */
 //************************************************** */
 // Routing container which swaps screens and adds them to the navigation stack(back button function properly on Android)
 import LoadingScreen from './screens/LoadingScreen';
+import DevicesScreen from './screens/Application/DevicesScreen';
+import GuestsScreen from './screens/index';
+// import HomeScreen from './screens/index';
+
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -70,7 +74,7 @@ const HomeNav = createStackNavigator();
 function HomeStack() {
   return(
     <HomeNav.Navigator>
-      <HomeNav.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
+      <HomeNav.Screen name="Guests" component={GuestsScreen} options={{headerShown: false}}/>
       <HomeNav.Screen name="Device" component={DeviceScreen} />
     </HomeNav.Navigator>
   )
@@ -90,9 +94,11 @@ const NavBar = createBottomTabNavigator();
 
 function AppNavBar() {
   return(
-    <NavBar.Navigator>
-      <NavBar.Screen name="HomeStack" component={HomeStack} />
-      <NavBar.Screen name="Devices" component={DeviceScreen} />
+    <NavBar.Navigator tabBarOptions={{
+      keyboardHidesTabBar: true
+   }} >
+      <NavBar.Screen name="Guests" component={HomeStack} />
+      <NavBar.Screen name="Devices" component={DevicesScreen} />
       <NavBar.Screen name="Logs" component={LogScreen} />
       <NavBar.Screen name="Profile" component={ProfileStack} />
     </NavBar.Navigator>
