@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "2.2.2": "^2.2.2",
+    "@expo-google-fonts/raleway": "^0.1.0",
     "@react-native-community/checkbox": "^0.4.2",
     "@react-native-community/datetimepicker": "3.2.0",
     "@react-native-community/masked-view": "0.1.10",
@@ -28,6 +29,7 @@
     "aws-sdk": "^2.702.0",
     "datetimepicker": "^0.1.39",
     "expo": "^41.0.0",
+    "expo-font": "~9.1.0",
     "graphql": "^15.1.0",
     "moment": "^2.29.1",
     "react": "16.13.1",
@@ -50,7 +52,6 @@
     "react-redux": "^7.2.1",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "redux-thunk": "^2.3.0"
-    
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

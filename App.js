@@ -14,6 +14,7 @@ import HubCardSharedUsersListEntry from './components/cards/ListEntries/HubCardS
 import appDataReducer from './redux/AppDataReducer';
 import AccountScreen from './screens/Application/AccountScreen';
 import DeviceScreen from './screens/Application/DeviceScreen';
+import DeviceProps from './screens/Application/DeviceProps';
 import LogScreen from './screens/Application/LogScreen';
 import UserScreen from './screens/Application/UserScreen';
 import HubScreen from './screens/Application/HubScreen';
@@ -37,7 +38,7 @@ import LoadingScreen from './screens/LoadingScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
+import { Icon } from 'react-native-elements';
 Amplify.configure(config);
 
 const store = createStore(appDataReducer, applyMiddleware(thunk));
@@ -68,37 +69,82 @@ const store = createStore(appDataReducer, applyMiddleware(thunk));
 const HomeNav = createStackNavigator();
 
 function HomeStack() {
-  return(
+  return (
     <HomeNav.Navigator>
-      <HomeNav.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
-      <HomeNav.Screen name="Device" component={DeviceScreen} />
+      <HomeNav.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <HomeNav.Screen
+        name="Device"
+        component={DeviceScreen}
+        options={{ headerShown: false }}
+      />
+      <HomeNav.Screen
+        name="Properties"
+        component={DeviceProps}
+        options={{ headerShown: false }}
+      />
     </HomeNav.Navigator>
-  )
+  );
 }
 const ProfileNav = createStackNavigator();
 
 function ProfileStack() {
-  return(
+  return (
     <ProfileNav.Navigator>
-      <ProfileNav.Screen name="Account" component={AccountScreen} options={{headerShown: false}}/>
-      <ProfileNav.Screen name="Hub" component={HubScreen}/>
+      <ProfileNav.Screen
+        name="Account"
+        component={AccountScreen}
+        options={{ headerShown: false }}
+      />
+      <ProfileNav.Screen name="Hub" component={HubScreen} />
     </ProfileNav.Navigator>
-  )
+  );
 }
 
 const NavBar = createBottomTabNavigator();
 
 function AppNavBar() {
-  return(
+  return (
     <NavBar.Navigator>
-      <NavBar.Screen name="HomeStack" component={HomeStack} />
-      <NavBar.Screen name="Devices" component={DeviceScreen} />
-      <NavBar.Screen name="Logs" component={LogScreen} />
-      <NavBar.Screen name="Profile" component={ProfileStack} />
+      <NavBar.Screen
+        name="HomeStack"
+        component={HomeStack}
+        options={{
+          tabBarLabel: 'Guests',
+          tabBarIcon: ({}) => (
+            <Icon name="users" type="feather" color="black" />
+          ),
+        }}
+      />
+      <NavBar.Screen
+        name="Devices"
+        component={DeviceScreen}
+        options={{
+          tabBarIcon: ({}) => <Icon name="grid" type="feather" color="black" />,
+        }}
+      />
+      <NavBar.Screen
+        name="Logs"
+        component={LogScreen}
+        options={{
+          tabBarIcon: ({}) => (
+            <Icon name="file-text" type="feather" color="black" />
+          ),
+        }}
+      />
+      <NavBar.Screen
+        name="Profile"
+        component={ProfileStack}
+        options={{
+          tabBarIcon: ({}) => <Icon name="user" type="feather" color="black" />,
+        }}
+      />
     </NavBar.Navigator>
-  )
+  );
 }
-
 
 const customAnimationFunc = () => ({
   screenInterpolator: (sceneProps) => {
@@ -127,30 +173,37 @@ const customAnimationFunc = () => ({
 //   }
 // );
 
-
 const Auth = createStackNavigator();
- const AuthStack = (props) => (
-    <Auth.Navigator 
-        initialRouteName="Login"
-        screenOptions={{
-          animationEnabled: false
-        }}
-        headerMode='none'
-    >
-        {/* {console.log("AuthStack props ", props)} */}
-        <Auth.Screen name="Login" component={LoginScreen} 
-            initialParams={{
-                setLoadingTrue: props.setLoadingTrue,
-                setLoadingFalse: props.setLoadingFalse,
-                setGoToAuthFalse: props.setGoToAuthFalse,
-                setGoToAppTrue: props.setGoToAppTrue}}/>
-        <Auth.Screen name="Register" component={RegisterScreen} />
-        <Auth.Screen name="App" component={AppNavBar} 
-          initialParams={{
-            setLoadingTrue: props.setLoadingTrue,
-            setLoadingFalse: props.setLoadingFalse}}/>
-    </Auth.Navigator>
- )
+const AuthStack = (props) => (
+  <Auth.Navigator
+    initialRouteName="Login"
+    screenOptions={{
+      animationEnabled: false,
+    }}
+    headerMode="none"
+  >
+    {/* {console.log("AuthStack props ", props)} */}
+    <Auth.Screen
+      name="Login"
+      component={LoginScreen}
+      initialParams={{
+        setLoadingTrue: props.setLoadingTrue,
+        setLoadingFalse: props.setLoadingFalse,
+        setGoToAuthFalse: props.setGoToAuthFalse,
+        setGoToAppTrue: props.setGoToAppTrue,
+      }}
+    />
+    <Auth.Screen name="Register" component={RegisterScreen} />
+    <Auth.Screen
+      name="App"
+      component={AppNavBar}
+      initialParams={{
+        setLoadingTrue: props.setLoadingTrue,
+        setLoadingFalse: props.setLoadingFalse,
+      }}
+    />
+  </Auth.Navigator>
+);
 
 export default class App extends Component {
   constructor(props) {
@@ -158,33 +211,33 @@ export default class App extends Component {
     this.state = {
       loading: false,
       goToAuth: false,
-      goToApp: false
+      goToApp: false,
     };
   }
 
   setLoadingTrue = () => {
     this.setState({ loading: true });
-  }
+  };
 
   setLoadingFalse = () => {
     this.setState({ loading: false });
-  }
+  };
 
   setGoToAuthTrue = () => {
     this.setState({ goToAuth: true });
-  }
+  };
 
   setGoToAuthFalse = () => {
     this.setState({ goToAuth: false });
-  }
+  };
 
   setGoToAppTrue = () => {
     this.setState({ goToApp: true });
-  }
+  };
 
   setGoToAppFalse = () => {
     this.setState({ goToApp: false });
-  }
+  };
 
   render() {
     return (
@@ -198,13 +251,20 @@ export default class App extends Component {
             }}
           />
           <NavigationContainer>
-            { this.state.goToApp == false && this.state.goToAuth == false && 
-                <LoadingScreen setGoToAuthTrue={this.setGoToAuthTrue} setGoToAppTrue={this.setGoToAppTrue}/>}
-            { this.state.goToAuth == true && 
-                <AuthStack setLoadingTrue = {this.setLoadingTrue} 
-                    setGoToAppTrue={this.setGoToAppTrue} 
-                    setLoadingFalse={this.setLoadingFalse}
-                    setGoToAuthFalse={this.setGoToAuthFalse}/>}
+            {this.state.goToApp == false && this.state.goToAuth == false && (
+              <LoadingScreen
+                setGoToAuthTrue={this.setGoToAuthTrue}
+                setGoToAppTrue={this.setGoToAppTrue}
+              />
+            )}
+            {this.state.goToAuth == true && (
+              <AuthStack
+                setLoadingTrue={this.setLoadingTrue}
+                setGoToAppTrue={this.setGoToAppTrue}
+                setLoadingFalse={this.setLoadingFalse}
+                setGoToAuthFalse={this.setGoToAuthFalse}
+              />
+            )}
             {/* { this.state.goToApp == true &&
                 <AppNavBar/>
             } */}

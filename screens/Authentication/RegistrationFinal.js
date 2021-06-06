@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Image,
   View,
@@ -6,18 +6,19 @@ import {
   TextInput,
   Text,
   CheckBox,
-} from "react-native";
-import authStyle from "../../styles/AuthStyle";
+  Linking,
+} from 'react-native';
+import authStyle from '../../styles/AuthStyle';
 
-import Icon from "react-native-vector-icons/Feather";
+import Icon from 'react-native-vector-icons/Feather';
 
 class RegistrationFinal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isSelected: false,
-      totalSteps: "",
-      currentStep: "",
+      totalSteps: '',
+      currentStep: '',
     };
   }
 
@@ -65,8 +66,8 @@ class RegistrationFinal extends React.Component {
         <View
           style={{
             flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
             paddingBottom: 30,
             paddingLeft: 60,
             paddingTop: 10,
@@ -75,20 +76,20 @@ class RegistrationFinal extends React.Component {
         >
           <View style={authStyle.stepTrackerIcon}>
             <TouchableOpacity>
-              <Icon name="user" size={30} color={"#008CFF"} />
-              <Text style={{ color: "#008CFF" }}>Profile</Text>
+              <Icon name="user" size={30} color={'#008CFF'} />
+              <Text style={{ color: '#008CFF' }}>Profile</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => this.props.next()}>
             <View style={authStyle.stepTrackerIcon}>
-              <Icon name="file-text" size={30} color={"#008CFF"} />
-              <Text style={{ color: "#008CFF" }}>Contact Info</Text>
+              <Icon name="file-text" size={30} color={'#008CFF'} />
+              <Text style={{ color: '#008CFF' }}>Contact Info</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity>
             <View style={authStyle.stepTrackerIcon}>
-              <Icon name="thumbs-up" size={30} color={"#008CFF"} />
-              <Text style={{ color: "#008CFF" }}>Finish</Text>
+              <Icon name="thumbs-up" size={30} color={'#008CFF'} />
+              <Text style={{ color: '#008CFF' }}>Finish</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -115,7 +116,11 @@ class RegistrationFinal extends React.Component {
             value={this.state.isSelected}
             onValueChange={this.handleCheckBox}
           />
-          <Text>Do you agree to the Terms and Conditions?</Text>
+          <TouchableOpacity
+            onPress={() => Linking.openURL('https://usabilla.com/terms/')}
+          >
+            <Text>Do you agree to the Terms and Conditions?</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Render the submit button */}
@@ -124,7 +129,7 @@ class RegistrationFinal extends React.Component {
             style={authStyle.authFormButton}
             onPress={this.nextStep}
           >
-            <Text style={{ color: "#FFF", fontSize: 22 }}>Create Account</Text>
+            <Text style={{ color: '#FFF', fontSize: 22 }}>Create Account</Text>
           </TouchableOpacity>
         </View>
       </View>
