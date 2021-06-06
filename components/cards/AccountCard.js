@@ -6,7 +6,7 @@ import AppText from '../app/AppText';
 function AccountCard(props) {
   // Holds all of our global variables
     const [registering, setRegistering] = useState(false);
- 
+    // console.log(props);
 
     registerHub = () => {
         setRegistering(true);

@@ -25,7 +25,6 @@ const SetScheduleScreen = () => {
                <StartTime/>
                <StartDate/>
                <EndTime/>
-
                <EndDate/>
                
 

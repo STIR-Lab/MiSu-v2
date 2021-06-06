@@ -19,44 +19,44 @@ class HomeScreen extends React.Component {
 	};
 
 	// This might be able to be deleted
-	static navigationOptions = ({ navigate, navigation }) => ({
-		headerTitle: 'Home',
-		headerRight: () => (
-			<View>
-				<TouchableOpacity
-					style={{ alignSelf: 'center', marginTop: 16 }}
-					onPress={() => navigation.navigate('Account')}
-				>
-					<Icon
-						name="menu"
-						size={35}
-						style={{ marginLeft: 16, marginRight: 16, marginBottom: 0, bottom: 5 }}
-					/>
-					<Text
-						style={{
-							fontSize: 18,
-							top: 0,
-							right: 55,
-							textAlign: 'right',
-							fontWeight: 'bold',
-							position: 'absolute',
-							width: 200
-						}}
-					>
-						{navigation.getParam('name') != null ? navigation.getParam('name').slice(0, 18) : '...'}
-					</Text>
-				</TouchableOpacity>
-			</View>
-		),
-		headerLeft: () => (
-			<View>
-				<Image
-					style={[{ marginBottom: -5, marginLeft: 10, width: 64, height: 64 }]}
-					source={require('../../assets/MISU.png')}
-				/>
-			</View>
-		)
-	});
+	// static navigationOptions = ({ navigate, navigation }) => ({
+	// 	headerTitle: 'Home',
+	// 	headerRight: () => (
+	// 		<View>
+	// 			<TouchableOpacity
+	// 				style={{ alignSelf: 'center', marginTop: 16 }}
+	// 				onPress={() => navigation.navigate('Account')}
+	// 			>
+	// 				<Icon
+	// 					name="menu"
+	// 					size={35}
+	// 					style={{ marginLeft: 16, marginRight: 16, marginBottom: 0, bottom: 5 }}
+	// 				/>
+	// 				<Text
+	// 					style={{
+	// 						fontSize: 18,
+	// 						top: 0,
+	// 						right: 55,
+	// 						textAlign: 'right',
+	// 						fontWeight: 'bold',
+	// 						position: 'absolute',
+	// 						width: 200
+	// 					}}
+	// 				>
+	// 					{navigation.getParam('name') != null ? navigation.getParam('name').slice(0, 18) : '...'}
+	// 				</Text>
+	// 			</TouchableOpacity>
+	// 		</View>
+	// 	),
+	// 	headerLeft: () => (
+	// 		<View>
+	// 			<Image
+	// 				style={[{ marginBottom: -5, marginLeft: 10, width: 64, height: 64 }]}
+	// 				source={require('../../assets/MISU.png')}
+	// 			/>
+	// 		</View>
+	// 	)
+	// });
 
 	constructor(props) {
 		super(props);

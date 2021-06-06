@@ -7,6 +7,7 @@ import { getSharedDevicesAction } from '../redux/Action/getSharedDevicesAction';
 import { listDevicesAction } from '../redux/Action/listDevicesAction';
 import { updateInvitationAction } from '../redux/Action/updateInvitationAction';
 import HomeScreen from './Application/HomeScreen';
+import GuestsScreen from './Application/GuestsScreen';
 
 const mapStateToProps = (state) => {
 	const {
@@ -40,4 +41,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(GuestsScreen);
