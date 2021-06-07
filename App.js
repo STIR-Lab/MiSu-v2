@@ -1,5 +1,5 @@
 import Amplify from '@aws-amplify/core';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 // import { createStackNavigator } from 'react-navigation-stack';
@@ -28,17 +28,22 @@ import RegisterScreen from './screens/Authentication/RegisterScreen';
 // App Stack *************************************** */
 //************************************************** */
 // Main screen holding all the logic essentially
-import HomeScreen from './screens/index';
+// import HomeScreen from './screens/index';
 //************************************************** */
 // Loading Stack *********************************** */
 //************************************************** */
 // Routing container which swaps screens and adds them to the navigation stack(back button function properly on Android)
 import LoadingScreen from './screens/LoadingScreen';
+import DevicesScreen from './screens/Application/DevicesScreen';
+import GuestsScreen from './screens/index';
+// import HomeScreen from './screens/index';
+
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-elements';
+
 Amplify.configure(config);
 
 const store = createStore(appDataReducer, applyMiddleware(thunk));
@@ -142,6 +147,7 @@ function AppNavBar() {
           tabBarIcon: ({}) => <Icon name="user" type="feather" color="black" />,
         }}
       />
+
     </NavBar.Navigator>
   );
 }
@@ -205,80 +211,43 @@ const AuthStack = (props) => (
   </Auth.Navigator>
 );
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-      goToAuth: false,
-      goToApp: false,
-    };
-  }
 
-  setLoadingTrue = () => {
-    this.setState({ loading: true });
-  };
+export default function App(props) {
+  const [loading, setLoading] = useState(false);
+  const [goToAuth, setGoToAuth] = useState(false);
+  const [goToApp, setGoToApp] = useState(false);
 
-  setLoadingFalse = () => {
-    this.setState({ loading: false });
-  };
-
-  setGoToAuthTrue = () => {
-    this.setState({ goToAuth: true });
-  };
-
-  setGoToAuthFalse = () => {
-    this.setState({ goToAuth: false });
-  };
-
-  setGoToAppTrue = () => {
-    this.setState({ goToApp: true });
-  };
-
-  setGoToAppFalse = () => {
-    this.setState({ goToApp: false });
-  };
-
-  render() {
-    return (
-      <Provider store={store}>
-        <View style={{ flex: 1 }}>
-          <Spinner
-            visible={this.state.loading}
-            textContent={'Loading...'}
-            textStyle={{
-              color: '#FFF',
-            }}
-          />
-          <NavigationContainer>
-            {this.state.goToApp == false && this.state.goToAuth == false && (
-              <LoadingScreen
-                setGoToAuthTrue={this.setGoToAuthTrue}
-                setGoToAppTrue={this.setGoToAppTrue}
-              />
-            )}
-            {this.state.goToAuth == true && (
-              <AuthStack
-                setLoadingTrue={this.setLoadingTrue}
-                setGoToAppTrue={this.setGoToAppTrue}
-                setLoadingFalse={this.setLoadingFalse}
-                setGoToAuthFalse={this.setGoToAuthFalse}
-              />
-            )}
-            {/* { this.state.goToApp == true &&
-                <AppNavBar/>
-            } */}
-          </NavigationContainer>
-          {/* <AppContainer
-            screenProps={{
-              setLoadingFalse: this.setLoadingFalse.bind(this),
-              setLoadingTrue: this.setLoadingTrue.bind(this),
-            }}
-          /> */}
-        </View>
-      </Provider>
-    );
-  }
+  return (
+    <Provider store={store}>
+      <View style={{ flex: 1 }}>
+        <Spinner
+          visible={loading}
+          textContent={'Loading...'}
+          textStyle={{
+            color: '#FFF',
+          }}
+        />
+        <NavigationContainer>
+          { goToApp == false && goToAuth == false && 
+              <LoadingScreen setGoToAuthTrue={setGoToAuth} setGoToAppTrue={setGoToApp}/>}
+          { goToAuth == true && 
+              <AuthStack setLoadingTrue = {setLoading} 
+                  setGoToAppTrue={setGoToApp} 
+                  setLoadingFalse={setLoading}
+                  setGoToAuthFalse={setGoToAuth}/>}
+          {/* { this.state.goToApp == true &&
+              <AppNavBar/>
+          } */}
+        </NavigationContainer>
+        {/* <AppContainer
+          screenProps={{
+            setLoadingFalse: this.setLoadingFalse.bind(this),
+            setLoadingTrue: this.setLoadingTrue.bind(this),
+          }}
+        /> */}
+      </View>
+    </Provider>
+  );
 }
 
 // Create App Navigator

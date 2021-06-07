@@ -1,5 +1,5 @@
 import { Auth } from 'aws-amplify';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -19,236 +19,261 @@ import ConfirmCodePopup from '../../components/popup/ConfirmCodePopup';
 import ForgotPasswordPopup from '../../components/popup/ForgotPasswordPopup';
 import ForgotPasswordConfirmPopup from '../../components/popup/ForgotPasswordConfirmPopup';
 
-class LoginScreen extends React.Component {
-  static navigationOptions = {
-    header: () => false,
-    /* No more header config here! */
-  };
-  state = {
-    username: '', // 'secondary@example.com'
-    password: '',
-    errorMessage: null,
-    message: null,
-    isLoading: false,
-    rememberMe: false,
-  };
+function LoginScreen(props) {
+  // static navigationOptions = {
+  //   header: () => false,
+  //   /* No more header config here! */
+  // };
+  
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [forgotPasswordState, setForgotPasswordState] = useState(false);
+  const [forgotPasswordConfirmState, setForgotPasswordConfirmState] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [confirmCode, setConfirmCode] = useState('');
+  const [confirmingCode, setConfirmingCode] = useState(false);
 
   handleLogin = async () => {
-    this.setState({ errorMessage: '' });
-    const { username, password } = this.state;
+    setErrorMessage('');
 
     if (username === '')
-      this.setState({ errorMessage: 'Missing email address' });
+      setErrorMessage('Missing email address');
     else if (password === '')
-      this.setState({ errorMessage: 'Missing password' });
+      setErrorMessage('Missing password');
     else {
       try {
-        this.props.route.params.setLoadingTrue();
+        props.route.params.setLoadingTrue(true);
 
         const user = await Auth.signIn(username, password)
           .then(async (user) => {
             console.log('Login successful!');
 
-            this.setState({ errorMessage: '' });
-            this.setState({ message: 'Login successful!' });
-            this.setState({ isLoading: false });
+            setErrorMessage('');
+            setMessage('Login successful!');
+            setIsLoading(false);
 
-            await this.props.getSession();
+            await props.getSession();
 
-            this.props.route.params.setLoadingFalse();
+            props.route.params.setLoadingFalse(false);
 
-            this.props.route.params.setGoToAppTrue();
+            props.route.params.setGoToAppTrue(true);
             // this.props.route.params.setGoToAuthFalse();
-            this.props.navigation.navigate('App');
+            props.navigation.navigate('App');
           })
           .catch((err) => {
-            this.setState({ errorMessage: err.message });
-            this.setState({ message: '' });
-            this.setState({ isLoading: false });
-            this.props.route.params.setLoadingFalse();
+            setErrorMessage(err.message);
+            setMessage('');
+            setIsLoading(false);
+            props.route.params.setLoadingFalse(false);
           });
       } catch (error) {
-        this.setState({ errorMessage: error.message });
-        this.setState({ message: '' });
-        this.setState({ isLoading: false });
-        this.props.params.setLoadingFalse();
+        setErrorMessage(err.message);
+            setMessage('');
+            setIsLoading(false);
+            props.route.params.setLoadingFalse(false);
       }
-      this.setState({ isLoading: false });
+      setIsLoading(false);
     }
+  };
+
+  // Verify sign up code
+  confirmSignUp = async () => {
+    setErrorMessage('');
+    setMessage('');
+
+    console.log("Inside confirmSignUp")
+    // Form validation
+    if (username == '') {
+      setMessage("Please enter the email you're verifying");
+      setErrorMessage('');
+    } else if (confirmCode == '') {
+      setMessage('Please enter the code sent to your email');
+      setErrorMessage('');
+    } else {
+      setIsLoading(true);
+      const user = await Auth.confirmSignUp(username, confirmCode)
+        .then(async (user) => {
+          console.log('confirmed sign up successful!');
+
+          setErrorMessage('');
+          setMessage('Confirm successful, please sign in.');
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setErrorMessage(err.Message);
+          setMessage('');
+          setIsLoading(false);
+        });
+    }
+    setConfirmingCode(false);
   };
 
   // Complete the forgot password auth
   forgotPassword = async (username) => {
-    this.setState({ errorMessage: '' });
-    this.setState({ message: '' });
-    this.setState({ forgotPassword: false });
+    setErrorMessage('');
+    setMessage('');
+    setForgotPasswordState(false);
 
     // Form validation
     if (username == '') {
-      this.setState({
-        message: 'Please enter the email address of your account',
-      });
-      this.setState({ errorMessage: '' });
+      setMessage('Please enter the email address of your account');
+      setErrorMessage('');
     } else {
       console.log(username);
       console.log('-----------');
-      this.setState({ isLoading: true });
+      setIsLoading(true);
       const user = await Auth.forgotPassword(username)
         .then(async (user) => {
           console.log('forgot password request successful!');
 
-          this.setState({ errorMessage: '' });
-          this.setState({
-            message:
-              'Request successful, check your email for further instructions.',
-          });
-          this.setState({ isLoading: false });
+          setErrorMessage('');
+          setMessage('Request successful, check your email for further instructions.');
+          setIsLoading(false);
         })
         .catch((err) => {
-          this.setState({ errorMessage: err.message });
-          this.setState({ message: '' });
-          this.setState({ isLoading: false });
+          setErrorMessage(err.message);
+          setMessage('');
+          setIsLoading(false);
         });
-      this.setState({ isLoading: false });
+      setIsLoading(false);
     }
   };
 
   // Complete the forgot password auth
-  forgotPasswordConfirm = async (username, code, password) => {
-    this.setState({ errorMessage: '' });
-    this.setState({ message: '' });
-    this.setState({ forgotPasswordConfirm: false });
+  forgotPasswordConfirm = async () => {
+    setErrorMessage('');
+    setMessage('');
 
     console.log(
       'attempting to confirm password ' +
         username +
         ', ' +
-        code +
+        confirmCode +
         ', ' +
         password
     );
     // Form validation
     if (username == '') {
-      this.setState({
-        message: 'Please enter the email address of your account',
-      });
-      this.setState({ errorMessage: '' });
+      setMessage('Please enter the email address of your account');
+      setErrorMessage('');
     } else {
-      this.setState({ isLoading: true });
-      const user = await Auth.forgotPasswordSubmit(username, code, password)
+      setIsLoading(true);
+      const user = await Auth.forgotPasswordSubmit(username, confirmCode, password)
         .then(async (user) => {
           console.log('forgot password successful!');
 
-          this.setState({ errorMessage: '' });
-          this.setState({
-            message: 'Reset successful, login with your new credentials.',
-          });
-          this.setState({ isLoading: false });
+          setErrorMessage('');
+          setMessage('Reset successful, login with your new credentials.');
+          setIsLoading(false);
         })
         .catch((err) => {
-          this.setState({ errorMessage: err.message });
-          this.setState({ message: '' });
-          this.setState({ isLoading: false });
+          setErrorMessage(err.message);
+          setMessage('');
+          setIsLoading(false);
         });
-      this.setState({ isLoading: false });
+      setIsLoading(false);
     }
+    setForgotPasswordConfirmState(false);
   };
 
-  render() {
-    // console.log(this.props);
-    // The loading element will restrict input during networked operations
-    let loadingElement = null;
-    if (this.state.isLoading) {
-      loadingElement = (
-        <View style={[appStyle.loadingHolder]}>
-          <ActivityIndicator size="large" style={[appStyle.loadingElement]} />
+  // console.log(this.props);
+  // The loading element will restrict input during networked operations
+  let loadingElement = null;
+  if (isLoading) {
+    loadingElement = (
+      <View style={[appStyle.loadingHolder]}>
+        <ActivityIndicator size="large" style={[appStyle.loadingElement]} />
+      </View>
+    );
+  }
+
+  // The confirm code popup will appear if there is actually an error
+  let forgotPasswordPopupElement = null;
+  if (forgotPasswordState) {
+    forgotPasswordPopupElement = (
+      <ForgotPasswordPopup
+        onCancel={() => setForgotPasswordState(false)}
+        onSubmit={forgotPassword}
+        username={username}
+      />
+    );
+  }
+
+  // The confirm code popup will appear if there is actually an error
+  // let forgotPasswordConfirmPopupElement = null;
+  // if (forgotPasswordConfirmState) {
+  //   forgotPasswordConfirmPopupElement = (
+  //     <ForgotPasswordConfirmPopup
+  //       onCancel={() => setForgotPasswordConfirmState(false)}
+  //       onSubmit={forgotPasswordConfirm}
+  //       username={username}
+  //     />
+  //   );
+  // }
+
+  // The message element will be set if there is actually an error
+  let messageElement = null;
+  if (message) {
+    messageElement = (
+      <View style={authStyle.message}>
+        {message && (
+          <Text style={authStyle.message}>{message}</Text>
+        )}
+      </View>
+    );
+  }
+
+  // The error element will be set if there is actually an error
+  let errorElement = null;
+  if (errorMessage) {
+    errorElement = (
+      <View style={authStyle.errorMessage}>
+        {errorMessage && (
+          <Text style={authStyle.errorMessage}>
+            {errorMessage}
+          </Text>
+        )}
+      </View>
+    );
+  }
+
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        {/* Render the app icon */}
+        <View style={styles.iconHolder}>
+          <Image
+            style={styles.icon}
+            source={require('../../assets/MISU.png')}
+          />
         </View>
-      );
-    }
 
-    // The confirm code popup will appear if there is actually an error
-    let forgotPasswordPopupElement = null;
-    if (this.state.forgotPassword) {
-      forgotPasswordPopupElement = (
-        <ForgotPasswordPopup
-          onCancel={() => this.setState({ forgotPassword: false })}
-          onSubmit={this.forgotPassword}
-          username={this.state.username}
-        />
-      );
-    }
+        {/* Render the greeting */}
+        <Text style={[styles.greeting]}>
+          Welcome to
+          <Text style={styles.appName}> MiSu</Text>
+        </Text>
 
-    // The confirm code popup will appear if there is actually an error
-    let forgotPasswordConfirmPopupElement = null;
-    if (this.state.forgotPasswordConfirm) {
-      forgotPasswordConfirmPopupElement = (
-        <ForgotPasswordConfirmPopup
-          onCancel={() => this.setState({ forgotPasswordConfirm: false })}
-          onSubmit={this.forgotPasswordConfirm}
-          username={this.state.username}
-        />
-      );
-    }
-
-    // The message element will be set if there is actually an error
-    let messageElement = null;
-    if (this.state.message) {
-      messageElement = (
-        <View style={authStyle.message}>
-          {this.state.message && (
-            <Text style={authStyle.message}>{this.state.message}</Text>
-          )}
-        </View>
-      );
-    }
-
-    // The error element will be set if there is actually an error
-    let errorElement = null;
-    if (this.state.errorMessage) {
-      errorElement = (
-        <View style={authStyle.errorMessage}>
-          {this.state.errorMessage && (
-            <Text style={authStyle.errorMessage}>
-              {this.state.errorMessage}
-            </Text>
-          )}
-        </View>
-      );
-    }
-
-    return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
-          {/* Render the app icon */}
-          <View style={styles.iconHolder}>
-            <Image
-              style={styles.icon}
-              source={require('../../assets/MISU.png')}
-            />
+        {/* Render the login form */}
+        <View style={styles.authForm}>
+          <View style={styles.iconAndInput}>
+            <View style={styles.iconInput}>
+              <Image source={require('../../assets/icons/email-icon.png')} />
+            </View>
+            <TextInput
+              style={styles.formInput}
+              autoCapitalize="none"
+              onChangeText={(username) => setUsername(username)}
+              value={username}
+              placeholder="Email Address"
+              placeholderTextColor="#808080"
+            ></TextInput>
           </View>
 
-          {/* Render the greeting */}
-          <Text style={[styles.greeting]}>
-            Welcome to
-            <Text style={styles.appName}> MiSu</Text>
-          </Text>
-
-          {/* Render the login form */}
-          <View style={styles.authForm}>
-            <View style={styles.iconAndInput}>
-              <View style={styles.iconInput}>
-                <Image source={require('../../assets/icons/email-icon.png')} />
-              </View>
-              <TextInput
-                style={styles.formInput}
-                autoCapitalize="none"
-                onChangeText={(username) => this.setState({ username })}
-                value={this.state.username}
-                placeholder="Email Address"
-                placeholderTextColor="#808080"
-              ></TextInput>
-            </View>
-
+          {!confirmingCode && (
             <View style={styles.iconAndInput}>
               <View style={styles.iconInput}>
                 <Image source={require('../../assets/icons/lock.png')} />
@@ -257,91 +282,126 @@ class LoginScreen extends React.Component {
                 style={styles.formInput}
                 secureTextEntry
                 autoCapitalize="none"
-                onChangeText={(password) => this.setState({ password })}
-                value={this.state.password}
+                onChangeText={(password) => setPassword(password)}
+                value={password}
                 placeholder="Password"
                 placeholderTextColor="#808080"
               ></TextInput>
-            </View>
-          </View>
+            </View>)}
 
-          {/* Render the forgot password btn */}
-          <View>
-            <TouchableOpacity
-              style={{ alignSelf: 'center', marginTop: 0 }}
-              onPress={() => {
-                this.setState({ forgotPassword: true });
-              }}
-            >
-              <Text style={{ color: '#414959', fontSize: 13 }} Password>
-                Forgot your password?{' '}
-                <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
-                  Get code
-                </Text>
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Render the submit button */}
-          <View style={authStyle.authFormButtonHolder}>
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={this.handleLogin}
-            >
-              <Text style={{ color: '#FFF', fontSize: 25 }}>Login</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Render the error message */}
-          {errorElement}
-
-          {/* Render the message */}
-          {messageElement}
-
-          {/* Render the forgot popup */}
-          {forgotPasswordPopupElement}
-
-          {/* Render the forgot confirm popup */}
-          {forgotPasswordConfirmPopupElement}
-
-          {/* Render the register toggle */}
-          <View>
-            <TouchableOpacity
-              style={{ alignSelf: 'center', marginTop: 40 }}
-              onPress={() => this.props.navigation.navigate('Register')}
-            >
-              <Text style={{ color: '#414959', fontSize: 13 }} Password>
-                Need an account?{' '}
-                <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
-                  Sign up
-                </Text>
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Render the confirm forgot password confirm btn */}
-          <View>
-            <TouchableOpacity
-              style={{ alignSelf: 'center', marginTop: 2 }}
-              onPress={() => {
-                this.setState({ forgotPasswordConfirm: true });
-              }}
-            >
-              <Text style={{ color: '#414959', fontSize: 13 }} Password>
-                Have a forgot password confirm code?{' '}
-                <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
-                  Confirm
-                </Text>
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Render the loading element */}
-          {loadingElement}
+          { (confirmingCode || forgotPasswordConfirmState) && (
+            <View style={styles.iconAndInput}>
+              <View style={styles.iconInput}>
+                <Image source={require('../../assets/icons/lock.png')} />
+              </View>
+              <TextInput
+                style={styles.formInput}
+                keyboardType='numeric'
+                autoCapitalize="none"
+                onChangeText={(confirmCode) => setConfirmCode(confirmCode)}
+                value={confirmCode}
+                placeholder="Confirm Code"
+                placeholderTextColor="#808080"
+              ></TextInput>
+           </View>)}
         </View>
-      </TouchableWithoutFeedback>
-    );
-  }
+
+        {/* Render the forgot password btn */}
+        <View>
+          <TouchableOpacity
+            style={{ alignSelf: 'center', marginTop: 0 }}
+            onPress={() => {
+              setForgotPasswordState(true);
+            }}
+          >
+            <Text style={{ color: '#414959', fontSize: 13 }} Password>
+              Forgot your password?{' '}
+              <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
+                Get code
+              </Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Render the submit button */}
+        <View style={authStyle.authFormButtonHolder}>
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={confirmingCode ? confirmSignUp : (forgotPasswordConfirmState ? forgotPasswordConfirm : handleLogin)}
+          >
+            <Text style={{ color: '#FFF', fontSize: 25 }}>{confirmingCode ? 'Confirm' : (forgotPasswordConfirmState ? 'Reset' : 'Login')}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Render the error message */}
+        {errorElement}
+
+        {/* Render the message */}
+        {messageElement}
+
+        {/* Render the forgot popup */}
+        {forgotPasswordPopupElement}
+
+        {/* Render the forgot confirm popup */}
+        {/* {forgotPasswordConfirmPopupElement} */}
+
+        {/* Render the register toggle */}
+        <View>
+          <TouchableOpacity
+            style={{ alignSelf: 'center', marginTop: 40 }}
+            onPress={() => props.navigation.navigate('Register')}
+          >
+            <Text style={{ color: '#414959', fontSize: 13 }} Password>
+              Need an account?{' '}
+              <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
+                Sign up
+              </Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Render the confirm forgot password confirm btn */}
+        <View>
+          <TouchableOpacity
+            style={{ alignSelf: 'center', marginTop: 2 }}
+            onPress={() => {
+              confirmingCode ?
+                setConfirmingCode(false) : setConfirmingCode(true);
+              setForgotPasswordConfirmState(false);
+            }}
+          >
+            <Text style={{ color: '#414959', fontSize: 13 }} Password>
+              {confirmingCode ? 'Already Confirmed? ':'Have an Account Verification code? '}
+              <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
+                Click Here
+              </Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View>
+          <TouchableOpacity
+            style={{ alignSelf: 'center', marginTop: 2 }}
+            onPress={() => {
+              forgotPasswordConfirmState ?
+                setForgotPasswordConfirmState(false) : setForgotPasswordConfirmState(true);
+              setConfirmingCode(false);
+            }}
+          >
+            <Text style={{ color: '#414959', fontSize: 13 }} Password>
+              {forgotPasswordConfirmState ? 'Go back to Login ':'Have a Password reset code? '}
+              <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
+                Click Here
+              </Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Render the loading element */}
+        {loadingElement}
+      </View>
+    </TouchableWithoutFeedback>
+  );
 }
 
 const styles = StyleSheet.create({

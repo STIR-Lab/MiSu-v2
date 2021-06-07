@@ -8,7 +8,7 @@ const  HomeCardDeviceEntry = (props) => {
     // console.log("In HomeCardDeviceEntry.js ", props);
     const name = props.device.name.substring(0, 15);
 
-    console.log("HomeCardDeviceEntry props ", props);
+    // console.log("HomeCardDeviceEntry props ", props);
     return (
     <TouchableOpacity style={appStyle.deviceItem} onPress={()=> {props.navigation.navigate("Device", { device: props.device, owner:props.owner })}}>
         {

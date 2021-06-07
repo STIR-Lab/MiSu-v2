@@ -41,6 +41,7 @@ function AccountScreen(props) {
       });
   };
 
+
   viewLogs = () => {
     props.navigation.navigate('Log');
   };

@@ -19,7 +19,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 const windowHeight = Dimensions.get('window').height;
 
 function HubScreen(props) {
-  console.log(props);
+
+    // console.log(props);
 
   const [url, setUrl] = useState(null);
   const [email, setEmail] = useState(null);
@@ -37,16 +38,16 @@ function HubScreen(props) {
     ) {
       setError('Some fields have not been completed');
       return;
-    } else {
-      console.log('ATTEMPTING= ' + url);
-      props.register(
+    } 
+        else
         {
-          hub_url: url,
-          hub_email: email,
-          hub_password: password,
-        },
-        props.sessionData.idToken
-      );
+            const state = props.register({
+                hub_url: url, 
+                hub_email: email,
+                hub_password: password},
+                props.sessionData.idToken);
+            setError('It probably worked..');
+        }
     }
   };
 
