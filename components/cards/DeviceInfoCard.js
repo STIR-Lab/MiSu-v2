@@ -14,7 +14,7 @@ function DeviceInfoCard(props) {
     
     let list;
     if (props.type == "GuestCard")
-        list = <SampleDeviceList />
+        list = <SampleDeviceList screen="Guests"/>
     else
         list = <Text>Render Guests Here</Text>
 
