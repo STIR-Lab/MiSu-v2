@@ -15,6 +15,8 @@ import AppHeaderText from '../app/AppHeaderText';
 import AppText from '../app/AppText';
 import appStyle from '../../styles/AppStyle';
 import Moment from 'moment';
+import { Icon } from 'react-native-elements';
+import { useFonts, Raleway } from '@expo-google-fonts/raleway';
 
 // Render each properties access values
 const RenderAccess = (props) => {
@@ -200,9 +202,8 @@ class DeviceCard extends Component {
                 // Check if this rule is operating on the correct day(s)
                 if (temp.time_range_reoccuring !== null) {
                   var withinTimeFrame = false;
-                  var daysReoccuring = temp.time_range_reoccuring.match(
-                    /.{1,3}/g
-                  );
+                  var daysReoccuring =
+                    temp.time_range_reoccuring.match(/.{1,3}/g);
                   for (var i = 0; i < daysReoccuring.length; i++) {
                     if (day === daysReoccuring[i]) {
                       withinTimeFrame = true;
@@ -298,8 +299,8 @@ class DeviceCard extends Component {
       this.state.device,
       switchV.properties[switchProp]
     );
-    switchV.properties[switchProp].value = !switchV.properties[switchProp]
-      .value;
+    switchV.properties[switchProp].value =
+      !switchV.properties[switchProp].value;
     this.setState({
       device: switchV,
     });
@@ -474,9 +475,8 @@ class DeviceCard extends Component {
                 // Check if this rule is operating on the correct day(s)
                 if (temp.time_range_reoccuring !== null) {
                   var withinTimeFrame = 0;
-                  var daysReoccuring = temp.time_range_reoccuring.match(
-                    /.{1,3}/g
-                  );
+                  var daysReoccuring =
+                    temp.time_range_reoccuring.match(/.{1,3}/g);
                   for (var i = 0; i < daysReoccuring.length; i++) {
                     if (day === daysReoccuring[i]) {
                       withinTimeFrame = 1;
@@ -771,27 +771,47 @@ class DeviceCard extends Component {
   render() {
     return (
       <View style={[appStyle.container, { marginLeft: -10, marginRight: -10 }]}>
-        <View style={[appStyle.card]}>
-          {this.state.loading && (
-            /* Fixes crashing/logging out*/
-            <TouchableOpacity onPress={() => this.props.onCancel()}>
-              <View style={appStyle.modalOverlay} />
-            </TouchableOpacity>
-          )}
+        {this.state.loading && (
+          /* Fixes crashing/logging out*/
+          <TouchableOpacity onPress={() => this.props.onCancel()}>
+            <View style={appStyle.modalOverlay} />
+          </TouchableOpacity>
+        )}
 
-          {/* Render the owners name */}
-          <AppHeaderText
+        <View style={appStyle.rowLeft}>
+          <TouchableOpacity
+            style={{ alignSelf: 'center', marginTop: 16 }}
+            onPress={() => this.props.navigation.navigate('Home')}
+          >
+            <Icon
+              name="arrow-back"
+              size={35}
+              style={{ marginLeft: 16, marginBottom: 10 }}
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/* Render the owners name */}
+        {/* <AppHeaderText
             style={([style.name], { marginBottom: -10, marginTop: 10 })}
           >
             {this.props.owner}'s House
-          </AppHeaderText>
+          </AppHeaderText> */}
 
+        {/* Render the device name */}
+        <AppHeaderText style={([style.name], { marginBottom: 20 })}>
+          {this.props.device.name.slice(0, 25)}
+        </AppHeaderText>
+
+        <View style={style.card}>
           {/* Render the device icon */}
           {this.props.device.name.substring(0, 6) === 'Google' && (
-            <Image
-              style={[style.icon, { marginBottom: 0 }]}
-              source={getDeviceIcon('Google Home Mini')}
-            />
+            <View style={[appStyle.card]}>
+              <Image
+                style={[style.icon, { marginBottom: 0 }]}
+                source={getDeviceIcon('Google Home Mini')}
+              />
+            </View>
           )}
 
           {this.props.device.name !== 'Google Home Mini' && (
@@ -801,211 +821,273 @@ class DeviceCard extends Component {
             />
           )}
 
-          {/* Render the device name */}
-          <AppHeaderText style={([style.name], { marginBottom: 20 })}>
-            {this.props.device.name.slice(0, 25)}
-          </AppHeaderText>
-
-          {/* Render loading bar */}
-          {this.state.device === null && (
-            <View>
-              <AppText>Loading...</AppText>
+          {true !== false ? (
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <View style={{ paddingRight: 10 }}>
+                <Icon name="circle" type="material" color="#FF5D53" size={18} />
+              </View>
+              <Text
+                style={{ color: '#FF5D53', fontWeight: 'bold', fontSize: 15 }}
+              >
+                Off
+              </Text>
+            </View>
+          ) : (
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <View style={{ paddingRight: 10 }}>
+                <Icon name="circle" type="material" color="#2DC62A" size={18} />
+              </View>
+              <Text
+                style={{ color: '#2DC62A', fontWeight: 'bold', fontSize: 15 }}
+              >
+                On
+              </Text>
             </View>
           )}
 
-          {/* Render each property */}
-          {this.state.device !== null &&
-            this.state.device.properties.map((prop, index) => {
-              return (
-                <View
-                  key={index}
-                  style={[appStyle.container, { marginTop: -5 }]}
-                >
-                  <View style={[appStyle.row]}>
-                    <View style={{ flex: 1, flexDirection: 'row' }}>
-                      {/* Render Property Left Side  */}
-                      <View style={appStyle.rowLeft}>
-                        {/* Render Property Name */}
-                        <AppText> {prop.name} </AppText>
-                      </View>
+          {/* {true !== false && (
+            <View></View>
+            <Text
+              style={{ color: '#2DC62A', fontWeight: 'bold', fontSize: 15 }}
+            >
+              On
+            </Text>
+          )} */}
 
-                      {/* Render Property Right Side */}
-                      <View style={appStyle.rowRight}>
-                        {/* Render Property Readonly */}
-                        {prop.read_only == 1 && (
-                          <AppText
+          {/* {true == false && (
+            <Text>{this.state.device.properties[index].value}</Text>
+          )} */}
+        </View>
+
+        {/* Render loading bar */}
+        {this.state.device === null && (
+          <View>
+            <AppText>Loading...</AppText>
+          </View>
+        )}
+
+        <View style={{ flex: 1, flexDirection: 'row', marginBottom: 15 }}>
+          <Text
+            style={[
+              {
+                color: '#353535',
+                fontSize: 23,
+                fontweight: 'bold',
+                fontFamily: 'Raleway',
+                textAlign: 'left',
+                flex: 1,
+              },
+            ]}
+          >
+            Actions
+          </Text>
+          <View style={[style.lineContainer, {}]} />
+        </View>
+
+        {/* Render each property */}
+        {this.state.device !== null &&
+          this.state.device.properties.map((prop, index) => {
+            return (
+              <View key={index} style={[appStyle.container, { marginTop: -5 }]}>
+                <View style={[appStyle.row]}>
+                  <View style={{ flex: 1, flexDirection: 'row' }}>
+                    {/* Render Property Left Side  */}
+                    <View style={appStyle.rowLeft}>
+                      {/* Render Property Name */}
+                      <AppText> {prop.name} </AppText>
+                    </View>
+
+                    {/* Render Property Right Side */}
+                    <View style={appStyle.rowRight}>
+                      {/* Render Property Readonly */}
+                      {prop.read_only == 1 && (
+                        <AppText
+                          style={{
+                            fontStyle: 'italic',
+                            fontSize: 13,
+                            top: -2,
+                            marginLeft: 40,
+                            position: 'absolute',
+                            right: 90,
+                          }}
+                        >
+                          View Only
+                        </AppText>
+                      )}
+                      {/* Render Property Readonly */}
+                      {prop.read_only == 1 && this.canAccess(prop) == true && (
+                        <AppText
+                          style={{
+                            fontStyle: 'italic',
+                            fontSize: 16,
+                            top: -2,
+                            marginLeft: 40,
+                          }}
+                        >
+                          {prop.value != null ? prop.value.toString() : '...'}
+                        </AppText>
+                      )}
+
+                      {/* Render Switch for Boolean */}
+                      {prop.type == 'boolean' &&
+                        prop.read_only == 0 &&
+                        this.canAccess(prop) == true && (
+                          <View
                             style={{
-                              fontStyle: 'italic',
-                              fontSize: 13,
-                              top: -2,
-                              marginLeft: 40,
-                              position: 'absolute',
-                              right: 90,
+                              flex: 1,
+                              flexDirection: 'row',
+                              justifyContent: 'flex-end',
                             }}
                           >
-                            View Only
-                          </AppText>
-                        )}
-                        {/* Render Property Readonly */}
-                        {prop.read_only == 1 && this.canAccess(prop) == true && (
-                          <AppText
-                            style={{
-                              fontStyle: 'italic',
-                              fontSize: 16,
-                              top: -2,
-                              marginLeft: 40,
-                            }}
-                          >
-                            {prop.value != null ? prop.value.toString() : '...'}
-                          </AppText>
+                            <Switch
+                              style={{
+                                transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
+                              }}
+                              trackColor={{ true: '#2DC62A', false: '#FF5D53' }}
+                              value={this.state.device.properties[index].value}
+                              onValueChange={(x) => {
+                                this.toggleSwitch(index);
+                              }}
+                            />
+                          </View>
                         )}
 
-                        {/* Render Switch for Boolean */}
-                        {prop.type == 'boolean' &&
-                          prop.read_only == 0 &&
-                          this.canAccess(prop) == true && (
+                      {/* Render Slider for float and integers */}
+                      {(prop.type == 'float' || prop.type == 'integer') &&
+                        this.canAccess(prop) == true &&
+                        prop.read_only == 0 && (
+                          <View
+                            style={{ borderRadius: 50, overflow: 'hidden' }}
+                          >
                             <View
                               style={{
-                                flex: 1,
                                 flexDirection: 'row',
-                                justifyContent: 'flex-end',
+                                position: 'absolute',
                               }}
                             >
-                              <Switch
-                                value={
-                                  this.state.device.properties[index].value
-                                }
-                                onValueChange={(x) => {
-                                  this.toggleSwitch(index);
-                                }}
-                              />
+                              <View style={style.sliderDummy}></View>
+                              <View style={style.sliderReal}></View>
                             </View>
-                          )}
-
-                        {/* Render Slider for float and integers */}
-                        {(prop.type == 'float' || prop.type == 'integer') &&
-                          this.canAccess(prop) == true &&
-                          prop.read_only == 0 && (
-                            <View>
-                              <Slider
-                                style={{ width: 200 }}
-                                step={1}
-                                minimumValue={0}
-                                maximumValue={100}
-                                value={prop.value}
-                                onSlidingComplete={(currentVal) => {
-                                  var temp = this.state.device;
-                                  var temp2 =
-                                    temp.properties[
-                                      temp.properties.indexOf(prop)
-                                    ];
-                                  temp2.value = currentVal;
-                                  this.useSharedDevice(
-                                    this.props.device.login_credentials_id,
-                                    this.state.device,
-                                    temp2
-                                  );
-                                  this.setState({ device: temp });
-                                }}
-                              />
-                            </View>
-                          )}
-                        {/* Render Buttons for actions */}
-                        {prop.type == 'action' &&
-                          prop.name != 'speak' &&
-                          this.canAccess(prop) == true &&
-                          prop.read_only == 0 && (
-                            <View style={{ bottom: 5 }}>
-                              <TouchableOpacity
-                                onPress={() =>
-                                  this.useSharedDevice(
-                                    this.props.device.login_credentials_id,
-                                    this.state.device,
-                                    prop
-                                  )
-                                }
-                              >
-                                <Text style={{ fontSize: 20 }}>&#9899;</Text>
-                              </TouchableOpacity>
-                            </View>
-                          )}
-                        {/* Render Buttons and text input for Google Home Mini */}
-                        {prop.type == 'action' &&
-                          prop.name == 'speak' &&
-                          this.canAccess(prop) == true &&
-                          prop.read_only == 0 && (
-                            <View
-                              style={[
-                                appStyle.row,
-                                { bottom: 5, paddingLeft: 5 },
-                              ]}
+                            <Slider
+                              style={{ width: 150, height: 20 }}
+                              maximumTrackTintColor="transparent"
+                              minimumTrackTintColor="transparent"
+                              step={1}
+                              minimumValue={0}
+                              maximumValue={100}
+                              thumbTintColor="grey"
+                              value={prop.value}
+                              onSlidingComplete={(currentVal) => {
+                                var temp = this.state.device;
+                                var temp2 =
+                                  temp.properties[
+                                    temp.properties.indexOf(prop)
+                                  ];
+                                temp2.value = currentVal;
+                                this.useSharedDevice(
+                                  this.props.device.login_credentials_id,
+                                  this.state.device,
+                                  temp2
+                                );
+                                this.setState({ device: temp });
+                              }}
+                            />
+                          </View>
+                        )}
+                      {/* Render Buttons for actions */}
+                      {prop.type == 'action' &&
+                        prop.name != 'speak' &&
+                        this.canAccess(prop) == true &&
+                        prop.read_only == 0 && (
+                          <View style={{ bottom: 5 }}>
+                            <TouchableOpacity
+                              onPress={() =>
+                                this.useSharedDevice(
+                                  this.props.device.login_credentials_id,
+                                  this.state.device,
+                                  prop
+                                )
+                              }
                             >
-                              <TextInput
-                                style={style.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="Text to Speech"
-                                autoCapitalize="none"
-                                onChangeText={this.handleText}
-                              />
-                              <TouchableOpacity
-                                onPress={() =>
-                                  this.useSharedDevice(
-                                    this.props.device.login_credentials_id,
-                                    this.state.device,
-                                    prop
-                                  )
-                                }
-                              >
-                                <Text style={{ fontSize: 20, marginLeft: -15 }}>
-                                  &#9899;
-                                </Text>
-                              </TouchableOpacity>
-                            </View>
-                          )}
-                      </View>
+                              <Text style={{ fontSize: 20 }}>&#9899;</Text>
+                            </TouchableOpacity>
+                          </View>
+                        )}
+                      {/* Render Buttons and text input for Google Home Mini */}
+                      {prop.type == 'action' &&
+                        prop.name == 'speak' &&
+                        this.canAccess(prop) == true &&
+                        prop.read_only == 0 && (
+                          <View
+                            style={[
+                              appStyle.row,
+                              { bottom: 5, paddingLeft: 5 },
+                            ]}
+                          >
+                            <TextInput
+                              style={style.input}
+                              underlineColorAndroid="transparent"
+                              placeholder="Text to Speech"
+                              autoCapitalize="none"
+                              onChangeText={this.handleText}
+                            />
+                            <TouchableOpacity
+                              onPress={() =>
+                                this.useSharedDevice(
+                                  this.props.device.login_credentials_id,
+                                  this.state.device,
+                                  prop
+                                )
+                              }
+                            >
+                              <Text style={{ fontSize: 20, marginLeft: -15 }}>
+                                &#9899;
+                              </Text>
+                            </TouchableOpacity>
+                          </View>
+                        )}
                     </View>
                   </View>
-                  <View style={[style.lineContainer, { marginTop: 10 }]} />
                 </View>
-              );
-            })}
+                <View style={[style.lineContainer, { marginTop: 10 }]} />
+              </View>
+            );
+          })}
 
-          {/* Render Property Info */}
-          {this.state.device !== null &&
-            this.state.device.properties.length > 0 && (
-              <View
-                style={[
-                  appStyle.container,
-                  { marginLeft: 10, marginBottom: 0, marginTop: 0 },
-                ]}
-              >
-                <RenderAccess curVal={this.state.device.properties[0]} />
-              </View>
-            )}
+        {/* Render Property Info */}
+        {this.state.device !== null && this.state.device.properties.length > 0 && (
+          <View
+            style={[
+              appStyle.container,
+              { marginLeft: 10, marginBottom: 0, marginTop: 0 },
+            ]}
+          >
+            <RenderAccess curVal={this.state.device.properties[0]} />
+          </View>
+        )}
 
-          {/* Render refresh access */}
-          {this.state.device !== null && this.state.lastRefreshed !== null && (
-            <View style={[appStyle.row, { height: 20, paddingTop: 5 }]}>
-              <View style={appStyle.rowLeft}>
-                <AppText style={{ fontSize: 14, marginLeft: 15 }}>
-                  Last Refreshed:{' '}
-                  {Moment(this.state.lastRefreshed).format('MM/DD @ h:mm:ss a')}
-                </AppText>
-              </View>
-              <View style={[appStyle.rowRight, { marginRight: 15, top: 7 }]}>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.getCurrentValues();
-                  }}
-                >
-                  <AppHeaderText style={{ fontSize: 28, color: 'blue' }}>
-                    ↺
-                  </AppHeaderText>
-                </TouchableOpacity>
-              </View>
+        {/* Render refresh access */}
+        {this.state.device !== null && this.state.lastRefreshed !== null && (
+          <View style={[appStyle.row, { height: 20, paddingTop: 5 }]}>
+            <View style={appStyle.rowLeft}>
+              <AppText style={{ fontSize: 14, marginLeft: 15 }}>
+                Last Refreshed:{' '}
+                {Moment(this.state.lastRefreshed).format('MM/DD @ h:mm:ss a')}
+              </AppText>
             </View>
-          )}
-        </View>
+            <View style={[appStyle.rowRight, { marginRight: 15, top: 7 }]}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.getCurrentValues();
+                }}
+              >
+                <AppHeaderText style={{ fontSize: 28, color: 'blue' }}>
+                  ↺
+                </AppHeaderText>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
       </View>
     );
   }
@@ -1037,6 +1119,30 @@ const style = StyleSheet.create({
     right: 0,
     top: 40,
   },
+  card: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    backgroundColor: '#FFFFFF',
+
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 10,
+    shadowRadius: 20.41,
+    borderBottomWidth: 3,
+    borderBottomColor: '#a8a8a8',
+    elevation: 4,
+
+    marginRight: 100,
+    marginLeft: 100,
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginBottom: 5,
+  },
   input: {
     alignSelf: 'center',
 
@@ -1059,6 +1165,18 @@ const style = StyleSheet.create({
     paddingLeft: 10,
     marginRight: 22,
     marginLeft: 1,
+  },
+  sliderDummy: {
+    backgroundColor: '#d3d3d3',
+    width: 300,
+    height: 20,
+    borderRadius: 50,
+    position: 'absolute',
+  },
+  sliderReal: {
+    backgroundColor: 'white',
+    width: 150,
+    height: 20,
   },
 });
 

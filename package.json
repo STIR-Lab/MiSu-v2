@@ -8,6 +8,8 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "2.2.2": "^2.2.2",
+    "@expo-google-fonts/raleway": "^0.1.0",
     "@react-native-community/checkbox": "^0.4.2",
     "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/masked-view": "0.1.10",
@@ -28,6 +30,7 @@
     "aws-sdk": "^2.702.0",
     "datetimepicker": "^0.1.39",
     "expo": "^41.0.0",
+    "expo-font": "~9.1.0",
     "graphql": "^15.1.0",
     "moment": "^2.29.1",
     "react": "16.13.1",
@@ -37,11 +40,8 @@
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
     "react-native-animated-multistep": "^1.1.1",
-<<<<<<< HEAD
     "react-native-dropdown-picker": "^5.1.19",
-=======
     "react-native-collapsible": "^1.6.0",
->>>>>>> efaaa1074599966537dd8f8ad43f541772c06bcf
     "react-native-elements": "^3.4.1",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
@@ -56,8 +56,9 @@
     "react-navigation-stack": "^2.7.0",
     "react-redux": "^7.2.1",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
-    "redux-thunk": "^2.3.0",
+    "redux-thunk": "^2.3.0"
     "xtypejs": "^0.7.1"
+
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
