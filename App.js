@@ -78,7 +78,7 @@ function HomeStack() {
     <HomeNav.Navigator>
       <HomeNav.Screen
         name="Home"
-        component={HomeScreen}
+        component={GuestsScreen}
         options={{ headerShown: false }}
       />
       <HomeNav.Screen
@@ -126,7 +126,7 @@ function AppNavBar() {
       />
       <NavBar.Screen
         name="Devices"
-        component={DeviceScreen}
+        component={DevicesScreen}
         options={{
           tabBarIcon: ({}) => <Icon name="grid" type="feather" color="black" />,
         }}

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Image, StyleSheet, TouchableOpacity, View, Text, Button } from 'react-native';
 import DeviceElement from '../../DeviceElement';
 import GuestElement from '../../GuestElement';
 
@@ -28,6 +28,24 @@ function SampleDeviceList(props) {
         ]
     });
 
+    // Will indicate whether this component is rendered in the devices or the guests screen
+    const [screen, setScreen] = useState('');
+
+    useEffect(() => {
+        if (props.screen == "Guests")
+            setScreen("Guests");
+        else if (props.screen == "Devices")
+            setScreen("Devices");
+        else
+            console.log("Invalid screen prop passed.");
+    });
+
+    let addButton = (
+        <View style={styles.iconAndName}>
+            <View style={(screen == "Devices") ? styles.addGuest : styles.addDevice}/>
+            <Text>{screen == "Devices" ? "Add Guest" : "Add Device"}</Text>
+        </View>
+    );
 
     return (
         <View style={styles.container}>
@@ -36,6 +54,7 @@ function SampleDeviceList(props) {
                     <GuestElement deviceName={d.deviceName}/>
                 </View>
             )}
+            {addButton}
         </View>     
     );
 }
@@ -65,6 +84,18 @@ const styles = StyleSheet.create({
         fontSize: 10,
         width: 70,
         textAlign: "center"
+    },
+    addGuest: {
+        backgroundColor: "#57E455",
+        borderRadius: 41,
+        width: 70,
+        height: 70
+    },
+    addDevice: {
+        backgroundColor: "#57E455",
+        borderRadius: 5,
+        width: 70,
+        height: 70
     }
   });
 

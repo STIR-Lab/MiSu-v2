@@ -49,47 +49,46 @@ function HubScreen(props) {
             setError('It probably worked..');
         }
     }
+    return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={style.container}>
+          <Text>Register Your Hub</Text>
+          <View style={style.form}>
+            <TextInput
+              style={style.input}
+              autoCapitalize="none"
+              onChangeText={(e) => setUrl(e)}
+              value={url}
+              placeholder="Hub URL"
+              placeholderTextColor="#808080"
+            ></TextInput>
+            <TextInput
+              style={style.input}
+              autoCapitalize="none"
+              onChangeText={(e) => setEmail(e)}
+              value={email}
+              placeholder="Hub Email"
+              placeholderTextColor="#808080"
+            ></TextInput>
+            <TextInput
+              style={style.input}
+              autoCapitalize="none"
+              secureTextEntry
+              onChangeText={(e) => setPassword(e)}
+              value={password}
+              placeholder="Hub Password"
+              placeholderTextColor="#808080"
+            ></TextInput>
+            <Text style={style.error}>{error}</Text>
+          </View>
+          <TouchableOpacity style={style.button} onPress={() => handleClick()}>
+            <Text style={{ color: 'white' }}>Add Hub</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
+    );
   };
 
-  return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={style.container}>
-        <Text>Register Your Hub</Text>
-        <View style={style.form}>
-          <TextInput
-            style={style.input}
-            autoCapitalize="none"
-            onChangeText={(e) => setUrl(e)}
-            value={url}
-            placeholder="Hub URL"
-            placeholderTextColor="#808080"
-          ></TextInput>
-          <TextInput
-            style={style.input}
-            autoCapitalize="none"
-            onChangeText={(e) => setEmail(e)}
-            value={email}
-            placeholder="Hub Email"
-            placeholderTextColor="#808080"
-          ></TextInput>
-          <TextInput
-            style={style.input}
-            autoCapitalize="none"
-            secureTextEntry
-            onChangeText={(e) => setPassword(e)}
-            value={password}
-            placeholder="Hub Password"
-            placeholderTextColor="#808080"
-          ></TextInput>
-          <Text style={style.error}>{error}</Text>
-        </View>
-        <TouchableOpacity style={style.button} onPress={() => handleClick()}>
-          <Text style={{ color: 'white' }}>Add Hub</Text>
-        </TouchableOpacity>
-      </View>
-    </TouchableWithoutFeedback>
-  );
-}
 
 const style = StyleSheet.create({
   container: {
