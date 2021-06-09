@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, TouchableOpacity, View, Text, Button } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View, Text, Button} from 'react-native';
+import Modal from 'react-native-modal';
 import DeviceElement from '../../DeviceElement';
 import GuestElement from '../../GuestElement';
 
@@ -30,6 +31,7 @@ function SampleDeviceList(props) {
 
     // Will indicate whether this component is rendered in the devices or the guests screen
     const [screen, setScreen] = useState('');
+    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
         if (props.screen == "Guests")
@@ -40,21 +42,40 @@ function SampleDeviceList(props) {
             console.log("Invalid screen prop passed.");
     });
 
+    closeModal = () => {
+        setIsVisible(!isVisible);
+    }
+
+    openModal = () => {
+        setIsVisible(!isVisible);
+    }
+
     let addButton = (
         <View style={styles.iconAndName}>
-            <View style={(screen == "Devices") ? styles.addGuest : styles.addDevice}/>
+            <TouchableOpacity onPress={() => openModal()}>
+                <View style={(screen == "Devices") ? styles.addGuest : styles.addDevice}/>
+            </TouchableOpacity>
             <Text>{screen == "Devices" ? "Add Guest" : "Add Device"}</Text>
         </View>
     );
 
+    let modal = (
+        <Modal visible={isVisible} transparent={true} onBackdropPress={() => setIsVisible(false)}>
+            <View style={styles.modal}>
+                <Text>I am the modal</Text>
+            </View>
+        </Modal>
+    );
+
     return (
-        <View style={styles.container}>
+        <View style={styles.container} transparent={true}>
             {deviceList.devices.map((d) => 
                 <View style={styles.iconAndName} key={d.id}>
                     <GuestElement deviceName={d.deviceName}/>
                 </View>
             )}
             {addButton}
+            {modal}
         </View>     
     );
 }
@@ -65,7 +86,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "94%",
         flexDirection: "row",
-        backgroundColor: "white",
         justifyContent: "flex-start",
         flexWrap: "wrap",
 
@@ -96,6 +116,13 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         width: 70,
         height: 70
+    },
+    modal: {
+        backgroundColor: 'red',
+        width: 300,
+        height: 500,
+        alignSelf: 'center',
+        alignItems: 'center'
     }
   });
 
