@@ -77,6 +77,7 @@ const authStyle = StyleSheet.create({
     fontSize: 16,
     paddingLeft: 15,
     marginTop: 21,
+    marginHorizontal: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
