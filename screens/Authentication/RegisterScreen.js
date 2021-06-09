@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -14,291 +14,385 @@ import { Auth } from 'aws-amplify';
 import appStyle from '../../styles/AppStyle';
 import authStyle from '../../styles/AuthStyle';
 import ConfirmCodePopup from '../../components/popup/ConfirmCodePopup';
+import { Icon } from 'react-native-elements';
 
-import AnimatedMultistep from 'react-native-animated-multistep';
-import Step1 from './RegisterStep1';
-import Step2 from './RegisterStep2';
-import RegistrationFinal from './RegistrationFinal';
+function RegisterScreen(props) {
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [authCode, setAuthcode] = useState('');
+  const [signedUp, setSignedup] = useState(false);
+  const [confirmingCode, setConfirmCode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [message, setMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [accessLevel, setAccess] = useState('');
 
-const allSteps = [
-  { name: 'step 1', component: Step1 },
-  { name: 'step 2', component: Step2 },
-  { name: 'step 3', component: RegistrationFinal },
-];
-
-export default class RegisterScreen extends React.Component {
-  static navigationOptions = {
-    header: () => false,
-  };
-  state = {
-    name: '',
-    username: '',
-    password: '',
-    phone: '',
-    street: '',
-    city: '',
-    state: '',
-    apartmentNo: '',
-    userId: null,
-    errorMessage: null,
-    message: null,
-    signedUp: false,
-    authCode: '',
-    confirmingCode: false,
-    isLoading: false,
-  };
-
-  handleSignUp = async (finalState) => {
-    this.setState({ errorMessage: '' });
-    this.setState({ message: '' });
-    this.setState({ isLoading: true });
-    console.log('street: ' + street);
-    const {
-      address,
-      city,
-      name,
-      password,
-      phone,
-      street,
-      state,
-      username,
-    } = finalState;
+  const handleSignUp = async () => {
+    setErrorMessage('');
+    setIsLoading(true);
 
     const passwordRegex = new RegExp(
       '^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$',
       'g'
     );
-    if (name === '') this.setState({ errorMessage: 'Missing name' });
-    else if (username === '')
-      this.setState({ errorMessage: 'Missing email address' });
-    else if (password === '')
-      this.setState({ errorMessage: 'Missing password' });
+    if (name === '') setErrorMessage('Missing name');
+    else if (username === '') setErrorMessage('Missing email address');
+    else if (password === '') setErrorMessage('Missing password');
+    else if (passwordConfirm == '' || password != passwordConfirm)
+      setErrorMessage('Re-check confirm password field');
     else if (passwordRegex.test(password) == false)
-      this.setState({
-        errorMessage:
-          'Password Must contain 8 characters, a number, a symbol, an upper case letter, and a lower case letter',
-      });
+      setErrorMessage(
+        'Password Must contain 8 characters, a number, a symbol, an upper case letter, and a lower case letter'
+      );
     else {
-      console.log(username, password, name);
+      console.log('Attempting sign-up');
+      console.log(name, username, password, passwordConfirm);
       const response = await Auth.signUp({
         username,
         password,
         attributes: {
           name,
           email: username,
-          phone_number: '+1' + phone.replace(/\D/g, ''),
-          address: street,
-          'custom:city': city,
-          'custom:state': state,
+          phone_number: '+11111111111',
+          address: 'null',
+          // user_type: accessLevel,
+          // phone_number: '+1' + phone.replace(/\D/g, ''),
+          // 'custom:city': city,
+          // 'custom:state': state,
         },
       })
         .then((response) => {
-          this.setState({
-            error: null,
-            userId: response.userSub,
-            signedUp: true,
-            message: 'A confirmation code was sent to your email! ',
-          });
-          this.setState({ errorMessage: '' });
-          this.setState({ confirmingCode: true }); // According to Mamtaj's feedback, open confirm code popup to save user time.
-          console.log('sign up successful!');
+          //setState(error: null)
+          setErrorMessage(null);
+          setUserId(response.userSub);
+          setSignedup(true);
+          setMessage('A confirmation code was sent to your email! ');
+          setErrorMessage('');
+          setConfirmCode(true);
+          console.log('Successful signup!');
           console.log(response.userSub);
         })
         .catch((error) => {
-          this.setState({ errorMessage: error.message });
-          console.log('Error', error.message);
+          setErrorMessage(error.message);
+          console.log('==ERROR DURING SIGNUP PROCESS==', error.message);
         });
     }
-    this.setState({ isLoading: false });
+    setIsLoading(false);
   };
 
   // Verify sign up code
-  confirmSignUp = async (username, authCode) => {
-    this.setState({ errorMessage: '' });
-    this.setState({ message: '' });
-    this.setState({ confirmingCode: false });
+  const confirmSignUp = async (username, authCode) => {
+    setErrorMessage('');
+    setMessage('');
+    setConfirmCode(false);
 
     // Form validation
     if (username == '') {
-      this.setState({ message: "Please enter the email you're verifying" });
-      this.setState({ errorMessage: '' });
+      setMessage("Please enter the email you're verifying");
+      setErrorMessage('');
     } else if (authCode == '') {
-      this.setState({ message: 'Please enter the code sent to your email' });
-      this.setState({ errorMessage: '' });
+      setMessage('Please enter the code sent to your email');
+      setErrorMessage('');
     } else {
-      this.setState({ isLoading: true });
+      setIsLoading(true);
       const user = await Auth.confirmSignUp(username, authCode)
         .then(async (user) => {
           console.log('confirmed sign up successful!');
-
-          this.setState({ errorMessage: '' });
-          this.setState({ message: 'Confirm successful, please sign in.' });
-          this.setState({ isLoading: false });
+          setErrorMessage('');
+          setMessage('Confirm successful, please sign in.');
+          props.navigation.navigate('Login');
+          setIsLoading(false);
         })
         .catch((err) => {
-          this.setState({ errorMessage: err.message });
-          this.setState({ message: '' });
-          this.setState({ isLoading: false });
+          setErrorMessage(err.message);
+          setMessage('');
+          setIsLoading(false);
         });
     }
   };
 
-  onNext = () => {
-    console.log('Next');
-  };
-
-  /* define the method to be called when you go on back step */
-
-  onBack = () => {
-    console.log('Back');
-  };
-
-  /* define the method to be called when the wizard is finished */
-
-  finish = (finalState) => {
-    this.handleSignUp(finalState);
-    console.log(finalState);
-  };
-
-  render() {
-    // The loading element will restrict input during networked operations
-    let loadingElement = null;
-    if (this.state.isLoading) {
-      loadingElement = (
-        <View style={[appStyle.loadingHolder]}>
-          <ActivityIndicator size="large" style={[appStyle.loadingElement]} />
-        </View>
-      );
-    }
-
-    // The error element will be set if there is actually an error
-    let errorElement = null;
-    if (this.state.errorMessage) {
-      errorElement = (
-        <View style={authStyle.errorMessage}>
-          {this.state.errorMessage && (
-            <Text style={authStyle.errorMessage}>
-              {this.state.errorMessage}
-            </Text>
-          )}
-        </View>
-      );
-    }
-    // The message element will be set if there is actually an error
-    let messageElement = null;
-    if (this.state.message) {
-      messageElement = (
-        <View style={authStyle.message}>
-          {this.state.message && (
-            <Text style={authStyle.message}>{this.state.message}</Text>
-          )}
-        </View>
-      );
-    }
-
-    // The confirm code popup will appear if there is actually an error
-    let confirmPopupElement = null;
-    if (this.state.confirmingCode) {
-      confirmPopupElement = (
-        <ConfirmCodePopup
-          onCancel={() => this.setState({ confirmingCode: false })}
-          onSubmit={this.confirmSignUp}
-          username={this.state.username}
-        />
-      );
-    }
-
-    return (
-      <KeyboardAvoidingView
-        enabled={true}
-        behavior="height"
-        style={authStyle.container}
-      >
-        <ScrollView style={authStyle.container} bounces={false}>
-          {/* Render the loading element */}
-          {loadingElement}
-
-          {/* Render the Confirm Popup */}
-          {confirmPopupElement}
-
-          {/* Render the app icon */}
-          <View style={authStyle.iconHolder}>
-            <Image
-              style={authStyle.icon}
-              source={require('../../assets/MISUv2.png')}
-            />
-          </View>
-
-          {/* Render the greeting */}
-          <Text style={authStyle.greeting}>
-            {`Create your`}
-            <Text style={authStyle.appName}> {'MiSu'} </Text>
-            account
-          </Text>
-
-          {/* Render the register form */}
-          <View style={authStyle.authForm}>
-            <AnimatedMultistep
-              steps={allSteps}
-              onFinish={this.finish}
-              onBack={this.onBack}
-              onNext={this.onNext}
-              comeInOnNext="bounceInUp"
-              OutOnNext="bounceOutDown"
-              comeInOnBack="bounceInDown"
-              OutOnBack="bounceOutUp"
-            />
-          </View>
-
-          {/* Render the submit button 
-          <View style={authStyle.authFormButtonHolder}>
-            <TouchableOpacity
-              style={authStyle.authFormButton}
-              onPress={this.handleSignUp}
-            >
-              <Text style={{ color: '#FFF', fontWeight: '500' }}>Sign up</Text>
-            </TouchableOpacity>
-          </View>*/}
-
-          {/* Render the error message */}
-          {errorElement}
-
-          {/* Render the message */}
-          {messageElement}
-
-          {/* Render the confirm code toggle */}
-          <View>
-            <TouchableOpacity
-              style={{ alignSelf: 'center', marginTop: 16 }}
-              onPress={() => {
-                this.setState({ confirmingCode: true });
-              }}
-            >
-              <Text style={{ color: '#414959', fontSize: 13 }} Password>
-                Have a confirmation code?{' '}
-                <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
-                  Confirm
-                </Text>
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Render the register toggle */}
-          <View>
-            <TouchableOpacity
-              style={{ alignSelf: 'center' }}
-              onPress={() => this.props.navigation.navigate('Login')}
-            >
-              <Text style={{ color: '#414959', fontSize: 13 }} Password>
-                Already have an account?{' '}
-                <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
-                  Sign In
-                </Text>
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+  // The loading element will restrict input during networked operations
+  let loadingElement = null;
+  if (isLoading) {
+    loadingElement = (
+      <View style={[appStyle.loadingHolder]}>
+        <ActivityIndicator size="large" style={[appStyle.loadingElement]} />
+      </View>
     );
   }
+
+  // The error element will be set if there is actually an error
+  let errorElement = null;
+  if (errorMessage) {
+    errorElement = (
+      <View style={authStyle.errorMessage}>
+        {errorMessage && (
+          <Text style={authStyle.errorMessage}>{errorMessage}</Text>
+        )}
+      </View>
+    );
+  }
+  // The message element will be set if there is actually an error
+  let messageElement = null;
+  if (message) {
+    messageElement = (
+      <View style={authStyle.message}>
+        {message && <Text style={authStyle.message}>{message}</Text>}
+      </View>
+    );
+  }
+
+  // The confirm code popup will appear if there is actually an error
+  let confirmPopupElement = null;
+  if (confirmingCode) {
+    confirmPopupElement = (
+      <ConfirmCodePopup
+        onCancel={() => setConfirmCode(false)}
+        onSubmit={confirmSignUp}
+        username={username}
+      />
+    );
+  }
+
+  // checks the password complexity as it is being filled
+  let passwordErrorElement = null;
+  if (password) {
+    // regex for all five complexity requirements
+    let passwordPolicy = [
+      RegExp('.{8,}$', 'g'),
+      RegExp('[A-Z]', 'g'),
+      RegExp('[a-z]', 'g'),
+      RegExp('[0-9]', 'g'),
+      RegExp('\\W', 'g'),
+    ];
+    // matching error messages
+    let passwordPolicyMessages = [
+      ' Password must contain atleast 1 upper case character',
+      ' Password must contain atleast 1 lower case character',
+      ' Password must contain atleast 8 characters',
+      ' Password must contain atleast 1 number',
+      ' Password contain atleast 1 symbol',
+    ];
+    // empty string to hold the error messages put to the screen
+    var passwordPolicyErrorString = '';
+
+    for (var i = 0; i < passwordPolicy.length; i++) {
+      if (!passwordPolicy[i].test(password)) {
+        passwordPolicyErrorString += passwordPolicyMessages[i] + '\n';
+      }
+    }
+
+    //console.log(passwordPolicyMessages);
+    if (passwordPolicyErrorString != '')
+      passwordErrorElement = (
+        <Text
+          style={{
+            color: 'red',
+            justifyContent: 'center',
+            alignSelf: 'center',
+          }}
+        >
+          {passwordPolicyErrorString}
+        </Text>
+      );
+  }
+
+  const guestOwner = () => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginLeft: 70,
+          marginRight: 70,
+        }}
+      >
+        <TouchableOpacity onPress={() => setAccess('Guest')}>
+          <View
+            style={{
+              flexDirection: 'column',
+              paddingVertical: 10,
+              paddingHorizontal: 20,
+              backgroundColor: '#5BD3FF',
+              borderRadius: 10,
+              elevation: 3,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowOpacity: 0.8,
+              shadowRadius: 20.41,
+              borderColor: '#3E3E3E',
+              borderWidth: accessLevel == 'Guest' ? 1 : 0,
+            }}
+          >
+            <Icon name="user" size={35} type="feather" color="white" />
+            <Text style={{ color: 'white' }}>Guest</Text>
+          </View>
+        </TouchableOpacity>
+
+        <Text
+          style={{ alignSelf: 'center', color: '#3E3E3E', fontWeight: 'bold' }}
+        >
+          OR
+        </Text>
+
+        <TouchableOpacity onPress={() => setAccess('Owner')}>
+          <View
+            style={{
+              flexDirection: 'column',
+              paddingVertical: 10,
+              paddingHorizontal: 20,
+              backgroundColor: 'white',
+              borderRadius: 10,
+              elevation: 3,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowOpacity: 0.8,
+              shadowRadius: 20.41,
+              borderColor: '#3E3E3E',
+              borderWidth: accessLevel == 'Owner' ? 1 : 0,
+            }}
+          >
+            <Icon name="home" type="font-awesom" size={35} color="#3E3E3E" />
+            <Text style={{ color: '#3E3E3E' }}>Owner</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  return (
+    <KeyboardAvoidingView
+      enabled={true}
+      behavior="height"
+      style={authStyle.container}
+    >
+      <ScrollView
+        style={(authStyle.container, { marginTop: 20 })}
+        bounces={false}
+      >
+        {/* Render the loading element */}
+        {loadingElement}
+
+        {/* Render the Confirm Popup */}
+        {confirmPopupElement}
+
+        {/* Render the app icon */}
+        <View style={authStyle.iconHolder}>
+          <Image
+            style={authStyle.icon}
+            source={require('../../assets/MISUv2.png')}
+          />
+        </View>
+
+        {/* Render the greeting */}
+        <Text style={authStyle.greeting}>
+          {`Create your`}
+          <Text style={authStyle.appName}> {'MiSu'} </Text>
+          account
+        </Text>
+
+        {/* Render the register form */}
+        <View style={authStyle.authForm}>
+          <TextInput
+            onChangeText={(name) => setName(name)}
+            style={authStyle.authFormInput}
+            autoCapitalize="words"
+            value={name}
+            placeholder={'Name'}
+          />
+          <TextInput
+            onChangeText={(text) => setUsername(text)}
+            style={authStyle.authFormInput}
+            autoCapitalize="none"
+            value={username}
+            placeholder={'Email Address'}
+          />
+          <TextInput
+            onChangeText={(text) => setPassword(text)}
+            secureTextEntry
+            style={authStyle.authFormInput}
+            autoCapitalize="none"
+            value={password}
+            placeholder={'Password'}
+          />
+          <TextInput
+            onChangeText={(passwordConfirm) =>
+              setPasswordConfirm(passwordConfirm)
+            }
+            secureTextEntry
+            style={authStyle.authFormInput}
+            autoCapitalize="none"
+            value={passwordConfirm}
+            placeholder={'Re-Type Password'}
+          />
+
+          <View style={authStyle.passwordError}>{passwordErrorElement}</View>
+        </View>
+
+        {guestOwner()}
+
+        {/* Render the submit button  */}
+        <View style={authStyle.authFormButtonHolder}>
+          <TouchableOpacity
+            style={authStyle.authFormButton}
+            onPress={handleSignUp}
+          >
+            <Text style={{ color: '#FFF', fontWeight: 'bold', fontSize: 25 }}>
+              Create Account
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Render the error message */}
+        {errorElement}
+
+        {/* Render the message */}
+        {messageElement}
+
+        {/* Render the confirm code toggle */}
+        <View>
+          <TouchableOpacity
+            style={{ alignSelf: 'center', marginTop: 16 }}
+            onPress={() => {
+              setConfirmCode(true);
+            }}
+          >
+            <Text style={{ color: '#414959', fontSize: 13 }} Password>
+              Have a confirmation code?{' '}
+              <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
+                Confirm
+              </Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Render the register toggle */}
+        <View>
+          <TouchableOpacity
+            style={{ alignSelf: 'center' }}
+            onPress={() => props.navigation.navigate('Login')}
+          >
+            <Text style={{ color: '#414959', fontSize: 13 }} Password>
+              Already have an account?{' '}
+              <Text style={{ color: '#71ccf0', fontWeight: '500' }}>
+                Sign In
+              </Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
 }
+
+export default RegisterScreen;
