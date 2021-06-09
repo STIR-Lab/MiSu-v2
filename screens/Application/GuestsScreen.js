@@ -37,6 +37,8 @@ function GuestsScreen(props) {
 			// };
 
 	// Called when when the screen is about to load, grabs all the info to display
+	// THE LACK OF THE [] IN THE SECOND PARAMETER CAUSES INFINITE CONSOLE LOGGING OR RERENDERING IN ACCOUNT SCREEN
+	// REQUIRES FURTHER INVESTIGATION
 	useEffect(() => {
 		// if (props.sessionData != null)
 		// 	props.navigation.setParams({
@@ -50,15 +52,20 @@ function GuestsScreen(props) {
 		//getUsageLogs();
 		//getAccessLogs();
 		// onRefresh();
-	})
+	}, []);
 
 	const [searchParam, setSearchParam] = useState('');
 	
     return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<View  style={appStyle.container}>
-                <SearchBar setSearchParam={setSearchParam}/>
-                <Text>{searchParam}</Text>
+				<View style={styles.header}>
+                	<SearchBar setSearchParam={setSearchParam}/>
+					<View style={styles.button}>
+						<Text>Add Guest</Text>
+					</View>
+				</View>
+                {/* <Text>{searchParam}</Text> */}
                 <ScrollView style={styles.cardContainer}>
                     <DeviceInfoCard title = {"Sam Smith"} type={"GuestCard"}/>
                 </ScrollView>
@@ -73,6 +80,23 @@ const styles = StyleSheet.create({
 		flex: 1,
 		width: "100%",
     },
+	header: {
+		flexDirection: "row",
+		width: "100%",
+		marginTop: 50,
+		justifyContent: "flex-start",
+		alignItems: "center"
+	},
+	button: {
+		position: "absolute",
+		backgroundColor: "blue",
+		height: 70,
+		right: 0,
+		width: "30%",
+		justifyContent: 'center',
+		alignItems: "center",
+		borderRadius: 15
+	}
   });
 
 

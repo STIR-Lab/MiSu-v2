@@ -22,12 +22,10 @@ function SearchBar(props) {
 const styles = StyleSheet.create({
     container: {
 		  height: 70,
-      width: '97%',
+      width: '65%',
       justifyContent: 'center',
       paddingLeft: 20,
       borderRadius: 15,
-      marginVertical: 10,
-      marginTop: 50,
       backgroundColor: "white"
     }
   });

@@ -1,5 +1,5 @@
 import { Auth } from 'aws-amplify';
-import React from 'react';
+import React, {useEffect} from 'react';
 import { ToastAndroid, TouchableOpacity, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
@@ -51,8 +51,10 @@ function AccountScreen(props) {
   // 		this.props.getHub(this.props.sessionData.idToken);
   // 	}
   // }
-  // console.log(props);
-  console.log(props);
+
+  // REFER TO GUEST SCREEN USE EFFECT
+  // useEffect(() => {console.log(props)}, []);
+
   return (
     <View style={appStyle.container}>
       <AccountCard

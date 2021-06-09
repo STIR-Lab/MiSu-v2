@@ -6,17 +6,17 @@ import LastActionCard from '../../components/cards/LastActionCard';
 
 
 function DeviceInfoCard(props) {
-    const [expanded, setExpanded] = useState(true);
+    const [collapsed, setCollapsed] = useState(true);
 
     const alter = () => {
-        setExpanded(!expanded);
+        setCollapsed(!collapsed);
     }
     
     let list;
     if (props.type == "GuestCard")
-        list = <SampleDeviceList screen="Guests"/>
+        list = <SampleDeviceList screen="Guests" />
     else
-        list = <Text>Render Guests Here</Text>
+        list = <SampleDeviceList screen="Devices" />
 
     
     const panel = (
@@ -34,7 +34,7 @@ function DeviceInfoCard(props) {
                     <Text>A</Text>
                 </TouchableOpacity>
             </View>
-            <Collapsible collapsed={expanded} style={styles.expanded}>
+            <Collapsible collapsed={collapsed} style={styles.expanded}>
                 <View style={styles.activeGuests}>
                     <Text style={styles.text}>{props.type == "GuestCard" ? "Devices" : "Active Guests"}</Text>
                 </View>
@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
     },
     guestList: {
         width: "100%",
-        backgroundColor: "white",
         alignItems: "center"
     },
     dropDownButtom: {
@@ -98,8 +97,9 @@ const styles = StyleSheet.create({
         borderLeftWidth: .5
     },
     expanded: {
+        position: "absolute",
         backgroundColor: "#FFFFFF",
-        // height: 300,
+        width: "100%",
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5
     },
