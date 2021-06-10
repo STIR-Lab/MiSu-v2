@@ -14,8 +14,10 @@ function DevicesScreen(props) {
     return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<View  style={appStyle.container}>
+				<View style={styles.header}>
+					<SearchBar setSearchParam={setSearchParam} screen={"Devices"}/>
+				</View>
 					{/* <Text>This is the Devices page</Text> */}
-				<SearchBar setSearchParam={setSearchParam}/>
 					{/* <View style={{backgroundColor: 'red'}}>
 						<TouchableOpacity
 							onPress={() => console.log( searchParam)}
@@ -46,6 +48,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		width: "100%",
     },
+	header: {
+		flexDirection: "row",
+		width: "100%",
+		marginTop: 50,
+		margin: 15,
+		justifyContent: "flex-start",
+		alignItems: "center"
+	},
   });
 
 const mapStateToProps = (state) => {

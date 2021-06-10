@@ -82,7 +82,7 @@ function GuestsScreen(props) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={appStyle.container}>
         <View style={styles.header}>
-          <SearchBar setSearchParam={setSearchParam} />
+          <SearchBar setSearchParam={setSearchParam} screen={"Guests"}/>
           <View style={styles.button}>
             <TouchableOpacity onPress={() => openModal()}>
               <Text>Add Guest</Text>

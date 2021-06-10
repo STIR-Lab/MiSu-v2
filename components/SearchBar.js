@@ -3,6 +3,19 @@ import { Image, StyleSheet, TouchableOpacity, View, TextInput } from 'react-nati
 
 function SearchBar(props) {
 
+    const barWidth = (props.screen == "Guests") ? "65%" : "100%";
+
+    const styles = StyleSheet.create({
+      container: {
+        height: 70,
+        width: barWidth,
+        justifyContent: 'center',
+        paddingLeft: 20,
+        borderRadius: 15,
+        backgroundColor: "white"
+      }
+    });
+    
     return (
         <View style={styles.container}>
             {/* <View style={styles.iconInput}>
@@ -12,23 +25,14 @@ function SearchBar(props) {
               style={styles.formInput}
               autoCapitalize="none"
               onChangeText={(searchParam) => props.setSearchParam(searchParam)}
-              placeholder="Search Devices..."
+              placeholder={"Search " + (props.screen == "Guests" ? "Guests" : "Devices") + "..."}
               placeholderTextColor="#808080"
             ></TextInput>
         </View>     
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-		  height: 70,
-      width: '65%',
-      justifyContent: 'center',
-      paddingLeft: 20,
-      borderRadius: 15,
-      backgroundColor: "white"
-    }
-  });
+
 
 
 export default SearchBar;
