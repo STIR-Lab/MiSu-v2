@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     marginTop: 50,
+    margin: 15,
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
