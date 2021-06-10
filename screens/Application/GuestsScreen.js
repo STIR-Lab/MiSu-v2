@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TouchableWithoutFeedback, StyleSheet, Keyboard, TouchableOpacity, View, Text, ScrollView } from 'react-native';
+import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
 import SearchBar from '../../components/SearchBar';
 import { getHubInfoAction } from '../../redux/Action/getHubInfoAction';
@@ -60,7 +61,7 @@ function GuestsScreen(props) {
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<View  style={appStyle.container}>
 				<View style={styles.header}>
-                	<SearchBar setSearchParam={setSearchParam}/>
+                	<SearchBar setSearchParam={setSearchParam} screen={"Guests"}/>
 					<View style={styles.button}>
 						<Text>Add Guest</Text>
 					</View>
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		width: "100%",
 		marginTop: 50,
+		margin: 15,
 		justifyContent: "flex-start",
 		alignItems: "center"
 	},
