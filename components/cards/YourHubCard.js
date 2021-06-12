@@ -11,11 +11,11 @@ function YourHubCard(props) {
     } else {
       setRegistering(true);
     }
-  }, []);
+  });
 
   registerHub = () => {
     props.navigation.navigate('Hub');
-    setRegistering(true);
+    // setRegistering(true);
   };
 
   return (

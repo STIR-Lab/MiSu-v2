@@ -91,7 +91,7 @@ function GuestsScreen(props) {
         </View>
         {/* <Text>{searchParam}</Text> */}
         <ScrollView style={styles.cardContainer}>
-          <DeviceInfoCard title={'Sam Smith'} type={'GuestCard'} />
+          <DeviceInfoCard title={'Sam Smith'} type={'GuestCard'} navigation={props.navigation}/>
         </ScrollView>
         {modal}
       </View>

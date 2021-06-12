@@ -46,7 +46,7 @@ function HubScreen(props) {
                 hub_email: email,
                 hub_password: password},
                 props.sessionData.idToken);
-            setError('It probably worked..');
+            // setError('It probably worked..');
         }
     }
     return (

@@ -26,7 +26,7 @@ function DevicesScreen(props) {
 						</TouchableOpacity>
 					</View> */}
 				<ScrollView style={styles.cardContainer}>
-					<DeviceInfoCard />
+					<DeviceInfoCard navigation={props.navigation}/>
 					<DeviceInfoCard />
 					<DeviceInfoCard />
 					<DeviceInfoCard />
