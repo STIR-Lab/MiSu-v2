@@ -81,11 +81,11 @@ function HomeStack() {
         component={GuestsScreen}
         options={{ headerShown: false }}
       />
-      <HomeNav.Screen
+      {/* <HomeNav.Screen
         name="Device"
         component={DeviceScreen}
         options={{ headerShown: false }}
-      />
+      /> */}
       <HomeNav.Screen
         name="Properties"
         component={DeviceProps}
@@ -94,6 +94,26 @@ function HomeStack() {
     </HomeNav.Navigator>
   );
 }
+
+const DevicesNav = createStackNavigator();
+
+function DevicesStack() {
+  return (
+    <DevicesNav.Navigator>
+      <DevicesNav.Screen
+        name="Device"
+        component={DevicesScreen}
+        options={{ headerShown: false }}
+      />
+      <DevicesNav.Screen
+        name="Properties"
+        component={DeviceProps}
+        options={{ headerShown: false }}
+      />
+    </DevicesNav.Navigator>
+  );
+}
+
 const ProfileNav = createStackNavigator();
 
 function ProfileStack() {
@@ -126,7 +146,7 @@ function AppNavBar() {
       />
       <NavBar.Screen
         name="Devices"
-        component={DevicesScreen}
+        component={DevicesStack}
         options={{
           tabBarIcon: ({}) => <Icon name="grid" type="feather" color="black" />,
         }}

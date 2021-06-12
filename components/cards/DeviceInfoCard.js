@@ -19,8 +19,8 @@ function DeviceInfoCard(props) {
   };
 
   let list;
-  if (props.type == 'GuestCard') list = <SampleDeviceList screen="Guests" />;
-  else list = <SampleDeviceList screen="Devices" />;
+  if (props.type == 'GuestCard') list = <SampleDeviceList screen="Guests" navigation={props.navigation}/>;
+  else list = <SampleDeviceList screen="Devices" navigation={props.navigation}/>;
 
   const panel = (
     <View style={styles.container}>

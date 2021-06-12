@@ -11,7 +11,9 @@ import {
 function GuestElement(props) {
   return (
     <View>
-      <View style={styles.iconHolder}></View>
+      <TouchableOpacity onPress={() => props.navigation.navigate('Properties')}>
+        <View style={styles.iconHolder}></View>
+      </TouchableOpacity>
       <Text style={styles.text}>{props.deviceName} </Text>
     </View>
   );
