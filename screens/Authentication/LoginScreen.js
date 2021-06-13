@@ -301,7 +301,7 @@ function LoginScreen(props) {
                 autoCapitalize="none"
                 onChangeText={(password) => setPassword(password)}
                 value={password}
-                placeholder="Password"
+                placeholder={forgotPasswordConfirmState ? "New Password" : "Password"}
                 placeholderTextColor="#808080"
               ></TextInput>
             </View>)}
