@@ -21,6 +21,7 @@ function SampleDeviceList(props) {
   const [isVisible2, setIsVisible2] = useState(false);
   const [selected, setSelected] = useState(null);
   const [sharedAccs, setSharedAccs] = useState(null);
+  const [guestEmail, setGuestEmail] = useState('');
   const [deviceList, setDeviceList] = useState({
     devices: [
       // Grab Device Name, Device Picture, And device Actions here. Determine what format the database has them in.
@@ -71,6 +72,13 @@ function SampleDeviceList(props) {
     setIsVisible2(true);
   };
 
+  const propsClick = () => {
+    if (selected == null) return;
+    props.navigation.navigate('Properties', {
+      account: selected,
+    });
+  };
+
   let addButton = (
     <View style={styles.iconAndName}>
       <TouchableOpacity onPress={() => openModal()}>
@@ -97,15 +105,15 @@ function SampleDeviceList(props) {
         {props.sharedAccs &&
           props.sharedAccs.map((entry, i) => (
             <View key={i} style={styles.cardCon}>
-              <TouchableOpacity onPress={() => setSelected(i)}>
+              <TouchableOpacity onPress={() => setSelected(entry)}>
                 <View
                   style={{
                     paddingLeft: 10,
                     paddingVertical: 6,
                     flexDirection: 'row',
                     borderRadius: 10,
-                    elevation: selected == i ? 2 : 0,
-                    backgroundColor: selected == i ? 'white' : '#F1F1F1',
+                    elevation: selected == entry ? 2 : 0,
+                    backgroundColor: selected == entry ? 'white' : '#F1F1F1',
                   }}
                 >
                   <Image source={require('../../../assets/people.png')} />
@@ -134,6 +142,32 @@ function SampleDeviceList(props) {
             </View>
           </TouchableOpacity>
         </View>
+        <View style={{ flex: 1, marginBottom: 30, justifyContent: 'flex-end' }}>
+          <TouchableOpacity onPress={() => propsClick()}>
+            <View
+              style={{
+                marginTop: 35,
+                backgroundColor: '#289EFF',
+                borderRadius: 10,
+                width: 150,
+                height: 40,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 22,
+                  fontWeight: 'bold',
+                  color: 'white',
+                }}
+              >
+                Add Guest
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </Modal>
   );
@@ -158,7 +192,11 @@ function SampleDeviceList(props) {
         >
           Send a request to your guest to have them share your home!
         </Text>
-        <TextInput style={styles.input} placeholder={'Guest Email'} />
+        <TextInput
+          style={styles.input}
+          placeholder={'Guest Email'}
+          onChangeText={(text) => setGuestEmail(text)}
+        />
         <TouchableOpacity>
           <View style={styles.submitButton}>
             <Text

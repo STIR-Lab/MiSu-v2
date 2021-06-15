@@ -71,10 +71,10 @@ function GuestsScreen(props) {
 
   async function fetchData(idToken) {
     console.log('Fetching Data..');
-    await props.getHub(idToken);
-    await props.getDevices(idToken);
-    await props.getSharedDevices(idToken);
-    await props.getAccounts(idToken);
+    props.getHub(idToken);
+    props.getDevices(idToken);
+    props.getSharedDevices(idToken);
+    props.getAccounts(idToken);
     setSharedAccs(props.sharedAccountsData.sharedAccounts);
     console.log('Data Fetched.');
   }
@@ -108,6 +108,7 @@ function GuestsScreen(props) {
             title={'Sam Smith'}
             type={'GuestCard'}
             sharedAccs={sharedAccs}
+            navigation={props.navigation}
           />
         </ScrollView>
         {modal}

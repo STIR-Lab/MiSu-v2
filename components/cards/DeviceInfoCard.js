@@ -20,9 +20,21 @@ function DeviceInfoCard(props) {
 
   let list;
   if (props.type == 'GuestCard')
-    list = <SampleDeviceList screen="Guests" sharedAccs={props.sharedAccs} />;
+    list = (
+      <SampleDeviceList
+        screen="Guests"
+        sharedAccs={props.sharedAccs}
+        navigation={props.navigation}
+      />
+    );
   else
-    list = <SampleDeviceList screen="Devices" sharedAccs={props.sharedAccs} />;
+    list = (
+      <SampleDeviceList
+        screen="Devices"
+        sharedAccs={props.sharedAccs}
+        navigation={props.navigation}
+      />
+    );
 
   const panel = (
     <View style={styles.container}>
