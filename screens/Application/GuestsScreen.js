@@ -23,6 +23,8 @@ AWS.config.update({ region: 'us-east-1' });
 function GuestsScreen(props) {
   const [searchParam, setSearchParam] = useState('');
   const [isVisible, setIsVisible] = useState(false);
+  const [sharedAccs, setSharedAccs] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   openModal = () => {
     setIsVisible(!isVisible);
@@ -57,14 +59,25 @@ function GuestsScreen(props) {
     // 		name: props.sessionData.name
     // 	});
     const { idToken } = props.sessionData;
-    props.getHub(idToken);
-    props.getDevices(idToken);
-    // await props.getAccounts(idToken);
-    props.getSharedDevices(idToken);
+    // console.log(props);
+
     //getUsageLogs();
     //getAccessLogs();
     // onRefresh();
+    fetchData(idToken);
+    console.log(props);
+    console.log('== GUESTS SCREEN== ' + JSON.stringify(sharedAccs));
   }, []);
+
+  async function fetchData(idToken) {
+    console.log('Fetching Data..');
+    await props.getHub(idToken);
+    await props.getDevices(idToken);
+    await props.getSharedDevices(idToken);
+    await props.getAccounts(idToken);
+    setSharedAccs(props.sharedAccountsData.sharedAccounts);
+    console.log('Data Fetched.');
+  }
 
   let modal = (
     <Modal
@@ -91,7 +104,11 @@ function GuestsScreen(props) {
         </View>
         {/* <Text>{searchParam}</Text> */}
         <ScrollView style={styles.cardContainer}>
-          <DeviceInfoCard title={'Sam Smith'} type={'GuestCard'} />
+          <DeviceInfoCard
+            title={'Sam Smith'}
+            type={'GuestCard'}
+            sharedAccs={sharedAccs}
+          />
         </ScrollView>
         {modal}
       </View>
