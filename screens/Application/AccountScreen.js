@@ -12,6 +12,7 @@ import { getHubInfoAction } from '../../redux/Action/getHubInfoAction';
 import { registerHubAction } from '../../redux/Action/registerHubAction';
 import appStyle from '../../styles/AppStyle';
 
+
 function AccountScreen(props) {
   // static navigationOptions = ({ navigate, navigation }) => ({
   // 	headerTitle: 'Account',
@@ -74,12 +75,21 @@ function AccountScreen(props) {
         navigation={props.navigation}
       />
       <SettingsCard />
-      <TouchableOpacity
-        style={[{ marginHorizontal: 50, marginBottom: 10 }, appStyle.redButton]}
-        onPress={signOut}
-      >
-        <AppText style={{ color: 'white' }}>Log out</AppText>
+      <View style={{ alignItems: "center", justifyContent: "center", marginTop: 25, paddingBottom: 0,  flex: .1}}>
+          <TouchableOpacity
+            style={[{ marginBottom: 15, flex:0, flexDirection: "row", width: 160, alignItems: "center", justifyContent: "center" }, appStyle.redButton]}
+            onPress={signOut}
+          >
+              <Icon
+                name="logout"
+                size={32}
+                style={{color: "white" }}/>
+        
+          <AppText style={{ color: 'white' }}>Log out</AppText>
       </TouchableOpacity>
+
+      </View>
+      
     </View>
   );
 }

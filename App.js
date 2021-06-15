@@ -44,6 +44,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-elements';
 
+//Import custom header component
+import Header from "./components/app/Header.js"
+
 Amplify.configure(config);
 
 const store = createStore(appDataReducer, applyMiddleware(thunk));
@@ -79,21 +82,41 @@ function HomeStack() {
       <HomeNav.Screen
         name="Home"
         component={GuestsScreen}
-        options={{ headerShown: false }}
+        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Your Guests"/>}}
       />
-      <HomeNav.Screen
+      {/* <HomeNav.Screen
         name="Device"
         component={DeviceScreen}
         options={{ headerShown: false }}
-      />
+      /> */}
       <HomeNav.Screen
         name="Properties"
         component={DeviceProps}
-        options={{ headerShown: false }}
+        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Properties"/> }}
       />
     </HomeNav.Navigator>
   );
 }
+
+const DevicesNav = createStackNavigator();
+
+function DevicesStack() {
+  return (
+    <DevicesNav.Navigator>
+      <DevicesNav.Screen
+        name="Device"
+        component={DevicesScreen}
+        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Your Devices"/>  }}
+      />
+      <DevicesNav.Screen
+        name="Properties"
+        component={DeviceProps}
+        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Properties"/> }}
+      />
+    </DevicesNav.Navigator>
+  );
+}
+
 const ProfileNav = createStackNavigator();
 
 function ProfileStack() {
@@ -126,7 +149,7 @@ function AppNavBar() {
       />
       <NavBar.Screen
         name="Devices"
-        component={DevicesScreen}
+        component={DevicesStack}
         options={{
           tabBarIcon: ({}) => <Icon name="grid" type="feather" color="black" />,
         }}
@@ -135,6 +158,8 @@ function AppNavBar() {
         name="Logs"
         component={LogScreen}
         options={{
+          headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Activity Logs"/> ,
+          
           tabBarIcon: ({}) => (
             <Icon name="file-text" type="feather" color="black" />
           ),

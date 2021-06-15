@@ -19,6 +19,7 @@ function DeviceInfoCard(props) {
   };
 
   let list;
+
   if (props.type == 'GuestCard')
     list = (
       <SampleDeviceList

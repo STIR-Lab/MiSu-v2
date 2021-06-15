@@ -11,11 +11,11 @@ function YourHubCard(props) {
     } else {
       setRegistering(true);
     }
-  }, []);
+  });
 
   registerHub = () => {
     props.navigation.navigate('Hub');
-    setRegistering(true);
+    // setRegistering(true);
   };
 
   return (
@@ -67,10 +67,10 @@ function YourHubCard(props) {
 
 const style = StyleSheet.create({
   container: {
-    flex: 0.27,
+    flex: 0.25,
     flexDirection: 'column',
-    borderBottomColor: 'gray',
-    borderBottomWidth: 2,
+    borderBottomColor: '#828282',
+    borderBottomWidth: .9,
     marginBottom: 10,
     width: '100%',
   },
@@ -95,14 +95,16 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     height: '60%',
     alignItems: 'center',
+    justifyContent: 'center',
+
   },
   hubDisplay: {
     backgroundColor: '#61B8FF',
     borderRadius: 15,
     height: '60%',
     width: '45%',
-    marginRight: 20,
-    marginLeft: 20,
+    marginRight: 30,
+    marginLeft: 40,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -119,7 +121,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
     right: 15,
     justifyContent: 'flex-end',
-    width: 50,
+    width: 40,
     height: 25,
   },
   gear: {
@@ -129,7 +131,9 @@ const style = StyleSheet.create({
   },
   header: {
     color: 'gray',
-    fontSize: 20,
+    fontSize: 22,
+    paddingLeft: 12,
+    fontWeight: "bold"
   },
   headerLine: {
     flexDirection: 'row',

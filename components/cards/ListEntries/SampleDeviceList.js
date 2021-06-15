@@ -52,7 +52,9 @@ function SampleDeviceList(props) {
   });
 
   useEffect(() => {
+
     console.log('==SAMPLE DEVICE LIST==' + JSON.stringify(props.sharedAccs));
+
     if (props.screen == 'Guests') setScreen('Guests');
     else if (props.screen == 'Devices') setScreen('Devices');
     else console.log('Invalid screen prop passed.');
@@ -219,7 +221,7 @@ function SampleDeviceList(props) {
     <View style={styles.container} transparent={true}>
       {deviceList.devices.map((d) => (
         <View style={styles.iconAndName} key={d.id}>
-          <GuestElement deviceName={d.deviceName} />
+          <GuestElement deviceName={d.deviceName} navigation={props.navigation}/>
         </View>
       ))}
       {addButton}

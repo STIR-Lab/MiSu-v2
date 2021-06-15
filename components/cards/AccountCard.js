@@ -3,6 +3,7 @@ import { Image, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import AppHeaderText from '../app/AppHeaderText';
 import AppText from '../app/AppText';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function AccountCard(props) {
   // Holds all of our global variables
@@ -15,18 +16,21 @@ function AccountCard(props) {
 
   return (
     <View style={style.container}>
-      <Image
-        style={style.icon}
-        source={require('../../assets/icons/user.png')}
-      />
-      <View>
+
+      <Icon 
+          name="account-circle"
+          size={70}
+          style={{color: "#FFCB5B", flexBasis: 100, }}/>
+     
+
+      <View style= {{}}>
         {/* Show user's name */}
         <Text style={style.name}>
           {props.user.name} {props.user.lastName}
         </Text>
 
         {/* Weird undefined behavior w/ city, state */}
-        <Text>
+        <Text style={style.info}>
           {props.user.city ===
           (undefined || null || '' || 'undefined' || 'null') ? (
             <></>
@@ -48,17 +52,19 @@ function AccountCard(props) {
 
 const style = StyleSheet.create({
   container: {
-    flex: 0.2,
+    flex: 0.22,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    paddingTop: 60,
+
   },
   info: {
-    marginLeft: 10,
+    fontSize: 17
   },
   name: {
-    fontSize: 20,
+    fontSize: 28,
     fontWeight: 'bold',
   },
   icon: {

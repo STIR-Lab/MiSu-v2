@@ -95,7 +95,7 @@ function GuestsScreen(props) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={appStyle.container}>
         <View style={styles.header}>
-          <SearchBar setSearchParam={setSearchParam} />
+          <SearchBar setSearchParam={setSearchParam} screen={"Guests"}/>
           <View style={styles.button}>
             <TouchableOpacity onPress={() => openModal()}>
               <Text>Add Guest</Text>
@@ -104,12 +104,14 @@ function GuestsScreen(props) {
         </View>
         {/* <Text>{searchParam}</Text> */}
         <ScrollView style={styles.cardContainer}>
+
           <DeviceInfoCard
             title={'Sam Smith'}
             type={'GuestCard'}
             sharedAccs={sharedAccs}
             navigation={props.navigation}
           />
+
         </ScrollView>
         {modal}
       </View>
@@ -126,6 +128,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     marginTop: 50,
+    margin: 15,
     justifyContent: 'flex-start',
     alignItems: 'center',
   },

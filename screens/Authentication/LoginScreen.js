@@ -27,6 +27,7 @@ function LoginScreen(props) {
   
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [cleanEmail, setCleanEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +40,11 @@ function LoginScreen(props) {
   handleLogin = async () => {
     setErrorMessage('');
 
-    if (username === '')
+    setUsername(username.split(" ").join(""));
+    //console.log(username, "A");
+    setCleanEmail(username.split(" ").join(""));
+    // console.log(cleanEmail, "A");
+    if (cleanEmail === '')
       setErrorMessage('Missing email address');
     else if (password === '')
       setErrorMessage('Missing password');
@@ -47,12 +52,12 @@ function LoginScreen(props) {
       try {
         props.route.params.setLoadingTrue(true);
 
-        const user = await Auth.signIn(username, password)
+        const user = await Auth.signIn(cleanEmail, password)
           .then(async (user) => {
             console.log('Login successful!');
 
             setErrorMessage('');
-            setMessage('Login successful!');
+            // setMessage('Login successful!');
             setIsLoading(false);
 
             await props.getSession();
@@ -84,9 +89,13 @@ function LoginScreen(props) {
     setErrorMessage('');
     setMessage('');
 
-    console.log("Inside confirmSignUp")
+    setUsername(username.split(" ").join(""));
+    //console.log(username, "A");
+    setCleanEmail(username.split(" ").join(""));
+
+    // console.log("Inside confirmSignUp")
     // Form validation
-    if (username == '') {
+    if (cleanEmail == '') {
       setMessage("Please enter the email you're verifying");
       setErrorMessage('');
     } else if (confirmCode == '') {
@@ -94,7 +103,7 @@ function LoginScreen(props) {
       setErrorMessage('');
     } else {
       setIsLoading(true);
-      const user = await Auth.confirmSignUp(username, confirmCode)
+      const user = await Auth.confirmSignUp(cleanEmail, confirmCode)
         .then(async (user) => {
           console.log('confirmed sign up successful!');
 
@@ -117,15 +126,18 @@ function LoginScreen(props) {
     setMessage('');
     setForgotPasswordState(false);
 
+    setUsername(username.split(" ").join(""));
+    //console.log(username, "A");
+    setCleanEmail(username.split(" ").join(""));
     // Form validation
-    if (username == '') {
+    if (cleanEmail == '') {
       setMessage('Please enter the email address of your account');
       setErrorMessage('');
     } else {
       console.log(username);
       console.log('-----------');
       setIsLoading(true);
-      const user = await Auth.forgotPassword(username)
+      const user = await Auth.forgotPassword(cleanEmail)
         .then(async (user) => {
           console.log('forgot password request successful!');
 
@@ -156,12 +168,17 @@ function LoginScreen(props) {
         password
     );
     // Form validation
-    if (username == '') {
+
+    setUsername(username.split(" ").join(""));
+    //console.log(username, "A");
+    setCleanEmail(username.split(" ").join(""));
+
+    if (cleanEmail == '') {
       setMessage('Please enter the email address of your account');
       setErrorMessage('');
     } else {
       setIsLoading(true);
-      const user = await Auth.forgotPasswordSubmit(username, confirmCode, password)
+      const user = await Auth.forgotPasswordSubmit(cleanEmail, confirmCode, password)
         .then(async (user) => {
           console.log('forgot password successful!');
 
@@ -284,7 +301,7 @@ function LoginScreen(props) {
                 autoCapitalize="none"
                 onChangeText={(password) => setPassword(password)}
                 value={password}
-                placeholder="Password"
+                placeholder={forgotPasswordConfirmState ? "New Password" : "Password"}
                 placeholderTextColor="#808080"
               ></TextInput>
             </View>)}
