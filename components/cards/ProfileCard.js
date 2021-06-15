@@ -6,7 +6,7 @@ function ProfileCard(props) {
     return (
         <View style={style.container}>
             <View style={style.headerLine}>
-                <Text style={style.header}>Profile</Text>
+                <Text style={style.header}>Account</Text>
                 <View style={style.editBox}>
                     <Image style={style.gear} source={require('../../assets/icons/Setting.png')}/>
                     <Text>Edit</Text>
@@ -39,11 +39,11 @@ function ProfileCard(props) {
 
 const style = StyleSheet.create({
     container: {
-        flex: .28,
+        flex: .25,
         width: "100%",
         flexDirection: "column",
-        borderBottomColor: "gray",
-        borderBottomWidth: 2,
+        borderBottomColor: "#828282",
+        borderBottomWidth: .9,
         marginBottom: 10
     },
     editBox: {
@@ -62,24 +62,31 @@ const style = StyleSheet.create({
     },
     header: {
       color: "gray",
-      fontSize: 20
+      fontSize: 22,
+      paddingLeft: 12,
+      fontWeight: "bold"
     },
     headerLine: {
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: 10
+        marginBottom: 10,
+
     },
     subHeader : {
         fontWeight: "bold",
-        width: 100
+        fontSize: 15,
+        width: 100,
+        paddingLeft: 15
     },
     info: {
-      marginLeft: 10
+      marginLeft: 10,
+      fontSize: 15.5
     },
     infoLine: {
       flexDirection: "row",
       marginHorizontal: 15,
-      marginVertical: 7
+      marginVertical: 7,
+  
     }
   });
 
