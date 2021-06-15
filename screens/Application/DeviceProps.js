@@ -1,3 +1,4 @@
+import { Route53 } from 'aws-sdk';
 import React from 'react';
 import {
   ScrollView,
@@ -55,6 +56,7 @@ class DeviceProps extends React.Component {
   }
 
   render() {
+    console.log('==DEVICE PROPS==' + this.props);
     return (
       <View style={appStyle.container}>
         {
@@ -62,7 +64,9 @@ class DeviceProps extends React.Component {
             <View>
               <TouchableOpacity
                 style={{ alignSelf: 'flex-start', marginTop: 16 }}
-                onPress={() => {}}
+                onPress={() => {
+                  this.props.navigation.pop();
+                }}
               >
                 <Icon
                   name="arrow-back"
@@ -84,7 +88,7 @@ class DeviceProps extends React.Component {
                         fontSize: 16,
                       }}
                     >
-                      Sam Smith
+                      {this.props.route.params.account.name}
                     </Text>
                   </View>
                 </View>
