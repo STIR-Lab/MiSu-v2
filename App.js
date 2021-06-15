@@ -44,6 +44,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-elements';
 
+//Import custom header component
+import Header from "./components/app/Header.js"
+
 Amplify.configure(config);
 
 const store = createStore(appDataReducer, applyMiddleware(thunk));
@@ -79,7 +82,7 @@ function HomeStack() {
       <HomeNav.Screen
         name="Home"
         component={GuestsScreen}
-        options={{ headerShown: false }}
+        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Your Guests"/>}}
       />
       {/* <HomeNav.Screen
         name="Device"
@@ -89,7 +92,7 @@ function HomeStack() {
       <HomeNav.Screen
         name="Properties"
         component={DeviceProps}
-        options={{ headerShown: false }}
+        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Properties"/> }}
       />
     </HomeNav.Navigator>
   );
@@ -103,12 +106,12 @@ function DevicesStack() {
       <DevicesNav.Screen
         name="Device"
         component={DevicesScreen}
-        options={{ headerShown: false }}
+        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Your Devices"/>  }}
       />
       <DevicesNav.Screen
         name="Properties"
         component={DeviceProps}
-        options={{ headerShown: false }}
+        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Properties"/> }}
       />
     </DevicesNav.Navigator>
   );
@@ -155,6 +158,8 @@ function AppNavBar() {
         name="Logs"
         component={LogScreen}
         options={{
+          headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Activity Logs"/> ,
+          
           tabBarIcon: ({}) => (
             <Icon name="file-text" type="feather" color="black" />
           ),

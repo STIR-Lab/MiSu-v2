@@ -5,41 +5,65 @@ const Header = ({title}) =>
 {
     return (
         <View style={styles.header}>
-            <View>
-            <Image
+            <View style={styles.image}>
+                <Image
                 style={styles.tinyLogo}
                 source={require('../../assets/MISUv2.png')}
-            />
+                />
             
             </View>
-            <Text style={styles.headerText}>
-                {title}
-            </Text>
+            <View style={styles.title}>
+                <Text style={styles.headerText}>
+                    {title}
+                </Text>
+            </View>
+
         </View>
     )
 }
 
 
 const styles = StyleSheet.create({
+    title: {
+        flex: 1,
+        backgroundColor: "transparent",
+        justifyContent: "flex-end",
+        alignItems: "center",
+
+        flexGrow: 1,
+        height: "100%"
+    },
     header: {
-        flex: .14,
-        backgroundColor: "white",
-        justifyContent: "flex-start",
-        alignItems: "flex-end",
+        flex: 1,
+        backgroundColor: "transparent",
         flexDirection: "row",
+        alignItems: "center",
+        
     },
     headerText: {
-        fontSize: 30,
+        fontSize: 28,
         fontWeight: "bold",
-        textAlign: "center",
-        marginLeft: 25
+
+
+
+     
+        backgroundColor:"transparent"
     },
     tinyLogo: {
-        marginBottom: -10,
-        marginLeft: 10,
+
         width: 90,
         height: 90,
       },
+
+    image: {
+        backgroundColor:"transparent",
+        position: "absolute",
+        zIndex: 1000,
+        left: -10,
+       bottom: -15
+      
+    
+    }
     
 })
 
