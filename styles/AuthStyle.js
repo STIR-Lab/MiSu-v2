@@ -1,4 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+
+var width = Dimensions.get('window').width; //full width
+var height = Dimensions.get('window').height; //full height
 
 const authStyle = StyleSheet.create({
   container: {

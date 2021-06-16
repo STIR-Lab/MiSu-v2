@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
   Keyboard,
+  Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import { currentSessionAction } from '../../redux/Action/currentSessionAction';
@@ -18,6 +19,9 @@ import authStyle from '../../styles/AuthStyle';
 import ConfirmCodePopup from '../../components/popup/ConfirmCodePopup';
 import ForgotPasswordPopup from '../../components/popup/ForgotPasswordPopup';
 import ForgotPasswordConfirmPopup from '../../components/popup/ForgotPasswordConfirmPopup';
+
+var width = Dimensions.get('window').width; //full width
+var height = Dimensions.get('window').height; //full height
 
 function LoginScreen(props) {
   // static navigationOptions = {
@@ -269,10 +273,12 @@ function LoginScreen(props) {
         </View>
 
         {/* Render the greeting */}
-        <Text style={[styles.greeting]}>
-          Welcome to
-          <Text style={styles.appName}> MiSu</Text>
-        </Text>
+        <View style={styles.firstLine}>
+          <Text style={[styles.greeting]}>
+            Welcome to
+            <Text style={styles.appName}> MiSu</Text>
+          </Text>
+        </View>
 
         {/* Render the login form */}
         <View style={styles.authForm}>
@@ -426,16 +432,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   authForm: {
-    marginTop: 60,
-    marginBottom: 15,
-    marginHorizontal: 30,
+    // backgroundColor: "green",
+    height: "35%",
+    justifyContent: "center",
+    marginTop: 0,
+    marginBottom: 10,
+    marginHorizontal: 20,
+  },
+  firstLine:{
+    // backgroundColor: "blue"
   },
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    paddingTop: 60,
+    paddingTop: 50,
   },
   formInput: {
+    // backgroundColor: "red",
     fontSize: 15,
     marginLeft: 20,
     height: 50,
@@ -448,13 +461,14 @@ const styles = StyleSheet.create({
     marginLeft: -15,
   },
   icon: {
-    height: 285,
-    width: 285,
-    marginBottom: -65,
+    height: height / 3,
+    width: height / 3,
+    marginBottom: -30,
     marginTop: -45,
   },
   iconInput: {
     width: 20,
+    height: "80%",
     marginLeft: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -469,8 +483,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F3F3',
     borderColor: '#D6D6D6',
     borderWidth: 1,
-    height: 50,
-    marginTop: 30,
+    height: "20%",
+    marginVertical: 8,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
@@ -482,8 +496,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#008CFF',
     marginTop: 20,
     borderRadius: 10,
-    height: 60,
-    width: 200,
+    height: height / 15,
+    width: "50%",
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -491,6 +505,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 1,
     elevation: 10,
+    marginBottom: -10
   },
 });
 
