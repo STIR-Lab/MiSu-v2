@@ -12,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import DeviceCard from '../../components/cards/DeviceCard';
+import ScheduleCard from '../../components/cards/ScheduleCard';
 import appStyle from '../../styles/AppStyle';
 
 class DeviceProps extends React.Component {
@@ -117,14 +118,9 @@ class DeviceProps extends React.Component {
                 <Text style={{ fontSize: 26, fontWeight: 'bold' }}>
                   Set Schedule
                 </Text>
-                <View
-                  style={{
-                    height: 150,
-                    marginTop: 10,
-                    backgroundColor: 'white',
-                    borderRadius: 10,
-                  }}
-                ></View>
+
+                <ScheduleCard />
+
                 <Text
                   style={{ marginTop: 20, fontSize: 26, fontWeight: 'bold' }}
                 >
