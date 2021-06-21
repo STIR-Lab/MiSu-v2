@@ -74,7 +74,11 @@ function AccountScreen(props) {
         hub_email={props.hubInfoData.hub_email}
         navigation={props.navigation}
       />
-      <SettingsCard />
+      <SettingsCard 
+        idToken={props.sessionData.idToken}
+        user={props.hubInfoData}
+        navigation={props.navigation}
+      />
       <View style={{ alignItems: "center", justifyContent: "center", marginTop: 25, paddingBottom: 0,  flex: .1}}>
           <TouchableOpacity
             style={[{ marginBottom: 15, flex:0, flexDirection: "row", width: 160, alignItems: "center", justifyContent: "center" }, appStyle.redButton]}
