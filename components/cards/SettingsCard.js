@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
-    import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function SettingsCard(props) {
 

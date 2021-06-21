@@ -83,10 +83,13 @@ function SampleDeviceList(props) {
 
   let addButton = (
     <View style={styles.iconAndName}>
-      <TouchableOpacity onPress={() => openModal()}>
-        <View
-          style={screen == 'Devices' ? styles.addGuest : styles.addDevice}
-        />
+      <TouchableOpacity onPress={() => openModal()} style={screen == 'Devices' ? styles.addGuest : styles.addDevice}>
+        <Icon
+                  name="plus"
+                  type="font-awesome"
+                  color="#FFFFFF"
+                  size={38}
+                />
       </TouchableOpacity>
       <Text>{screen == 'Devices' ? 'Add Guest' : 'Add Device'}</Text>
     </View>
@@ -256,12 +259,14 @@ const styles = StyleSheet.create({
   },
   addGuest: {
     backgroundColor: '#57E455',
+    justifyContent: "center",
     borderRadius: 41,
     width: 70,
     height: 70,
   },
   addDevice: {
     backgroundColor: '#57E455',
+    justifyContent: "center",
     borderRadius: 5,
     width: 70,
     height: 70,
