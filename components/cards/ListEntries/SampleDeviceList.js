@@ -19,7 +19,9 @@ function SampleDeviceList(props) {
   const [screen, setScreen] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [isVisible2, setIsVisible2] = useState(false);
-  const [selected, setSelected] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [sharedAccs, setSharedAccs] = useState(null);
+  const [guestEmail, setGuestEmail] = useState('');
   const [deviceList, setDeviceList] = useState({
     devices: [
       // Grab Device Name, Device Picture, And device Actions here. Determine what format the database has them in.
@@ -50,10 +52,16 @@ function SampleDeviceList(props) {
   });
 
   useEffect(() => {
-    // console.log(props);
+
+    console.log('==SAMPLE DEVICE LIST==' + JSON.stringify(props.sharedAccs));
+
     if (props.screen == 'Guests') setScreen('Guests');
     else if (props.screen == 'Devices') setScreen('Devices');
     else console.log('Invalid screen prop passed.');
+
+    if (props.sharedAccs != null) {
+      setSharedAccs(props.sharedAccs);
+    }
   });
 
   const openModal = () => {
@@ -64,6 +72,13 @@ function SampleDeviceList(props) {
   const handleClick = () => {
     setIsVisible(false);
     setIsVisible2(true);
+  };
+
+  const propsClick = () => {
+    if (selected == null) return;
+    props.navigation.navigate('Properties', {
+      account: selected,
+    });
   };
 
   let addButton = (
@@ -84,96 +99,36 @@ function SampleDeviceList(props) {
       onBackdropPress={() => setIsVisible(false)}
     >
       <View style={styles.modal}>
-        <View
-          style={{
-            marginTop: 10,
-            marginBottom: 15,
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-          }}
-        >
+        <View style={styles.topGuestModal}>
           <Icon name="users" type="feather" color="black" />
           <Text style={{ marginLeft: 10, fontSize: 20 }}>Add Guest</Text>
         </View>
 
-        <View
-          style={{
-            flexDirection: 'column',
-            alignSelf: 'flex-start',
-            marginLeft: 20,
-            marginRight: 20,
-            alignSelf: 'stretch',
-          }}
-        >
-          <TouchableOpacity onPress={() => setSelected(true)}>
-            <View
-              style={{
-                paddingLeft: 10,
-                paddingVertical: 6,
-                flexDirection: 'row',
-                borderRadius: 10,
-                elevation: selected ? 2 : 0,
-                backgroundColor: selected ? 'white' : '#F1F1F1',
-              }}
-            >
-              <Image source={require('../../../assets/people.png')} />
-              <Text
-                style={{ fontSize: 16, alignSelf: 'center', marginLeft: 20 }}
-              >
-                Paul Smith
-              </Text>
+        {props.sharedAccs &&
+          props.sharedAccs.map((entry, i) => (
+            <View key={i} style={styles.cardCon}>
+              <TouchableOpacity onPress={() => setSelected(entry)}>
+                <View
+                  style={{
+                    paddingLeft: 10,
+                    paddingVertical: 6,
+                    flexDirection: 'row',
+                    borderRadius: 10,
+                    elevation: selected == entry ? 2 : 0,
+                    backgroundColor: selected == entry ? 'white' : '#F1F1F1',
+                  }}
+                >
+                  <Image source={require('../../../assets/people.png')} />
+                  <Text style={styles.cardText}>{entry.name}</Text>
+                </View>
+              </TouchableOpacity>
+              <View style={styles.seperator}></View>
             </View>
-          </TouchableOpacity>
-          <View style={styles.seperator}></View>
-          <TouchableOpacity onPress={() => setSelected(false)}>
-            <View
-              style={{
-                paddingLeft: 10,
-                paddingVertical: 6,
-                flexDirection: 'row',
-                borderRadius: 10,
-                elevation: selected ? 2 : 0,
-                backgroundColor: selected ? 'white' : '#F1F1F1',
-              }}
-            >
-              <Image source={require('../../../assets/people.png')} />
-              <Text
-                style={{ fontSize: 16, alignSelf: 'center', marginLeft: 20 }}
-              >
-                Tim Smith
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <View style={styles.seperator}></View>
-          <TouchableOpacity onPress={() => setSelected(true)}>
-            <View
-              style={{
-                paddingLeft: 10,
-                paddingVertical: 6,
-                flexDirection: 'row',
-                borderRadius: 10,
-                elevation: selected ? 2 : 0,
-                backgroundColor: selected ? 'white' : '#F1F1F1',
-              }}
-            >
-              <Image source={require('../../../assets/people.png')} />
-              <Text
-                style={{ fontSize: 16, alignSelf: 'center', marginLeft: 20 }}
-              >
-                Kaleb Smith
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <View style={styles.seperator}></View>
+          ))}
+
+        <View style={styles.cardCon}>
           <TouchableOpacity onPress={() => handleClick()}>
-            <View
-              style={{
-                paddingLeft: 10,
-                flexDirection: 'row',
-                borderRadius: 10,
-                backgroundColor: '#F1F1F1',
-              }}
-            >
+            <View style={styles.iconCon}>
               <Icon
                 reverse
                 name="plus"
@@ -189,6 +144,32 @@ function SampleDeviceList(props) {
             </View>
           </TouchableOpacity>
         </View>
+        <View style={{ flex: 1, marginBottom: 30, justifyContent: 'flex-end' }}>
+          <TouchableOpacity onPress={() => propsClick()}>
+            <View
+              style={{
+                marginTop: 35,
+                backgroundColor: '#289EFF',
+                borderRadius: 10,
+                width: 150,
+                height: 40,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 22,
+                  fontWeight: 'bold',
+                  color: 'white',
+                }}
+              >
+                Add Guest
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </Modal>
   );
@@ -200,14 +181,7 @@ function SampleDeviceList(props) {
       onBackdropPress={() => setIsVisible2(false)}
     >
       <View style={styles.addGuestmodal}>
-        <View
-          style={{
-            marginTop: 25,
-            marginBottom: 15,
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-          }}
-        >
+        <View style={styles.addGuestHeader}>
           <Icon name="users" type="feather" color="black" />
           <Text style={{ marginLeft: 10, fontSize: 20 }}>Add New Guest</Text>
         </View>
@@ -220,19 +194,13 @@ function SampleDeviceList(props) {
         >
           Send a request to your guest to have them share your home!
         </Text>
-        <TextInput style={styles.input} placeholder={'Guest Email'} />
+        <TextInput
+          style={styles.input}
+          placeholder={'Guest Email'}
+          onChangeText={(text) => setGuestEmail(text)}
+        />
         <TouchableOpacity>
-          <View
-            style={{
-              marginTop: 35,
-              backgroundColor: '#289EFF',
-              borderRadius: 10,
-              width: 200,
-              height: 50,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+          <View style={styles.submitButton}>
             <Text
               style={{
                 textAlign: 'center',
@@ -335,6 +303,45 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 21,
     marginHorizontal: 20,
+  },
+  topGuestModal: {
+    marginTop: 10,
+    marginBottom: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  cardText: {
+    fontSize: 16,
+    alignSelf: 'center',
+    marginLeft: 20,
+  },
+  cardCon: {
+    flexDirection: 'column',
+    alignSelf: 'flex-start',
+    marginLeft: 20,
+    marginRight: 20,
+    alignSelf: 'stretch',
+  },
+  iconCon: {
+    paddingLeft: 4,
+    flexDirection: 'row',
+    borderRadius: 10,
+    backgroundColor: '#F1F1F1',
+  },
+  addGuestHeader: {
+    marginTop: 25,
+    marginBottom: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  submitButton: {
+    marginTop: 35,
+    backgroundColor: '#289EFF',
+    borderRadius: 10,
+    width: 200,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

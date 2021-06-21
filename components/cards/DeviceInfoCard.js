@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Image,
   StyleSheet,
@@ -19,8 +19,25 @@ function DeviceInfoCard(props) {
   };
 
   let list;
-  if (props.type == 'GuestCard') list = <SampleDeviceList screen="Guests" />;
-  else list = <SampleDeviceList screen="Devices" />;
+
+
+  if (props.type == 'GuestCard')
+    list = (
+      <SampleDeviceList
+        screen="Guests"
+        sharedAccs={props.sharedAccs}
+        navigation={props.navigation}
+      />
+    );
+  else
+    list = (
+      <SampleDeviceList
+        screen="Devices"
+        sharedAccs={props.sharedAccs}
+        navigation={props.navigation}
+      />
+    );
+
 
   const panel = (
     <View style={styles.container}>
@@ -44,6 +61,10 @@ function DeviceInfoCard(props) {
       </Collapsible>
     </View>
   );
+
+  useEffect(() => {
+    console.log('==DEVICE INFO CARD== ' + JSON.stringify(props));
+  });
 
   return (
     <View>
