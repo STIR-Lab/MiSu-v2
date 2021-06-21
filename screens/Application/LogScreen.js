@@ -99,7 +99,7 @@ class LogScreen extends React.Component {
 		} else
 			return (
 				<View>
-					<AppHeaderText style={{ fontSize: 18, marginLeft: 10 }}>Loading...</AppHeaderText>
+				 <LogCard type="Access" logs={this.state.accessLogs} />
 				</View>
 			);
 	};

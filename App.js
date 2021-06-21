@@ -18,6 +18,7 @@ import DeviceProps from './screens/Application/DeviceProps';
 import LogScreen from './screens/Application/LogScreen';
 import UserScreen from './screens/Application/UserScreen';
 import HubScreen from './screens/Application/HubScreen';
+import ChangePasswordScreen from './screens/Application/ChangePasswordScreen';
 //************************************************** */
 // Auth Stack ************************************** */
 //************************************************** */
@@ -128,8 +129,25 @@ function ProfileStack() {
         options={{ headerShown: false }}
       />
       <ProfileNav.Screen name="Hub" component={HubScreen} />
+      <ProfileNav.Screen name="ChangePassword" component={ChangePasswordScreen} />
     </ProfileNav.Navigator>
   );
+}
+
+const LogNav = createStackNavigator();
+
+function LogStack() {
+  return (
+  <LogNav.Navigator>
+    <LogNav.Screen name="Properties"
+        component={LogScreen}
+        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Activity Logs"/> }}>
+    
+       
+      
+    </LogNav.Screen>
+  </LogNav.Navigator>
+  )
 }
 
 const NavBar = createBottomTabNavigator();
@@ -156,7 +174,7 @@ function AppNavBar() {
       />
       <NavBar.Screen
         name="Logs"
-        component={LogScreen}
+        component={LogStack}
         options={{
           headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Activity Logs"/> ,
           

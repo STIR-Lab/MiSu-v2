@@ -21,6 +21,7 @@ function DeviceInfoCard(props) {
 
   let list;
 
+
   if (props.type == 'GuestCard')
     list = (
       <SampleDeviceList
@@ -37,6 +38,7 @@ function DeviceInfoCard(props) {
         navigation={props.navigation}
       />
     );
+
 
   const panel = (
     <View style={styles.container}>
@@ -58,7 +60,7 @@ function DeviceInfoCard(props) {
           </Text>
         </View>
         <View style={styles.guestList}>{list}</View>
-        <LastActionCard />
+        <LastActionCard screen={props.type}/>
       </Collapsible>
     </View>
   );

@@ -10,7 +10,7 @@ function SettingsCard(props) {
                 <Text style={styles.header}>Settings</Text>
                 
             </View>
-            <View style= {styles.setting} >
+            <TouchableOpacity style= {styles.setting} onPress={() => props.navigation.navigate('ChangePassword')}>
                 <Text style={styles.settingFont}>Change Password</Text>
                 
                 <View style={styles.icon}>
@@ -21,7 +21,7 @@ function SettingsCard(props) {
                   style={{ }}/>
                     </View>
                 
-            </View>
+            </TouchableOpacity>
             <View style= {styles.setting} >
             <Text style={styles.settingFont}>Modify Geofencing Radius</Text>
                 
