@@ -15,6 +15,8 @@ import { registerHubAction } from '../../redux/Action/registerHubAction';
 import appStyle from '../../styles/AppStyle';
 import DeviceInfoCard from '../../components/cards/DeviceInfoCard';
 import Modal from 'react-native-modal';
+import Icon from 'react-native-vector-icons/Feather';
+
 
 // AWS Config
 const AWS = require('aws-sdk');
@@ -96,11 +98,15 @@ function GuestsScreen(props) {
       <View style={appStyle.container}>
         <View style={styles.header}>
           <SearchBar setSearchParam={setSearchParam} screen={"Guests"}/>
-          <View style={styles.button}>
-            <TouchableOpacity onPress={() => openModal()}>
-              <Text>Add Guest</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity style={styles.button} onPress={() => openModal()}>
+          <Icon 
+            name="user-plus"
+            size={30}
+            style={{color: "#44ABFF"}}/>
+            <View style={styles.addGuest}>
+              <Text style={{textAlign: "center"}}>Add Guest</Text>
+            </View>
+          </TouchableOpacity>
         </View>
         {/* <Text>{searchParam}</Text> */}
         <ScrollView style={styles.cardContainer}>
@@ -127,20 +133,26 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     width: '100%',
-    marginTop: 50,
+    marginTop: 0,
     margin: 15,
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
   button: {
     position: 'absolute',
-    backgroundColor: 'blue',
+    flexDirection: "row",
+    backgroundColor: '#FFFFFF',
     height: 70,
     right: 0,
-    width: '30%',
+    width: '32%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
+    padding: 25,
+    shadowColor: '#000',
+    shadowOpacity: 0.8,
+    shadowRadius: 1,
+    elevation: 6,
   },
   modal: {
     backgroundColor: 'green',
@@ -149,6 +161,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
   },
+  addGuest: {
+    alignItems: "center",
+    marginLeft: 5
+  }
 });
 
 export default GuestsScreen;

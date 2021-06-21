@@ -1,6 +1,6 @@
 import { Auth } from 'aws-amplify';
 import React, {useEffect} from 'react';
-import { ToastAndroid, TouchableOpacity, View, Text } from 'react-native';
+import { ToastAndroid, TouchableOpacity, View, Text, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import AppText from '../../components/app/AppText';
@@ -58,38 +58,35 @@ function AccountScreen(props) {
 
   return (
     <View style={appStyle.container}>
-      <AccountCard
-        idToken={props.sessionData.idToken}
-        user={props.hubInfoData}
-      />
-      <ProfileCard
-        idToken={props.sessionData.idToken}
-        user={props.hubInfoData}
-      />
-      <YourHubCard
-        register={props.register}
-        idToken={props.sessionData.idToken}
-        user={props.hubInfoData}
-        hub_url={props.hubInfoData.hub_url}
-        hub_email={props.hubInfoData.hub_email}
-        navigation={props.navigation}
-      />
-      <SettingsCard />
-      <View style={{ alignItems: "center", justifyContent: "center", marginTop: 25, paddingBottom: 0,  flex: .1}}>
+        <AccountCard
+          idToken={props.sessionData.idToken}
+          user={props.hubInfoData}
+        />
+        <ProfileCard
+          idToken={props.sessionData.idToken}
+          user={props.hubInfoData}
+        />
+        <YourHubCard
+          register={props.register}
+          idToken={props.sessionData.idToken}
+          user={props.hubInfoData}
+          hub_url={props.hubInfoData.hub_url}
+          hub_email={props.hubInfoData.hub_email}
+          navigation={props.navigation}
+        />
+        <SettingsCard />
+        <View style={{ alignItems: "center", justifyContent: "center", marginTop: 25, paddingBottom: 0,  flex: .1}}>
           <TouchableOpacity
             style={[{ marginBottom: 15, flex:0, flexDirection: "row", width: 160, alignItems: "center", justifyContent: "center" }, appStyle.redButton]}
             onPress={signOut}
           >
-              <Icon
-                name="logout"
-                size={32}
-                style={{color: "white" }}/>
-        
-          <AppText style={{ color: 'white' }}>Log out</AppText>
-      </TouchableOpacity>
-
-      </View>
-      
+            <Icon
+              name="logout"
+              size={32}
+              style={{color: "white" }}/>
+            <AppText style={{ color: 'white' }}>Log out</AppText>
+          </TouchableOpacity>
+        </View>
     </View>
   );
 }

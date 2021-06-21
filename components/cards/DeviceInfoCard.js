@@ -10,6 +10,7 @@ import {
 import Collapsible from 'react-native-collapsible';
 import SampleDeviceList from '../../components/cards/ListEntries/SampleDeviceList';
 import LastActionCard from '../../components/cards/LastActionCard';
+import Icon from 'react-native-vector-icons/Feather';
 
 function DeviceInfoCard(props) {
   const [collapsed, setCollapsed] = useState(true);
@@ -45,7 +46,9 @@ function DeviceInfoCard(props) {
           <Text>{props.title}</Text>
         </View>
         <TouchableOpacity style={styles.dropDownButtom} onPress={alter}>
-          <Text>A</Text>
+          {collapsed ? 
+          <Icon name="chevron-right" size={35} /> :
+          <Icon name="chevron-down" size={35} /> }
         </TouchableOpacity>
       </View>
       <Collapsible collapsed={collapsed} style={styles.expanded}>
