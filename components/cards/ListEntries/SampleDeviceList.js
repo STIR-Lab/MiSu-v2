@@ -53,7 +53,7 @@ function SampleDeviceList(props) {
 
   useEffect(() => {
 
-    console.log('==SAMPLE DEVICE LIST==' + JSON.stringify(props.sharedAccs));
+    // console.log('==SAMPLE DEVICE LIST==' + JSON.stringify(props.sharedAccs));
 
     if (props.screen == 'Guests') setScreen('Guests');
     else if (props.screen == 'Devices') setScreen('Devices');

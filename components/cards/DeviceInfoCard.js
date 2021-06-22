@@ -66,7 +66,7 @@ function DeviceInfoCard(props) {
   );
 
   useEffect(() => {
-    console.log('==DEVICE INFO CARD== ' + JSON.stringify(props));
+    // console.log('==DEVICE INFO CARD== ' + JSON.stringify(props));
   });
 
   return (

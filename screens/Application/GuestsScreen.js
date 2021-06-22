@@ -19,8 +19,8 @@ import Icon from 'react-native-vector-icons/Feather';
 
 
 // AWS Config
-const AWS = require('aws-sdk');
-AWS.config.update({ region: 'us-east-1' });
+// const AWS = require('aws-sdk');
+// AWS.config.update({ region: 'us-east-1' });
 
 function GuestsScreen(props) {
   const [searchParam, setSearchParam] = useState('');
@@ -60,25 +60,25 @@ function GuestsScreen(props) {
     // 	props.navigation.setParams({
     // 		name: props.sessionData.name
     // 	});
-    const { idToken } = props.sessionData;
+    // const { idToken } = props.sessionData;
     // console.log(props);
-
+    const idToken = 0;
     //getUsageLogs();
     //getAccessLogs();
     // onRefresh();
     fetchData(idToken);
-    console.log(props);
-    console.log('== GUESTS SCREEN== ' + JSON.stringify(sharedAccs));
+    // console.log(props);
+    // console.log('== GUESTS SCREEN== ' + JSON.stringify(sharedAccs));
   }, []);
 
   async function fetchData(idToken) {
-    console.log('Fetching Data..');
-    props.getHub(idToken);
-    props.getDevices(idToken);
-    props.getSharedDevices(idToken);
-    props.getAccounts(idToken);
+    // console.log('Fetching Data..');
+    // props.getHub(idToken);
+    // props.getDevices(idToken);
+    // props.getSharedDevices(idToken);
+    // props.getAccounts(idToken);
     setSharedAccs(props.sharedAccountsData.sharedAccounts);
-    console.log('Data Fetched.');
+    // console.log('Data Fetched.');
   }
 
   let modal = (
@@ -167,4 +167,17 @@ const styles = StyleSheet.create({
   }
 });
 
-export default GuestsScreen;
+
+const mapStateToProps = (state) => {
+	const { hubInfoData, sessionData, sharedAccountsData, registerData } = state;
+	return { hubInfoData, sessionData, sharedAccountsData, registerData };
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		register: (data, idToken) => dispatch(registerHubAction(data, idToken)),
+		getHub: (idToken) => dispatch(getHubInfoAction(idToken))
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GuestsScreen);
