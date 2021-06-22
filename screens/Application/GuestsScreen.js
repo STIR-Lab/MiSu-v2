@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   TouchableWithoutFeedback,
   StyleSheet,
@@ -7,23 +7,24 @@ import {
   View,
   Text,
   ScrollView,
-} from 'react-native';
-import { connect } from 'react-redux';
-import SearchBar from '../../components/SearchBar';
-import { getHubInfoAction } from '../../redux/Action/getHubInfoAction';
-import { registerHubAction } from '../../redux/Action/registerHubAction';
-import appStyle from '../../styles/AppStyle';
-import DeviceInfoCard from '../../components/cards/DeviceInfoCard';
-import Modal from 'react-native-modal';
-import Icon from 'react-native-vector-icons/Feather';
-
+} from "react-native";
+import { connect } from "react-redux";
+import SearchBar from "../../components/SearchBar";
+import { getHubInfoAction } from "../../redux/Action/getHubInfoAction";
+import { registerHubAction } from "../../redux/Action/registerHubAction";
+import appStyle from "../../styles/AppStyle";
+import DeviceInfoCard from "../../components/cards/DeviceInfoCard";
+import Modal from "react-native-modal";
+import Icon from "react-native-vector-icons/Feather";
 
 // AWS Config
+
 // const AWS = require('aws-sdk');
 // AWS.config.update({ region: 'us-east-1' });
 
+
 function GuestsScreen(props) {
-  const [searchParam, setSearchParam] = useState('');
+  const [searchParam, setSearchParam] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [sharedAccs, setSharedAccs] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -79,7 +80,12 @@ function GuestsScreen(props) {
     // props.getAccounts(idToken);
     setSharedAccs(props.sharedAccountsData.sharedAccounts);
     // console.log('Data Fetched.');
-  }
+
+    console.log(props);
+    console.log("== GUESTS SCREEN== " + JSON.stringify(sharedAccs));
+  }, []);
+
+
 
   let modal = (
     <Modal
@@ -97,27 +103,22 @@ function GuestsScreen(props) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={appStyle.container}>
         <View style={styles.header}>
-          <SearchBar setSearchParam={setSearchParam} screen={"Guests"}/>
+          <SearchBar setSearchParam={setSearchParam} screen={"Guests"} />
           <TouchableOpacity style={styles.button} onPress={() => openModal()}>
-          <Icon 
-            name="user-plus"
-            size={30}
-            style={{color: "#44ABFF"}}/>
+            <Icon name="user-plus" size={30} style={{ color: "#44ABFF" }} />
             <View style={styles.addGuest}>
-              <Text style={{textAlign: "center"}}>Add Guest</Text>
+              <Text style={{ textAlign: "center" }}>Add Guest</Text>
             </View>
           </TouchableOpacity>
         </View>
         {/* <Text>{searchParam}</Text> */}
         <ScrollView style={styles.cardContainer}>
-
           <DeviceInfoCard
-            title={'Sam Smith'}
-            type={'GuestCard'}
+            title={"Sam Smith"}
+            type={"GuestCard"}
             sharedAccs={sharedAccs}
             navigation={props.navigation}
           />
-
         </ScrollView>
         {modal}
       </View>
@@ -128,43 +129,43 @@ function GuestsScreen(props) {
 const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
-    width: '100%',
+    width: "100%",
   },
   header: {
-    flexDirection: 'row',
-    width: '100%',
+    flexDirection: "row",
+    width: "100%",
     marginTop: 0,
     margin: 15,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   button: {
-    position: 'absolute',
+    position: "absolute",
     flexDirection: "row",
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     height: 70,
     right: 0,
-    width: '32%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "32%",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 15,
     padding: 25,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.8,
     shadowRadius: 1,
     elevation: 6,
   },
   modal: {
-    backgroundColor: 'green',
+    backgroundColor: "green",
     width: 300,
     height: 500,
-    alignSelf: 'center',
-    alignItems: 'center',
+    alignSelf: "center",
+    alignItems: "center",
   },
   addGuest: {
     alignItems: "center",
-    marginLeft: 5
-  }
+    marginLeft: 5,
+  },
 });
 
 

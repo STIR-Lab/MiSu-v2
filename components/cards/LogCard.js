@@ -55,7 +55,7 @@ function LogCard(props){
         
         <View style={styles.addGuestHeader}>
           
-          <Text style={{ marginLeft: 0, fontSize: 20 }}>Filter</Text>
+          <Text style={{ marginLeft: 0, fontSize: 20, fontWeight: 'bold' }}>Filter</Text>
         </View>
 
         <View style = {styles.textHeader}>
@@ -198,11 +198,10 @@ const styles = StyleSheet.create({
   },
   addGuestmodal: {
     backgroundColor: '#F1F1F1',
-    borderWidth: 1,
-    borderColor: 'black',
+    elevation: 6,
     borderRadius: 10,
     width: 300,
-    height: 400,
+   
     alignSelf: 'center',
     alignItems: 'center',
   },
@@ -232,6 +231,7 @@ const styles = StyleSheet.create({
     marginTop: 35,
     backgroundColor: '#289EFF',
     borderRadius: 10,
+    marginBottom: 25, 
     width: 120,
     height: 50,
     alignItems: 'center',

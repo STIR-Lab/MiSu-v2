@@ -56,7 +56,9 @@ class DeviceProps extends React.Component {
   }
 
   render() {
-    console.log('==DEVICE PROPS==' + this.props);
+    console.log("============");
+    console.log(this.props.sharedAccountsData);
+    // console.log('==DEVICE PROPS==' + this.props);
     return (
       <View style={appStyle.container}>
         {
