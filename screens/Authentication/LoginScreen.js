@@ -67,9 +67,9 @@ function LoginScreen(props) {
 
             props.route.params.setLoadingFalse(false);
 
-            props.route.params.setGoToAppTrue(true);
+            // props.route.params.setGoToAppTrue(true);
             // this.props.route.params.setGoToAuthFalse();
-            props.navigation.navigate('App');
+            props.navigation.navigate('Loading');
           })
           .catch((err) => {
             setErrorMessage(err.message);

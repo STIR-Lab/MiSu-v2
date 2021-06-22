@@ -59,9 +59,14 @@ function SampleDeviceList(props) {
         JSON.stringify(props.sharedAccountsData.sharedAccounts)
     );
 
-    if (props.screen == "Guests") setScreen("Guests");
-    else if (props.screen == "Devices") setScreen("Devices");
-    else console.log("Invalid screen prop passed.");
+
+    // console.log('==SAMPLE DEVICE LIST==' + JSON.stringify(props.sharedAccs));
+
+    if (props.screen == 'Guests') setScreen('Guests');
+    else if (props.screen == 'Devices') setScreen('Devices');
+    else console.log('Invalid screen prop passed.');
+
+
   });
 
   const openModal = () => {
