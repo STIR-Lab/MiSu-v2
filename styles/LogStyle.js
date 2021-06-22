@@ -66,6 +66,7 @@ const LogStyle = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "flex-start",
     fontWeight: "bold",
+    fontSize: 20, 
     paddingBottom: 14,
   },
   textLog: {

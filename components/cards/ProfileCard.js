@@ -70,6 +70,7 @@ const style = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         marginBottom: 10,
+        width: "100%"
 
     },
     subHeader : {
@@ -83,6 +84,7 @@ const style = StyleSheet.create({
       fontSize: 15.5
     },
     infoLine: {
+      width: "75%",
       flexDirection: "row",
       marginHorizontal: 15,
       marginVertical: 7,

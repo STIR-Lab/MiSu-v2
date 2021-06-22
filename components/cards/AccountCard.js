@@ -13,7 +13,7 @@ function AccountCard(props) {
   registerHub = () => {
     setRegistering(true);
   };
-
+  
   return (
     <View style={style.container}>
 
@@ -52,16 +52,16 @@ function AccountCard(props) {
 
 const style = StyleSheet.create({
   container: {
-    flex: 0.22,
+    flex: 0.20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    paddingTop: 60,
+    paddingTop: 0,
 
   },
   info: {
-    fontSize: 17
+    fontSize: 17,
   },
   name: {
     fontSize: 28,

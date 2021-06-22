@@ -31,7 +31,6 @@ function LoginScreen(props) {
   
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [cleanEmail, setCleanEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,11 +43,11 @@ function LoginScreen(props) {
   handleLogin = async () => {
     setErrorMessage('');
 
-    setUsername(username.split(" ").join(""));
-    //console.log(username, "A");
-    setCleanEmail(username.split(" ").join(""));
-    // console.log(cleanEmail, "A");
-    if (cleanEmail === '')
+    // setUsername(username.split(" ").join(""));
+    // console.log(username, "A");
+    let str = username.split(" ").join("");
+    // console.log(str);
+    if (str === '')
       setErrorMessage('Missing email address');
     else if (password === '')
       setErrorMessage('Missing password');
@@ -56,7 +55,7 @@ function LoginScreen(props) {
       try {
         props.route.params.setLoadingTrue(true);
 
-        const user = await Auth.signIn(cleanEmail, password)
+        const user = await Auth.signIn(str, password)
           .then(async (user) => {
             console.log('Login successful!');
 
@@ -68,9 +67,9 @@ function LoginScreen(props) {
 
             props.route.params.setLoadingFalse(false);
 
-            props.route.params.setGoToAppTrue(true);
+            // props.route.params.setGoToAppTrue(true);
             // this.props.route.params.setGoToAuthFalse();
-            props.navigation.navigate('App');
+            props.navigation.navigate('Loading');
           })
           .catch((err) => {
             setErrorMessage(err.message);
@@ -93,13 +92,13 @@ function LoginScreen(props) {
     setErrorMessage('');
     setMessage('');
 
-    setUsername(username.split(" ").join(""));
+    // setUsername(username.split(" ").join(""));
     //console.log(username, "A");
-    setCleanEmail(username.split(" ").join(""));
+    let str = username.split(" ").join("");
 
     // console.log("Inside confirmSignUp")
     // Form validation
-    if (cleanEmail == '') {
+    if (str == '') {
       setMessage("Please enter the email you're verifying");
       setErrorMessage('');
     } else if (confirmCode == '') {
@@ -107,7 +106,7 @@ function LoginScreen(props) {
       setErrorMessage('');
     } else {
       setIsLoading(true);
-      const user = await Auth.confirmSignUp(cleanEmail, confirmCode)
+      const user = await Auth.confirmSignUp(str, confirmCode)
         .then(async (user) => {
           console.log('confirmed sign up successful!');
 
@@ -130,20 +129,20 @@ function LoginScreen(props) {
     setMessage('');
     setForgotPasswordState(false);
 
-    setUsername(username.split(" ").join(""));
+    // setUsername(username.split(" ").join(""));
     //console.log(username, "A");
-    setCleanEmail(username.split(" ").join(""));
+    let str = username.split(" ").join("");
     // Form validation
-    if (cleanEmail == '') {
+    if (str == '') {
       setMessage('Please enter the email address of your account');
       setErrorMessage('');
     } else {
-      console.log(username);
-      console.log('-----------');
+      // console.log(username);
+      // console.log('-----------');
       setIsLoading(true);
-      const user = await Auth.forgotPassword(cleanEmail)
+      const user = await Auth.forgotPassword(str)
         .then(async (user) => {
-          console.log('forgot password request successful!');
+          // console.log('forgot password request successful!');
 
           setErrorMessage('');
           setMessage('Request successful, check your email for further instructions.');
@@ -173,16 +172,14 @@ function LoginScreen(props) {
     );
     // Form validation
 
-    setUsername(username.split(" ").join(""));
-    //console.log(username, "A");
-    setCleanEmail(username.split(" ").join(""));
+    let str = username.split(" ").join("");;
 
-    if (cleanEmail == '') {
+    if (str == '') {
       setMessage('Please enter the email address of your account');
       setErrorMessage('');
     } else {
       setIsLoading(true);
-      const user = await Auth.forgotPasswordSubmit(cleanEmail, confirmCode, password)
+      const user = await Auth.forgotPasswordSubmit(str, confirmCode, password)
         .then(async (user) => {
           console.log('forgot password successful!');
 
@@ -268,7 +265,7 @@ function LoginScreen(props) {
         <View style={styles.iconHolder}>
           <Image
             style={styles.icon}
-            source={require('../../assets/MISU.png')}
+            source={require('../../assets/MISUv2.png')}
           />
         </View>
 
@@ -433,7 +430,7 @@ const styles = StyleSheet.create({
   },
   authForm: {
     // backgroundColor: "green",
-    height: "35%",
+    height: height * 0.30,
     justifyContent: "center",
     marginTop: 0,
     marginBottom: 10,
@@ -448,7 +445,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   formInput: {
-    // backgroundColor: "red",
+    // backgroundColor: "red",,
     fontSize: 15,
     marginLeft: 20,
     height: 50,
@@ -483,7 +480,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F3F3',
     borderColor: '#D6D6D6',
     borderWidth: 1,
-    height: "20%",
+    height: height * 0.08,
     marginVertical: 8,
     alignItems: 'center',
     shadowColor: '#000',

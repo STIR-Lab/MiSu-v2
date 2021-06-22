@@ -8,6 +8,7 @@ import { listDevicesAction } from '../redux/Action/listDevicesAction';
 import { updateInvitationAction } from '../redux/Action/updateInvitationAction';
 import HomeScreen from './Application/HomeScreen';
 import GuestsScreen from './Application/GuestsScreen';
+import LoadingScreen from './LoadingScreen';
 
 const mapStateToProps = (state) => {
 	const {
@@ -41,4 +42,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GuestsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoadingScreen);
