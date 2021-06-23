@@ -54,10 +54,10 @@ function SampleDeviceList(props) {
   });
 
   useEffect(() => {
-    console.log(
-      "==SAMPLE DEVICE LIST==" +
-        JSON.stringify(props.sharedAccountsData.sharedAccounts)
-    );
+    // console.log(
+    //   "==SAMPLE DEVICE LIST==" +
+    //     JSON.stringify(props.sharedAccountsData.sharedAccounts)
+    // );
 
 
     // console.log('==SAMPLE DEVICE LIST==' + JSON.stringify(props.sharedAccs));
