@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 	header: {
 		flexDirection: "row",
 		width: "100%",
-		marginTop: 50,
+		marginTop: 0,
 		margin: 15,
 		justifyContent: "flex-start",
 		alignItems: "center"

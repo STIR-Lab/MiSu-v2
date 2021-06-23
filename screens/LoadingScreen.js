@@ -2,19 +2,44 @@ import React, {useEffect} from 'react';
 import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import { Auth } from 'aws-amplify';
 
+const AWS = require('aws-sdk');
+AWS.config.update({ region: 'us-east-1' });
+
+
 export default function LoadingScreen(props) {
+	// useEffect(() => {
+	// 	async function AuthUserLoading(){
+	// 	try {
+	// 		const user = await Auth.currentAuthenticatedUser();
+	// 		props.navigation.navigate('App', { user: user });
+	// 	} catch (err) {
+	// 		props.setGoToAuthTrue(true);
+	// 		// this.props.navigation.navigate('Auth');
+	// 	}
+	// };
+	// AuthUserLoading();
+	// });
+
 	useEffect(() => {
-		async function AuthUserLoading(){
-		try {
-			const user = await Auth.currentAuthenticatedUser();
-			props.navigation.navigate('App', { user: user });
-		} catch (err) {
-			props.setGoToAuthTrue(true);
-			// this.props.navigation.navigate('Auth');
-		}
-	};
-	AuthUserLoading();
-	});
+
+		const { idToken } = props.sessionData;
+		fetchData(idToken);
+		console.log(props);
+		if (props.hubInfoData.hub_url == '') {
+			props.navigation.navigate('GuestApp');
+		  } else {
+			props.navigation.navigate('App');
+		  }
+	}, [props.hubInfoData.hub_url]);
+	
+	async function fetchData(idToken) {
+	console.log('Fetching Data..');
+	props.getHub(idToken);
+	props.getDevices(idToken);
+	props.getSharedDevices(idToken);
+	props.getAccounts(idToken);
+	console.log('Data Fetched.');
+	}
 
 	// Shows a loading animation
 	return (
