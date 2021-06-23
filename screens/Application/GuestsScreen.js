@@ -81,9 +81,9 @@ function GuestsScreen(props) {
     setSharedAccs(props.sharedAccountsData.sharedAccounts);
     // console.log('Data Fetched.');
 
-    console.log(props);
-    console.log("== GUESTS SCREEN== " + JSON.stringify(sharedAccs));
-  }, []);
+    // console.log(props);
+    // console.log("== GUESTS SCREEN== " + JSON.stringify(sharedAccs));
+  };
 
 
 

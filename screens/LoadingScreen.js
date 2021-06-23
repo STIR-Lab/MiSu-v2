@@ -24,7 +24,7 @@ export default function LoadingScreen(props) {
 
 		const { idToken } = props.sessionData;
 		fetchData(idToken);
-		console.log(props);
+		// console.log(props);
 		if (props.hubInfoData.hub_url == '') {
 			props.navigation.navigate('GuestApp');
 		  } else {
@@ -33,12 +33,12 @@ export default function LoadingScreen(props) {
 	}, [props.hubInfoData.hub_url]);
 	
 	async function fetchData(idToken) {
-	console.log('Fetching Data..');
+	// console.log('Fetching Data..');
 	props.getHub(idToken);
 	props.getDevices(idToken);
 	props.getSharedDevices(idToken);
 	props.getAccounts(idToken);
-	console.log('Data Fetched.');
+	// console.log('Data Fetched.');
 	}
 
 	// Shows a loading animation

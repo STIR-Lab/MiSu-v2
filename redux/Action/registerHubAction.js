@@ -24,7 +24,7 @@ export const registerHubAction = (
     console.log(hub_url, hub_email, hub_password, idToken);
     try {
       dispatch(registerHubStart({ loading: true, success: null, error: null }));
-      hub_url = hub_url + '.webthings.io';
+      hub_url = hub_url;
       const hubDat = {
         hub_url,
         hub_email,
