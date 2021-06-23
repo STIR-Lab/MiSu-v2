@@ -54,10 +54,9 @@ function SampleDeviceList(props) {
   });
 
   useEffect(() => {
-    console.log(
-      "==SAMPLE DEVICE LIST==" +
-        JSON.stringify(props.sharedAccountsData.sharedAccounts)
-    );
+    // console.log(
+    //   "==SAMPLE DEVICE LIST==" + JSON.stringify(props.sharedAccountsData)
+    // );
 
     if (props.screen == "Guests") setScreen("Guests");
     else if (props.screen == "Devices") setScreen("Devices");
@@ -201,8 +200,16 @@ function SampleDeviceList(props) {
           onChangeText={(text) => setGuestEmail(text)}
         />
         <TouchableOpacity
-          onPress={() =>
-            props.Share(props.idToken, guestEmail, null, null, null)
+          onPress={
+            () =>
+              props.Share(
+                props.sessionData.idToken,
+                guestEmail,
+                { "title:": "Trash Device", description: "Test Desc" },
+                [{ time_range: 0 }],
+                null
+              )
+            //Share(idToken, guestEmail, device, shareProperties, shareOptions)
           }
         >
           <View style={styles.submitButton}>

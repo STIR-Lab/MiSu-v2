@@ -106,12 +106,16 @@ function GuestsScreen(props) {
         </View>
         {/* <Text>{searchParam}</Text> */}
         <ScrollView style={styles.cardContainer}>
-          <DeviceInfoCard
-            title={"Sam Smith"}
-            type={"GuestCard"}
-            sharedAccs={sharedAccs}
-            navigation={props.navigation}
-          />
+          {props.sharedAccountsData.sharedAccounts &&
+            props.sharedAccountsData.sharedAccounts.map((entry, i) => (
+              <DeviceInfoCard
+                key={i}
+                title={entry.name}
+                type={"GuestCard"}
+                sharedAccs={sharedAccs}
+                navigation={props.navigation}
+              />
+            ))}
         </ScrollView>
         {modal}
       </View>

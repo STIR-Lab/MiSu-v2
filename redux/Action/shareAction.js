@@ -33,22 +33,35 @@ export const shareAction = (
   options
 ) => {
   return async (dispatch) => {
-    console.log("Entered sharing action");
+    console.log(
+      "Entered sharing action: ",
+      idToken,
+      email,
+      device,
+      accounts,
+      properties,
+      options
+    );
     if (properties == null) {
       console.log("Properties cannot be null");
-      return;
+      // return;
     }
 
     dispatch(shareStart({ loading: true }));
 
-    //check  if email exist
-
+    // Checks if user exists, returns:
+    //      message = 0: user does not exist
+    //      message = 1: user exists
     const { message } = await checkUserExists(idToken, email);
+    console.log(message);
 
     if (message == 1) {
       const account = accounts.find((account) => account.guest_email == email);
 
       if (!account) {
+        // Creates user of some kind? returns:
+        //      400 response: if SECONDARY user account cannot be found
+        //      500 error: when tested in postman on various accounts
         const data = await createSharedUser(idToken, email);
 
         const account = {
@@ -63,19 +76,19 @@ export const shareAction = (
 
         device.id = des.message;
 
-        await Promise.all(
-          properties.map(
-            async (prop) =>
-              await createProperty(
-                idToken,
-                account.login_credentials_id,
-                device.id,
-                prop,
-                options
-              )
-          )
-        );
-
+        // await Promise.all(
+        //   properties.map(
+        //     async (prop) =>
+        //       await createProperty(
+        //         idToken,
+        //         account.login_credentials_id,
+        //         device.id,
+        //         prop,
+        //         options
+        //       )
+        //   )
+        // );
+        console.log("Sent Share Request");
         showToast("Sent share request");
         dispatch(getSharedAccountsAction(idToken));
         dispatch(getSharedDevicesAction(idToken));
@@ -155,6 +168,7 @@ export const shareAction = (
         dispatch(shareSucess({ loading: false, success: true }));
       }
     } else {
+      console.log("User not found... Cancelling sharing");
       showToast("User not found... Cancelling sharing");
       dispatch(shareFailed({ loading: false, success: false }));
     }
