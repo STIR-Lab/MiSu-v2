@@ -8,11 +8,15 @@ import {
   Image,
   StyleSheet,
   Switch,
+  Button
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import DeviceCard from '../../components/cards/DeviceCard';
 import appStyle from '../../styles/AppStyle';
+
+// importing set schedule card from ./cards
+import SetScheduleCard from '../../components/cards/SetScheduleCard';
 
 class DeviceProps extends React.Component {
   // static navigationOptions = ({ navigate, navigation }) => ({
@@ -90,7 +94,7 @@ class DeviceProps extends React.Component {
                         fontSize: 16,
                       }}
                     >
-                      {this.props.route.params.account.name}
+                      //this.props.route.params.account.name}
                     </Text>
                   </View>
                 </View>
@@ -115,18 +119,14 @@ class DeviceProps extends React.Component {
                   </View>
                 </View>
               </View>
+              {// Set Schedule Card imported}
+  }
               <View style={propstyle.column}>
                 <Text style={{ fontSize: 26, fontWeight: 'bold' }}>
                   Set Schedule
                 </Text>
-                <View
-                  style={{
-                    height: 150,
-                    marginTop: 10,
-                    backgroundColor: 'white',
-                    borderRadius: 10,
-                  }}
-                ></View>
+                <SetScheduleCard/>
+
                 <Text
                   style={{ marginTop: 20, fontSize: 26, fontWeight: 'bold' }}
                 >
