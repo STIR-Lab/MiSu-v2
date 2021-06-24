@@ -1,8 +1,27 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-
+import React, {setState, useState} from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import Icon from "react-native-vector-icons/Feather";
+import Modal from "react-native-modal";
 const Header = ({title}) => 
 {
+    const [toggled, setToggled] = useState(false);
+
+    const toggleBell =() => {
+        setToggled(!toggled)
+    }
+
+    let notificationsModal = (
+        <Modal backgroundColor={'red'}
+        visible={toggled}
+        onBackdropPress={() => toggleBell}>
+            <View >
+                <Text>
+                    Meow
+                </Text>
+            </View>
+        </Modal>
+    );
+    
     return (
         <View style={styles.header}>
             <View style={styles.image}>
@@ -17,9 +36,17 @@ const Header = ({title}) =>
                     {title}
                 </Text>
             </View>
+            <TouchableOpacity onPress={toggleBell}  style={styles.bell}>
+                    <Icon  name="bell" size={38}/>  
+                
+            </TouchableOpacity>
+            {notificationsModal}
 
         </View>
     )
+
+
+    
 }
 
 
@@ -63,6 +90,13 @@ const styles = StyleSheet.create({
        bottom: -15
       
     
+    }
+    ,
+    bell: {
+        position: "absolute",
+        right: 10, 
+        top: -20,
+
     }
     
 })
