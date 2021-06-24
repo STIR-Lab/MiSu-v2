@@ -313,16 +313,5 @@ const styles = StyleSheet.create({
 
 
 
-const mapStateToProps = (state) => {
-	const { hubInfoData, sessionData, sharedAccountsData, registerData } = state;
-	return { hubInfoData, sessionData, sharedAccountsData, registerData };
-};
-
-const mapDispatchToProps = (dispatch) => {
-	return {
-		register: (data, idToken) => dispatch(registerHubAction(data, idToken)),
-		getHub: (idToken) => dispatch(getHubInfoAction(idToken))
-	};
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(GuestsScreen);
