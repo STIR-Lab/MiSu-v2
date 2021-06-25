@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   Text,
+  TextInput,
   ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
@@ -16,6 +17,7 @@ import appStyle from "../../styles/AppStyle";
 import DeviceInfoCard from "../../components/cards/DeviceInfoCard";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Feather";
+//import { shareAction } from "../../../redux/Action/shareAction";
 
 // AWS Config
 
@@ -26,12 +28,18 @@ import Icon from "react-native-vector-icons/Feather";
 function GuestsScreen(props) {
   const [searchParam, setSearchParam] = useState("");
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisible2, setIsVisible2] = useState(false);
   const [sharedAccs, setSharedAccs] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [guestEmail, setGuestEmail] = useState("");
 
   openModal = () => {
     setIsVisible(!isVisible);
   };
+
+  openModal2 = () => {
+    setIsVisible2(!isVisible2);
+  }
   // console.log(props);
 
   // =========================================================================
@@ -72,6 +80,19 @@ function GuestsScreen(props) {
     // console.log('== GUESTS SCREEN== ' + JSON.stringify(sharedAccs));
   }, []);
 
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      ModifyAccess: (title, value) => {
+        dispatch(ModifyAccessStateAction(title, value));
+      },
+      Share: (idToken, email, device, accounts, properties, options) => {
+        dispatch(
+          shareAction(idToken, email, device, accounts, properties, options)
+        );
+      },
+    };
+  };
+ 
   async function fetchData(idToken) {
     // console.log('Fetching Data..');
     // props.getHub(idToken);
@@ -99,12 +120,58 @@ function GuestsScreen(props) {
     </Modal>
   );
 
+  let modal2 = (
+    <Modal
+      visible={isVisible2}
+      transparent={true}
+      onBackdropPress={() => setIsVisible2(false)}
+    >
+      <View style={styles.addGuestmodal}>
+        <View style={styles.addGuestHeader}>
+          <Icon name="users" type="feather" color="black" size={25} />
+          <Text style={{ marginLeft: 10, fontSize: 20 }}>Add New Guest</Text>
+        </View>
+        <Text
+          style={{
+            fontWeight: "bold",
+            textAlign: "center",
+            justifyContent: "center",
+          }}
+        >
+          Send a request to your guest to have them share your home!
+        </Text>
+        <TextInput
+          style={styles.input}
+          placeholder={"Guest Email"}
+          onChangeText={(text) => setGuestEmail(text)}
+        />
+        <TouchableOpacity
+          
+         >
+          <View style={styles.submitButton}>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 22,
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
+              Send Request
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </Modal>
+  );
+
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={appStyle.container}>
         <View style={styles.header}>
           <SearchBar setSearchParam={setSearchParam} screen={"Guests"} />
-          <TouchableOpacity style={styles.button} onPress={() => openModal()}>
+          <TouchableOpacity style={styles.button} onPress={() => openModal2()}>
             <Icon name="user-plus" size={30} style={{ color: "#44ABFF" }} />
             <View style={styles.addGuest}>
               <Text style={{ textAlign: "center" }}>Add Guest</Text>
@@ -113,18 +180,57 @@ function GuestsScreen(props) {
         </View>
         {/* <Text>{searchParam}</Text> */}
         <ScrollView style={styles.cardContainer}>
-          <DeviceInfoCard
-            title={"Sam Smith"}
-            type={"GuestCard"}
-            sharedAccs={sharedAccs}
-            navigation={props.navigation}
-          />
+          {props.sharedAccountsData.sharedAccounts &&
+            props.sharedAccountsData.sharedAccounts.map((entry, i) => (
+              <DeviceInfoCard
+                key={i}
+                title={entry.name}
+                type={"GuestCard"}
+                sharedAccs={sharedAccs}
+                navigation={props.navigation}
+              />
+            ))}
         </ScrollView>
         {modal}
+        {modal2}
       </View>
     </TouchableWithoutFeedback>
   );
+
+
+  
 }
+
+const mapStateToProps = (state) => {
+  const {
+    devicesData,
+    sharedAccountsData,
+    sessionData,
+    shareState,
+    AccessState,
+  } = state;
+  return {
+    devicesData,
+    sharedAccountsData,
+    sessionData,
+    shareState,
+    AccessState,
+  };
+};
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    ModifyAccess: (title, value) => {
+      dispatch(ModifyAccessStateAction(title, value));
+    },
+    Share: (idToken, email, device, accounts, properties, options) => {
+      dispatch(
+        shareAction(idToken, email, device, accounts, properties, options)
+      );
+    },
+  };
+};
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -166,19 +272,50 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: 5,
   },
+
+  addGuestmodal: {
+    backgroundColor: "#F1F1F1",
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 10,
+    width: 300,
+    height: 300,
+    alignSelf: "center",
+    alignItems: "center",
+  },
+
+  addGuestHeader: {
+    marginTop: 25,
+    marginBottom: 15,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+
+  input: {
+    borderRadius: 10,
+    borderColor: "black",
+    borderWidth: 0.5,
+    backgroundColor: "#F4F4F4",
+    alignSelf: "stretch",
+    paddingLeft: 20,
+    height: 48,
+    fontSize: 16,
+    marginTop: 21,
+    marginHorizontal: 20,
+  },
+
+  submitButton: {
+    marginTop: 35,
+    backgroundColor: "#289EFF",
+    borderRadius: 10,
+    width: 200,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
 
 
-const mapStateToProps = (state) => {
-	const { hubInfoData, sessionData, sharedAccountsData, registerData } = state;
-	return { hubInfoData, sessionData, sharedAccountsData, registerData };
-};
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		register: (data, idToken) => dispatch(registerHubAction(data, idToken)),
-		getHub: (idToken) => dispatch(getHubInfoAction(idToken))
-	};
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(GuestsScreen);
