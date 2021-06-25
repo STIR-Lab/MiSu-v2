@@ -44,7 +44,6 @@ export const shareAction = (
     );
     if (properties == null) {
       console.log("Properties cannot be null");
-      // return;
     }
 
     dispatch(shareStart({ loading: true }));
@@ -76,18 +75,18 @@ export const shareAction = (
 
         device.id = des.message;
 
-        // await Promise.all(
-        //   properties.map(
-        //     async (prop) =>
-        //       await createProperty(
-        //         idToken,
-        //         account.login_credentials_id,
-        //         device.id,
-        //         prop,
-        //         options
-        //       )
-        //   )
-        // );
+        await Promise.all(
+          properties.map(
+            async (prop) =>
+              await createProperty(
+                idToken,
+                account.login_credentials_id,
+                device.id,
+                prop,
+                options
+              )
+          )
+        );
         console.log("Sent Share Request");
         showToast("Sent share request");
         dispatch(getSharedAccountsAction(idToken));

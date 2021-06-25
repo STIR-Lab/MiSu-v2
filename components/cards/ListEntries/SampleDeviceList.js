@@ -54,9 +54,9 @@ function SampleDeviceList(props) {
   });
 
   useEffect(() => {
-    // console.log(
-    //   "==SAMPLE DEVICE LIST==" + JSON.stringify(props.sharedAccountsData)
-    // );
+    console.log(
+      "==SAMPLE DEVICE LIST==" + JSON.stringify(props.sharedAccountsData)
+    );
 
     if (props.screen == "Guests") setScreen("Guests");
     else if (props.screen == "Devices") setScreen("Devices");
@@ -74,7 +74,10 @@ function SampleDeviceList(props) {
   };
 
   const propsClick = () => {
-    if (selected == null) return;
+    if (selected == null) {
+      console.log("Selected cannot be null");
+      return;
+    }
     props.navigation.navigate("Properties", {
       account: selected,
     });
@@ -201,14 +204,16 @@ function SampleDeviceList(props) {
         />
         <TouchableOpacity
           onPress={
-            () =>
+            () => {
               props.Share(
                 props.sessionData.idToken,
                 guestEmail,
                 { "title:": "Trash Device", description: "Test Desc" },
-                [{ time_range: 0 }],
+                [{ access: 1 }],
                 null
-              )
+              ),
+                setIsVisible2(false);
+            }
             //Share(idToken, guestEmail, device, shareProperties, shareOptions)
           }
         >
