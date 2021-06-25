@@ -21,6 +21,7 @@ function SampleDeviceList(props) {
   const [screen, setScreen] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [isVisible2, setIsVisible2] = useState(false);
+  const [isVisibleDevices, setIsVisibleDevices] = useState(false);
   const [selected, setSelected] = useState(null);
   const [sharedAccs, setSharedAccs] = useState(null);
   const [guestEmail, setGuestEmail] = useState("");
@@ -54,19 +55,29 @@ function SampleDeviceList(props) {
   });
 
   useEffect(() => {
-    console.log(
-      "==SAMPLE DEVICE LIST==" + JSON.stringify(props.sharedAccountsData)
-    );
+    // console.log(
+    //   "==SAMPLE DEVICE LIST==" +
+    //     JSON.stringify(props.sharedAccountsData.sharedAccounts)
+    // );
 
-    if (props.screen == "Guests") setScreen("Guests");
-    else if (props.screen == "Devices") setScreen("Devices");
-    else console.log("Invalid screen prop passed.");
+
+    // console.log('==SAMPLE DEVICE LIST==' + JSON.stringify(props.sharedAccs));
+
+    if (props.screen == 'Guests') setScreen('Guests');
+    else if (props.screen == 'Devices') setScreen('Devices');
+    else console.log('Invalid screen prop passed.');
+
+
   });
 
   const openModal = () => {
     // setSelected(false);
     setIsVisible(!isVisible);
   };
+
+  const openModalDevices = () => {
+    setIsVisibleDevices(!isVisibleDevices);
+  }
 
   const handleClick = () => {
     setIsVisible(false);
@@ -86,7 +97,7 @@ function SampleDeviceList(props) {
   let addButton = (
     <View style={styles.iconAndName}>
       <TouchableOpacity
-        onPress={() => openModal()}
+        onPress={() => screen == "Devices" ? openModal() : openModalDevices() }
         style={screen == "Devices" ? styles.addGuest : styles.addDevice}
       >
         <Icon name="plus" type="font-awesome" color="#FFFFFF" size={38} />
@@ -177,6 +188,72 @@ function SampleDeviceList(props) {
     </Modal>
   );
 
+
+  let modalDevices = (
+    <Modal
+      visible={isVisibleDevices}
+      transparent={true}
+      onBackdropPress={() => setIsVisibleDevices(false)}
+    >
+      <View style={styles.modal}>
+        <View style={styles.topGuestModal}>
+          <Icon name="codesandbox" type="feather" color="black" />
+          <Text style={{ marginLeft: 10, fontSize: 20 }}>Add Device</Text>
+        </View>
+
+        {props.sharedAccountsData.sharedAccounts &&
+          props.sharedAccountsData.sharedAccounts.map((entry, i) => (
+            <View key={i} style={styles.cardCon}>
+              <TouchableOpacity onPress={() => setSelected(entry)}>
+                <View
+                  style={{
+                    paddingLeft: 10,
+                    paddingVertical: 6,
+                    flexDirection: "row",
+                    borderRadius: 10,
+                    elevation: selected == entry ? 2 : 0,
+                    backgroundColor: selected == entry ? "white" : "#F1F1F1",
+                  }}
+                >
+                  <Image source={require("../../../assets/people.png")} />
+                  <Text style={styles.cardText}>{entry.name}</Text>
+                </View>
+              </TouchableOpacity>
+              <View style={styles.seperator}></View>
+            </View>
+          ))}
+
+    
+        <View style={{ flex: 1, marginBottom: 30, justifyContent: "flex-end" }}>
+          <TouchableOpacity onPress={() => propsClick()}>
+            <View
+              style={{
+                marginTop: 35,
+                backgroundColor: "#289EFF",
+                borderRadius: 10,
+                width: 150,
+                height: 40,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 22,
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                Add Device
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
+
   let modal2 = (
     <Modal
       visible={isVisible2}
@@ -247,6 +324,7 @@ function SampleDeviceList(props) {
       {addButton}
       {modal}
       {modal2}
+      {modalDevices}
     </View>
   );
 }
