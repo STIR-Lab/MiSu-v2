@@ -1,5 +1,5 @@
-import { Route53 } from 'aws-sdk';
-import React from 'react';
+import { Route53 } from "aws-sdk";
+import React from "react";
 import {
   ScrollView,
   TouchableOpacity,
@@ -8,15 +8,15 @@ import {
   Image,
   StyleSheet,
   Switch,
-  Button
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { connect } from 'react-redux';
-import DeviceCard from '../../components/cards/DeviceCard';
-import appStyle from '../../styles/AppStyle';
+  Button,
+} from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { connect } from "react-redux";
+import DeviceCard from "../../components/cards/DeviceCard";
+import appStyle from "../../styles/AppStyle";
 
 // importing set schedule card from ./cards
-import SetScheduleCard from '../../components/cards/SetScheduleCard';
+import SetScheduleCard from "../../components/cards/SetScheduleCard";
 
 class DeviceProps extends React.Component {
   // static navigationOptions = ({ navigate, navigation }) => ({
@@ -69,7 +69,7 @@ class DeviceProps extends React.Component {
           <View style={appStyle.cardContainer}>
             <View>
               <TouchableOpacity
-                style={{ alignSelf: 'flex-start', marginTop: 16 }}
+                style={{ alignSelf: "flex-start", marginTop: 16 }}
                 onPress={() => {
                   this.props.navigation.pop();
                 }}
@@ -85,50 +85,51 @@ class DeviceProps extends React.Component {
               <View style={appStyle.row}>
                 <View style={propstyle.card}>
                   <View style={appStyle.row}>
-                    <Image source={require('../../assets/people.png')} />
+                    <Image source={require("../../assets/people.png")} />
                     <Text
                       style={{
                         paddingLeft: 10,
                         paddingRight: 10,
-                        alignSelf: 'center',
+                        alignSelf: "center",
                         fontSize: 16,
                       }}
                     >
-                      //this.props.route.params.account.name}
+                      {this.props.route.params.account.name}
                     </Text>
                   </View>
                 </View>
                 <View style={propstyle.devicecard}>
                   <View style={appStyle.row}>
                     <Image
-                      style={{ marginLeft: 10, alignSelf: 'center' }}
-                      source={require('../../assets/zap.png')}
+                      style={{ marginLeft: 10, alignSelf: "center" }}
+                      source={require("../../assets/zap.png")}
                     />
                     <Text
                       style={{
                         paddingLeft: 10,
                         paddingRight: 10,
-                        alignSelf: 'center',
+                        alignSelf: "center",
                         fontSize: 13,
-                        fontWeight: 'bold',
-                        color: 'white',
+                        fontWeight: "bold",
+                        color: "white",
                       }}
                     >
-                      Sengled{'\n'}Lightbulb
+                      Sengled{"\n"}Lightbulb
                     </Text>
                   </View>
                 </View>
               </View>
-              {// Set Schedule Card imported}
-  }
+              {
+                // Set Schedule Card imported}
+              }
               <View style={propstyle.column}>
-                <Text style={{ fontSize: 26, fontWeight: 'bold' }}>
+                <Text style={{ fontSize: 26, fontWeight: "bold" }}>
                   Set Schedule
                 </Text>
-                <SetScheduleCard/>
+                <SetScheduleCard />
 
                 <Text
-                  style={{ marginTop: 20, fontSize: 26, fontWeight: 'bold' }}
+                  style={{ marginTop: 20, fontSize: 26, fontWeight: "bold" }}
                 >
                   Set Actions
                 </Text>
@@ -137,9 +138,9 @@ class DeviceProps extends React.Component {
                   style={{
                     marginTop: 10,
                     paddingBottom: 0,
-                    flexDirection: 'row',
-                    alignSelf: 'stretch',
-                    justifyContent: 'space-between',
+                    flexDirection: "row",
+                    alignSelf: "stretch",
+                    justifyContent: "space-between",
                   }}
                 >
                   <Text style={{ fontSize: 20 }}>On/Off</Text>
@@ -147,7 +148,7 @@ class DeviceProps extends React.Component {
                     style={{
                       transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
                     }}
-                    trackColor={{ true: '#2DC62A', false: '#FF5D53' }}
+                    trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
                     onValueChange={(x) => {}}
                   />
                 </View>
@@ -155,9 +156,9 @@ class DeviceProps extends React.Component {
                   style={{
                     marginTop: 20,
                     paddingBottom: 0,
-                    flexDirection: 'row',
-                    alignSelf: 'stretch',
-                    justifyContent: 'space-between',
+                    flexDirection: "row",
+                    alignSelf: "stretch",
+                    justifyContent: "space-between",
                   }}
                 >
                   <Text style={{ fontSize: 20 }}>Brightness</Text>
@@ -165,7 +166,7 @@ class DeviceProps extends React.Component {
                     style={{
                       transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
                     }}
-                    trackColor={{ true: '#2DC62A', false: '#FF5D53' }}
+                    trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
                     onValueChange={(x) => {}}
                   />
                 </View>
@@ -173,9 +174,9 @@ class DeviceProps extends React.Component {
                   style={{
                     marginTop: 20,
                     paddingBottom: 0,
-                    flexDirection: 'row',
-                    alignSelf: 'stretch',
-                    justifyContent: 'space-between',
+                    flexDirection: "row",
+                    alignSelf: "stretch",
+                    justifyContent: "space-between",
                   }}
                 >
                   <Text style={{ fontSize: 20 }}>Color</Text>
@@ -183,12 +184,12 @@ class DeviceProps extends React.Component {
                     style={{
                       transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
                     }}
-                    trackColor={{ true: '#2DC62A', false: '#FF5D53' }}
+                    trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
                     onValueChange={(x) => {}}
                   />
                 </View>
                 <Text
-                  style={{ marginTop: 20, fontSize: 26, fontWeight: 'bold' }}
+                  style={{ marginTop: 20, fontSize: 26, fontWeight: "bold" }}
                 >
                   Set Geofencing
                 </Text>
@@ -197,16 +198,16 @@ class DeviceProps extends React.Component {
                   style={{
                     marginTop: 20,
                     paddingBottom: 0,
-                    flexDirection: 'row',
-                    alignSelf: 'stretch',
-                    justifyContent: 'space-between',
+                    flexDirection: "row",
+                    alignSelf: "stretch",
+                    justifyContent: "space-between",
                   }}
                 >
                   <Switch
                     style={{
                       transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
                     }}
-                    trackColor={{ true: '#2DC62A', false: '#FF5D53' }}
+                    trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
                     onValueChange={(x) => {}}
                   />
                 </View>
@@ -221,13 +222,13 @@ class DeviceProps extends React.Component {
 
 const propstyle = StyleSheet.create({
   card: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    backgroundColor: '#FFFFFF',
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "stretch",
+    backgroundColor: "#FFFFFF",
 
     borderRadius: 35,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
@@ -235,7 +236,7 @@ const propstyle = StyleSheet.create({
     shadowOpacity: 10,
     shadowRadius: 20.41,
     borderBottomWidth: 3,
-    borderBottomColor: '#a8a8a8',
+    borderBottomColor: "#a8a8a8",
     elevation: 4,
 
     paddingTop: 5,
@@ -246,13 +247,13 @@ const propstyle = StyleSheet.create({
     marginRight: 50,
   },
   devicecard: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    backgroundColor: '#44ABFF',
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "stretch",
+    backgroundColor: "#44ABFF",
 
     borderRadius: 35,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
@@ -260,7 +261,7 @@ const propstyle = StyleSheet.create({
     shadowOpacity: 10,
     shadowRadius: 20.41,
     borderBottomWidth: 3,
-    borderBottomColor: '#a8a8a8',
+    borderBottomColor: "#a8a8a8",
     elevation: 4,
 
     paddingTop: 5,
@@ -274,16 +275,16 @@ const propstyle = StyleSheet.create({
     margin: 2,
     marginTop: 40,
     paddingBottom: 0,
-    flexDirection: 'column',
-    alignSelf: 'stretch',
+    flexDirection: "column",
+    alignSelf: "stretch",
   },
   lineContainer: {
     flex: 1,
-    backgroundColor: '#333333',
+    backgroundColor: "#333333",
     height: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'stretch',
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "stretch",
   },
 });
 

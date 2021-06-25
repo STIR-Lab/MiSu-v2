@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import SearchBar from "../../components/SearchBar";
 import { getHubInfoAction } from "../../redux/Action/getHubInfoAction";
 import { registerHubAction } from "../../redux/Action/registerHubAction";
+import { shareAction } from "../../redux/Action/shareAction";
 import appStyle from "../../styles/AppStyle";
 import DeviceInfoCard from "../../components/cards/DeviceInfoCard";
 import Modal from "react-native-modal";
@@ -23,7 +24,6 @@ import Icon from "react-native-vector-icons/Feather";
 
 // const AWS = require('aws-sdk');
 // AWS.config.update({ region: 'us-east-1' });
-
 
 function GuestsScreen(props) {
   const [searchParam, setSearchParam] = useState("");
@@ -39,7 +39,7 @@ function GuestsScreen(props) {
 
   openModal2 = () => {
     setIsVisible2(!isVisible2);
-  }
+  };
   // console.log(props);
 
   // =========================================================================
@@ -92,7 +92,7 @@ function GuestsScreen(props) {
       },
     };
   };
- 
+
   async function fetchData(idToken) {
     // console.log('Fetching Data..');
     // props.getHub(idToken);
@@ -104,9 +104,7 @@ function GuestsScreen(props) {
 
     // console.log(props);
     // console.log("== GUESTS SCREEN== " + JSON.stringify(sharedAccs));
-  };
-
-
+  }
 
   let modal = (
     <Modal
@@ -146,8 +144,17 @@ function GuestsScreen(props) {
           onChangeText={(text) => setGuestEmail(text)}
         />
         <TouchableOpacity
-          
-         >
+          onPress={() => {
+            props.Share(
+              props.sessionData.idToken,
+              guestEmail,
+              { "title:": "Trash Device", description: "Test Desc" },
+              [{ access: 1 }],
+              null
+            ),
+              setIsVisible2(false);
+          }}
+        >
           <View style={styles.submitButton}>
             <Text
               style={{
@@ -164,7 +171,6 @@ function GuestsScreen(props) {
       </View>
     </Modal>
   );
-
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -196,9 +202,6 @@ function GuestsScreen(props) {
       </View>
     </TouchableWithoutFeedback>
   );
-
-
-  
 }
 
 const mapStateToProps = (state) => {
@@ -217,7 +220,6 @@ const mapStateToProps = (state) => {
     AccessState,
   };
 };
-
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -314,8 +316,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(GuestsScreen);
