@@ -50,7 +50,7 @@ export const createHub = async ({
   //   hub_url: hub_url,
   //   hub_email: hub_email,
   //   hub_password: hub_password}))
-  const response = await fetch('https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/updatehubinfo', {
+  return await fetch('https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/updatehubinfo', {
     method: 'POST',
     headers: 
     {
@@ -62,9 +62,11 @@ export const createHub = async ({
       hub_email: hub_email,
       hub_password: hub_password
   })
+}).then(response => response.json())
+  .then(data => {
+    // console.log(data);
+    return data;
 }).catch(err => console.log(err));
-  console.log("finished")
-  return  response.json()
 }
 
 export const createSharedUser = async (idToken, email) => {
