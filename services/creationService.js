@@ -1,4 +1,4 @@
-import Moment from 'moment';
+import Moment from "moment";
 
 export const createADevice = async (
   account,
@@ -6,11 +6,13 @@ export const createADevice = async (
   { title, description }
 ) => {
   const response = await fetch(
-    'https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/device',
+    "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/device",
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Authorization: 'Bearer ' + idToken,
+        Authorization: "Bearer " + idToken,
+        "Content-type": "application/json",
+        Accept: "*/*",
       },
       body: JSON.stringify({
         account: account.login_credentials_id,
@@ -25,11 +27,13 @@ export const createADevice = async (
 
 export const checkUserExists = async (idToken, email) => {
   const response = await fetch(
-    'https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/checkuserexists',
+    "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/checkuserexists",
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Authorization: 'Bearer ' + idToken,
+        Authorization: "Bearer " + idToken,
+        "Content-type": "application/json",
+        Accept: "*/*",
       },
       body: JSON.stringify({
         // TODO: Have the email come from user input
@@ -37,19 +41,20 @@ export const checkUserExists = async (idToken, email) => {
       }),
     }
   );
+  console.log(response);
   return response.json();
 };
 
-export const createHub = async ({ 
-  hub_url,
-  hub_email,
-  hub_password
-},idToken) => {
+export const createHub = async (
+  { hub_url, hub_email, hub_password },
+  idToken
+) => {
   // console.log('Bearer ' + idToken)
   // console.log(JSON.stringify({
   //   hub_url: hub_url,
   //   hub_email: hub_email,
   //   hub_password: hub_password}))
+
   return await fetch('https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/updatehubinfo', {
     method: 'POST',
     headers: 
@@ -70,12 +75,14 @@ export const createHub = async ({
 }
 
 export const createSharedUser = async (idToken, email) => {
-  const response = await await fetch(
-    'https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/createshareduser',
+  const response = await fetch(
+    "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/createshareduser",
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Authorization: 'Bearer ' + idToken,
+        Authorization: "Bearer " + idToken,
+        "Content-type": "application/json",
+        Accept: "*/*",
       },
       // TODO: Change this to user input
       body: JSON.stringify({
@@ -90,11 +97,11 @@ export const createSharedUser = async (idToken, email) => {
 // Sends a command to a hub
 export const useSharedDevice = async (account, device, property) => {
   const response = await fetch(
-    'https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/usedevice',
+    "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/usedevice",
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Authorization: 'Bearer ' + this.props.appData.idToken,
+        Authorization: "Bearer " + this.props.appData.idToken,
       },
       body: JSON.stringify({
         account: account.login_credentials_id,
@@ -114,28 +121,28 @@ export const createProperty = async (
   property,
   options
 ) => {
-  var days = '';
-  var scheduledEndDate = '';
-  var scheduledStartDate = '';
-  var scheduledEndTime = '';
-  var scheduledStartTime = '';
-  var tempDate = '';
-  var tempTime = '';
+  var days = "";
+  var scheduledEndDate = "";
+  var scheduledStartDate = "";
+  var scheduledEndTime = "";
+  var scheduledStartTime = "";
+  var tempDate = "";
+  var tempTime = "";
 
   // check if we've selected Temporary
   if (options.selection == 0) {
-    tempDate = Moment(options.tempDate).format('MM/DD/YY');
-    tempTime = Moment(options.tempDate).format('HH:mm');
+    tempDate = Moment(options.tempDate).format("MM/DD/YY");
+    tempTime = Moment(options.tempDate).format("HH:mm");
   }
   // check if we've selected Scheduled
   if (options.selection == 1) {
     // Get dates MM/DD/YY
-    scheduledStartDate = Moment(options.scheduledStartDate).format('MM/DD/YY');
-    scheduledEndDate = Moment(options.scheduledEndDate).format('MM/DD/YY');
+    scheduledStartDate = Moment(options.scheduledStartDate).format("MM/DD/YY");
+    scheduledEndDate = Moment(options.scheduledEndDate).format("MM/DD/YY");
 
     // Get times MM:HH
-    scheduledStartTime = Moment(options.scheduledStartDate).format('HH:mm');
-    scheduledEndTime = Moment(options.scheduledEndDate).format('HH:mm');
+    scheduledStartTime = Moment(options.scheduledStartDate).format("HH:mm");
+    scheduledEndTime = Moment(options.scheduledEndDate).format("HH:mm");
 
     // Sort options days
     options.scheduledDays.sort((a, b) => a - b);
@@ -143,19 +150,19 @@ export const createProperty = async (
     // Build the string for days
     for (var i = 0; i < options.scheduledDays.length; i++) {
       if (options.scheduledDays[i] == 0) {
-        days += 'Mon';
+        days += "Mon";
       } else if (options.scheduledDays[i] == 1) {
-        days += 'Tue';
+        days += "Tue";
       } else if (options.scheduledDays[i] == 2) {
-        days += 'Wed';
+        days += "Wed";
       } else if (options.scheduledDays[i] == 3) {
-        days += 'Thu';
+        days += "Thu";
       } else if (options.scheduledDays[i] == 4) {
-        days += 'Fri';
+        days += "Fri";
       } else if (options.scheduledDays[i] == 5) {
-        days += 'Sat';
+        days += "Sat";
       } else if (options.scheduledDays[i] == 6) {
-        days += 'Sun';
+        days += "Sun";
       }
       // Days of the week follow format ddd, so the full week would be: MonTueWedThuFriSatSun
     }
@@ -163,21 +170,21 @@ export const createProperty = async (
 
   // Check if marked as No Access
   if (property.access == 0)
-    return 'Cant create not allow property ' + property.access;
+    return "Cant create not allow property " + property.access;
 
   const response = await fetch(
-    'https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/property',
+    "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/property",
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Authorization: 'Bearer ' + idToken,
+        Authorization: "Bearer " + idToken,
       },
       body: JSON.stringify({
         account: accountId,
         device: deviceId,
-        name: property.title + '',
-        type: property.type + '',
-        path: property.links[0].href + '',
+        name: property.title + "",
+        type: property.type + "",
+        path: property.links[0].href + "",
         read_only: property.access == 2 ? 0 : 1,
 
         // Unrestricted access is if the options we selected is 2
@@ -185,7 +192,7 @@ export const createProperty = async (
 
         // Temporary access is if the options we selected is 0
         temporary: options.selection == 0 ? 1 : 0,
-        temp_time_range_start: '00:00', // Make sure to follow HH:MM 24-hour format for the time range
+        temp_time_range_start: "00:00", // Make sure to follow HH:MM 24-hour format for the time range
         temp_time_range_end: tempTime,
         temp_date: tempDate, // Dates should be of format MM/DD/YY
 

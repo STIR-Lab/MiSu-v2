@@ -1,6 +1,6 @@
 import Amplify from '@aws-amplify/core';
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StatusBar } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 // import { createStackNavigator } from 'react-navigation-stack';
 // ************************************************ */
@@ -334,6 +334,7 @@ export default function App(props) {
   return (
     <Provider store={store}>
       <View style={{ flex: 1 }}>
+      <StatusBar translucent backgroundColor="transparent" />
         <Spinner
           visible={loading}
           textContent={'Loading...'}
