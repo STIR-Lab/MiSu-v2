@@ -315,10 +315,15 @@ function SampleDeviceList(props) {
     <View style={styles.container} transparent={true}>
       {deviceList.devices.map((d) => (
         <View style={styles.iconAndName} key={d.id}>
+          {screen === "Devices" ?
           <GuestElement
             deviceName={d.deviceName}
             navigation={props.navigation}
-          />
+          /> :
+          <DeviceElement
+            deviceName={d.deviceName}
+            navigation={props.navigation}
+          />}
         </View>
       ))}
       {addButton}

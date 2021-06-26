@@ -37,6 +37,8 @@ import RegisterScreen from './screens/Authentication/RegisterScreen';
 import LoadingScreen from './screens/index';
 import DevicesScreen from './screens/Application/DevicesScreen';
 import GuestsScreen from './screens/Application/GuestsScreen';
+import YourHubsScreen from './screens/Application/YourHubsScreen';
+
 // import HomeScreen from './screens/index';
 
 
@@ -96,6 +98,30 @@ function HomeStack() {
         options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Properties"/> }}
       />
     </HomeNav.Navigator>
+  );
+}
+
+const HomeGuestNav = createStackNavigator();
+
+function HomeGuestStack() {
+  return (
+    <HomeGuestNav.Navigator>
+      <HomeGuestNav.Screen
+        name="Home"
+        component={YourHubsScreen}
+        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Your Hubs"/>}}
+      />
+      {/* <HomeNav.Screen
+        name="Device"
+        component={DeviceScreen}
+        options={{ headerShown: false }}
+      /> */}
+      <HomeGuestNav.Screen
+        name="Properties"
+        component={DeviceProps}
+        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Properties"/> }}
+      />
+    </HomeGuestNav.Navigator>
   );
 }
 
@@ -201,12 +227,12 @@ function GuestAppNavBar() {
   return (
     <GuestNavBar.Navigator>
       <GuestNavBar.Screen
-        name="HomeStack"
-        component={HomeStack}
+        name="HomeGuestStack"
+        component={HomeGuestStack}
         options={{
-          tabBarLabel: 'Guests',
+          tabBarLabel: 'Hubs',
           tabBarIcon: ({}) => (
-            <Icon name="users" type="feather" color="black" />
+            <Icon name="home" type="feather" color="black" />
           ),
         }}
       />
