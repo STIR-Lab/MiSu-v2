@@ -29,7 +29,14 @@ function GuestElement(props) {
 
   return (
     <View>
-      <TouchableOpacity onPress={() => props.navigation.navigate("Properties")}>
+      <TouchableOpacity
+        onPress={() =>
+          props.navigation.navigate("Properties", {
+            accountName: props.title,
+            deviceName: props.deviceName,
+          })
+        }
+      >
         <View style={styles.iconHolder}>
           <Icon
             name={checkIcon(props.deviceName)}
