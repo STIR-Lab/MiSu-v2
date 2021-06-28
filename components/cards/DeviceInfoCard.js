@@ -25,6 +25,8 @@ function DeviceInfoCard(props) {
     list = (
       <SampleDeviceList
         screen="Guests"
+        title={props.title}
+        device={props.device}
         // sharedAccs={props.sharedAccs}
         navigation={props.navigation}
       />
@@ -33,6 +35,8 @@ function DeviceInfoCard(props) {
     list = (
       <SampleDeviceList
         screen="Devices"
+        title={props.title}
+        device={props.device}
         // sharedAccs={props.sharedAccs} attempting to use redux instead
         navigation={props.navigation}
       />
