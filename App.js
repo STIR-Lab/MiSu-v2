@@ -1,30 +1,30 @@
-import Amplify from '@aws-amplify/core';
-import React, { useState } from 'react';
-import { View, Text, StatusBar } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
+import Amplify from "@aws-amplify/core";
+import React, { useState } from "react";
+import { View, Text, StatusBar } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 // import { createStackNavigator } from 'react-navigation-stack';
 // ************************************************ */
 // Redux ****************************************** */
 // ************************************************ */
-import { Provider } from 'react-redux';
-import { applyMiddleware, createStore } from 'redux';
-import thunk from 'redux-thunk';
-import config from './aws-exports';
-import HubCardSharedUsersListEntry from './components/cards/ListEntries/HubCardSharedUsersListEntry';
-import appDataReducer from './redux/AppDataReducer';
-import AccountScreen from './screens/Application/AccountScreen';
-import DeviceScreen from './screens/Application/DeviceScreen';
-import DeviceProps from './screens/Application/DeviceProps';
-import LogScreen from './screens/Application/LogScreen';
-import UserScreen from './screens/Application/UserScreen';
-import HubScreen from './screens/Application/HubScreen';
-import ChangePasswordScreen from './screens/Application/ChangePasswordScreen';
+import { Provider } from "react-redux";
+import { applyMiddleware, createStore } from "redux";
+import thunk from "redux-thunk";
+import config from "./aws-exports";
+import HubCardSharedUsersListEntry from "./components/cards/ListEntries/HubCardSharedUsersListEntry";
+import appDataReducer from "./redux/AppDataReducer";
+import AccountScreen from "./screens/Application/AccountScreen";
+import DeviceScreen from "./screens/Application/DeviceScreen";
+import DeviceProps from "./screens/Application/DeviceProps";
+import LogScreen from "./screens/Application/LogScreen";
+import UserScreen from "./screens/Application/UserScreen";
+import HubScreen from "./screens/Application/HubScreen";
+import ChangePasswordScreen from "./screens/Application/ChangePasswordScreen";
 //************************************************** */
 // Auth Stack ************************************** */
 //************************************************** */
 // Login/Register screens hold the code that mess with the firebase auth(login)
-import LoginScreen from './screens/Authentication/LoginScreen';
-import RegisterScreen from './screens/Authentication/RegisterScreen';
+import LoginScreen from "./screens/Authentication/LoginScreen";
+import RegisterScreen from "./screens/Authentication/RegisterScreen";
 //************************************************** */
 // App Stack *************************************** */
 //************************************************** */
@@ -34,21 +34,20 @@ import RegisterScreen from './screens/Authentication/RegisterScreen';
 // Loading Stack *********************************** */
 //************************************************** */
 // Routing container which swaps screens and adds them to the navigation stack(back button function properly on Android)
-import LoadingScreen from './screens/index';
-import DevicesScreen from './screens/Application/DevicesScreen';
-import GuestsScreen from './screens/Application/GuestsScreen';
-import YourHubsScreen from './screens/Application/YourHubsScreen';
+import LoadingScreen from "./screens/index";
+import DevicesScreen from "./screens/Application/DevicesScreen";
+import GuestsScreen from "./screens/Application/GuestsScreen";
+import YourHubsScreen from "./screens/Application/YourHubsScreen";
 
 // import HomeScreen from './screens/index';
 
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Icon } from 'react-native-elements';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Icon } from "react-native-elements";
 
 //Import custom header component
-import Header from "./components/app/Header.js"
+import Header from "./components/app/Header.js";
 
 Amplify.configure(config);
 
@@ -85,7 +84,11 @@ function HomeStack() {
       <HomeNav.Screen
         name="Home"
         component={GuestsScreen}
-        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Your Guests"/>}}
+        options={{
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Your Guests" />,
+        }}
       />
       {/* <HomeNav.Screen
         name="Device"
@@ -95,7 +98,11 @@ function HomeStack() {
       <HomeNav.Screen
         name="Properties"
         component={DeviceProps}
-        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Properties"/> }}
+        options={{
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Device Properties" />,
+        }}
       />
     </HomeNav.Navigator>
   );
@@ -109,7 +116,11 @@ function HomeGuestStack() {
       <HomeGuestNav.Screen
         name="Home"
         component={YourHubsScreen}
-        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Your Hubs"/>}}
+        options={{
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Your Hubs" />,
+        }}
       />
       {/* <HomeNav.Screen
         name="Device"
@@ -119,7 +130,11 @@ function HomeGuestStack() {
       <HomeGuestNav.Screen
         name="Properties"
         component={DeviceProps}
-        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Properties"/> }}
+        options={{
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Device Properties" />,
+        }}
       />
     </HomeGuestNav.Navigator>
   );
@@ -133,12 +148,20 @@ function DevicesStack() {
       <DevicesNav.Screen
         name="Device"
         component={DevicesScreen}
-        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Your Devices"/>  }}
+        options={{
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Your Devices" />,
+        }}
       />
       <DevicesNav.Screen
         name="Properties"
         component={DeviceProps}
-        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Properties"/> }}
+        options={{
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Device Properties" />,
+        }}
       />
     </DevicesNav.Navigator>
   );
@@ -155,7 +178,10 @@ function ProfileStack() {
         options={{ headerShown: false }}
       />
       <ProfileNav.Screen name="Hub" component={HubScreen} />
-      <ProfileNav.Screen name="ChangePassword" component={ChangePasswordScreen} />
+      <ProfileNav.Screen
+        name="ChangePassword"
+        component={ChangePasswordScreen}
+      />
     </ProfileNav.Navigator>
   );
 }
@@ -164,30 +190,37 @@ const LogNav = createStackNavigator();
 
 function LogStack() {
   return (
-  <LogNav.Navigator>
-    <LogNav.Screen name="Properties"
+    <LogNav.Navigator>
+      <LogNav.Screen
+        name="Properties"
         component={LogScreen}
-        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Activity Logs"/> }}>
-    
-       
-      
-    </LogNav.Screen>
-  </LogNav.Navigator>
-  )
+        options={{
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Activity Logs" />,
+        }}
+      ></LogNav.Screen>
+    </LogNav.Navigator>
+  );
 }
 
 const NavBar = createBottomTabNavigator();
 
 function AppNavBar() {
   return (
-    <NavBar.Navigator>
+    <NavBar.Navigator
+      tabBarOptions={{
+        activeTintColor: "#008CFF",
+        inactiveTintColor: "#4B4B4B",
+      }}
+    >
       <NavBar.Screen
         name="HomeStack"
         component={HomeStack}
         options={{
-          tabBarLabel: 'Guests',
-          tabBarIcon: ({}) => (
-            <Icon name="users" type="feather" color="black" />
+          tabBarLabel: "Guests",
+          tabBarIcon: ({ color }) => (
+            <Icon name="users" type="feather" color={color} size={31} />
           ),
         }}
       />
@@ -195,17 +228,21 @@ function AppNavBar() {
         name="Devices"
         component={DevicesStack}
         options={{
-          tabBarIcon: ({}) => <Icon name="grid" type="feather" color="black" />,
+          tabBarIcon: ({ color }) => (
+            <Icon name="grid" type="feather" color={color} size={31} />
+          ),
         }}
       />
       <NavBar.Screen
         name="Logs"
         component={LogStack}
         options={{
-          headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Activity Logs"/> ,
-          
-          tabBarIcon: ({}) => (
-            <Icon name="file-text" type="feather" color="black" />
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Activity Logs" />,
+
+          tabBarIcon: ({ color }) => (
+            <Icon name="file-text" type="feather" color={color} size={31} />
           ),
         }}
       />
@@ -213,10 +250,11 @@ function AppNavBar() {
         name="Profile"
         component={ProfileStack}
         options={{
-          tabBarIcon: ({}) => <Icon name="user" type="feather" color="black" />,
+          tabBarIcon: ({ color }) => (
+            <Icon name="user" type="feather" color={color} size={31} />
+          ),
         }}
       />
-
     </NavBar.Navigator>
   );
 }
@@ -230,18 +268,18 @@ function GuestAppNavBar() {
         name="HomeGuestStack"
         component={HomeGuestStack}
         options={{
-          tabBarLabel: 'Hubs',
-          tabBarIcon: ({}) => (
-            <Icon name="home" type="feather" color="black" />
-          ),
+          tabBarLabel: "Hubs",
+          tabBarIcon: ({}) => <Icon name="home" type="feather" color="black" />,
         }}
       />
       <GuestNavBar.Screen
         name="Logs"
         component={LogStack}
         options={{
-          headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Activity Logs"/> ,
-          
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Activity Logs" />,
+
           tabBarIcon: ({}) => (
             <Icon name="file-text" type="feather" color="black" />
           ),
@@ -254,7 +292,6 @@ function GuestAppNavBar() {
           tabBarIcon: ({}) => <Icon name="user" type="feather" color="black" />,
         }}
       />
-
     </GuestNavBar.Navigator>
   );
 }
@@ -327,27 +364,27 @@ const AuthStack = (props) => (
   </Auth.Navigator>
 );
 
-
 export default function App(props) {
   const [loading, setLoading] = useState(false);
 
   return (
     <Provider store={store}>
       <View style={{ flex: 1 }}>
-      <StatusBar translucent backgroundColor="transparent" />
+        <StatusBar translucent backgroundColor="transparent" />
         <Spinner
           visible={loading}
-          textContent={'Loading...'}
+          textContent={"Loading..."}
           textStyle={{
-            color: '#FFF',
+            color: "#FFF",
           }}
         />
         <NavigationContainer>
-              <AuthStack setLoadingTrue = {setLoading} 
-                  // setGoToAppTrue={setGoToApp} 
-                  setLoadingFalse={setLoading}
-                  // setGoToAuthFalse={setGoToAuth}
-                  />
+          <AuthStack
+            setLoadingTrue={setLoading}
+            // setGoToAppTrue={setGoToApp}
+            setLoadingFalse={setLoading}
+            // setGoToAuthFalse={setGoToAuth}
+          />
           {/* { this.state.goToApp == true &&
               <AppNavBar/>
           } */}
