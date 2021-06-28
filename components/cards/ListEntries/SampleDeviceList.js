@@ -310,23 +310,14 @@ function SampleDeviceList(props) {
 
   return (
     <View style={styles.container} transparent={true}>
-      {/* {deviceList.devices.map((d) => (
-        <View style={styles.iconAndName} key={d.id}>
-          {screen === "Devices" ?
-          <GuestElement
-            deviceName={d.deviceName}
-            navigation={props.navigation}
-          /> :
-          <DeviceElement
-            deviceName={d.deviceName}
-            navigation={props.navigation}
-          />}
-        </View>
-      ))} */}
       {props.device &&
-        props.device.map((d) => (
-          <View style={styles.iconAndName} key={d.id}>
-            <GuestElement deviceName={d.name} navigation={props.navigation} />
+        props.device.map((entry, i) => (
+          <View style={styles.iconAndName} key={i}>
+            <GuestElement
+              deviceName={entry.name}
+              title={props.title}
+              navigation={props.navigation}
+            />
           </View>
         ))}
       {addButton}
