@@ -1,5 +1,5 @@
 import { Route53 } from "aws-sdk";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ScrollView,
   TouchableOpacity,
@@ -19,6 +19,9 @@ import appStyle from "../../styles/AppStyle";
 import SetScheduleCard from "../../components/cards/SetScheduleCard";
 
 function DeviceProps(props) {
+  var deviceProperties = props.route.params.currDevice.properties;
+  console.log("=====" + JSON.stringify(deviceProperties) + "======");
+
   return (
     <View style={appStyle.container}>
       {
@@ -74,14 +77,15 @@ function DeviceProps(props) {
               </View>
             </View>
 
-            {
-              // Set Schedule Card imported}
-            }
             <View style={propstyle.column}>
               <Text style={{ fontSize: 26, fontWeight: "bold" }}>
                 Set Schedule
               </Text>
-              <SetScheduleCard />
+
+              <SetScheduleCard
+                deviceProperties={deviceProperties[0]}
+                navigation={props.route.params.navigation}
+              />
 
               <Text style={{ marginTop: 20, fontSize: 26, fontWeight: "bold" }}>
                 Set Actions
@@ -115,6 +119,7 @@ function DeviceProps(props) {
                 }}
               >
                 <Text style={{ fontSize: 20 }}>Brightness</Text>
+                {/* Easy solution would be to set deviceProps readOnly to true if switched */}
                 <Switch
                   style={{
                     transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
@@ -159,6 +164,7 @@ function DeviceProps(props) {
                     transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
                   }}
                   trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
+                  // Kolbe api call to set gps location and set deviceProps gps_location
                   onValueChange={(x) => {}}
                 />
               </View>

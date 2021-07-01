@@ -34,6 +34,8 @@ function GuestElement(props) {
           props.navigation.navigate("Properties", {
             accountName: props.title,
             deviceName: props.deviceName,
+            currDevice: props.currDevice,
+            navigation: props.navigation,
           })
         }
       >
