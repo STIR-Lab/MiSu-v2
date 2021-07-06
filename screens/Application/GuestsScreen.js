@@ -191,6 +191,7 @@ function GuestsScreen(props) {
               <DeviceInfoCard
                 key={i}
                 title={entry.name}
+                device={entry.devices}
                 type={"GuestCard"}
                 sharedAccs={sharedAccs}
                 navigation={props.navigation}

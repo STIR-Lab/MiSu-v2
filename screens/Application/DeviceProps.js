@@ -18,62 +18,85 @@ import appStyle from "../../styles/AppStyle";
 // importing set schedule card from ./cards
 import SetScheduleCard from "../../components/cards/SetScheduleCard";
 
-class DeviceProps extends React.Component {
-  // static navigationOptions = ({ navigate, navigation }) => ({
-  //   // headerTitle: navigation.getParam('device', '').name.slice(0, 22),
-  //   headerLeft: () => (
-  //     <View>
-  //       <TouchableOpacity
-  //         style={{ alignSelf: 'center', marginTop: 16 }}
-  //         onPress={() => navigation.navigate('Home')}
-  //       >
-  //         <Icon
-  //           name="arrow-back"
-  //           size={35}
-  //           style={{ marginLeft: 16, marginBottom: 10 }}
-  //         />
-  //       </TouchableOpacity>
-  //     </View>
-  //   ),
-  //   headerRight: () => (
-  //     <View>
-  //       <TouchableOpacity
-  //         style={{ alignSelf: 'center', marginTop: 16 }}
-  //         onPress={() => navigation.navigate('Properties')}
-  //       >
-  //         <Icon
-  //           name="arrow-back"
-  //           size={35}
-  //           style={{ marginLeft: 16, marginBottom: 10 }}
-  //         />
-  //       </TouchableOpacity>
-  //     </View>
-  //   ),
-  // });
+function DeviceProps(props) {
+  return (
+    <View style={appStyle.container}>
+      {
+        <View style={appStyle.cardContainer}>
+          <View>
+            <TouchableOpacity
+              style={{ alignSelf: "flex-start" }}
+              onPress={() => {
+                props.navigation.pop();
+              }}
+            >
+              <Icon name="arrow-back" size={35} style={{ marginBottom: 10 }} />
+            </TouchableOpacity>
+          </View>
+          <ScrollView style={appStyle.scrollView}>
+            <View style={propstyle.rowContainer}>
+              <View style={propstyle.card}>
+                <View style={propstyle.row}>
+                  <Image source={require("../../assets/people.png")} />
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      paddingRight: 10,
+                      alignSelf: "center",
+                      fontSize: 16,
+                    }}
+                  >
+                    {props.route.params.accountName &&
+                      props.route.params.accountName}
+                  </Text>
+                </View>
+              </View>
 
-  constructor(props) {
-    super(props);
+              <View style={propstyle.devicecard}>
+                <View style={appStyle.row}>
+                  <Image
+                    style={{ marginLeft: 10, alignSelf: "center" }}
+                    source={require("../../assets/zap.png")}
+                  />
+                  <Text
+                    style={{
+                      paddingLeft: 10,
+                      paddingRight: 10,
+                      alignSelf: "center",
+                      fontSize: 13,
+                      fontWeight: "bold",
+                      color: "white",
+                    }}
+                  >
+                    {props.route.params.deviceName}
+                  </Text>
+                </View>
+              </View>
+            </View>
 
-    this.state = {
-      device: {},
-    };
-  }
+            {
+              // Set Schedule Card imported}
+            }
+            <View style={propstyle.column}>
+              <Text style={{ fontSize: 26, fontWeight: "bold" }}>
+                Set Schedule
+              </Text>
+              <SetScheduleCard />
 
-  render() {
-    console.log("============");
-    console.log(this.props.sharedAccountsData);
-    // console.log('==DEVICE PROPS==' + this.props);
-    return (
-      <View style={appStyle.container}>
-        {
-          <View style={appStyle.cardContainer}>
-            <View>
-              <TouchableOpacity
-                style={{ alignSelf: "flex-start", marginTop: 16 }}
-                onPress={() => {
-                  this.props.navigation.pop();
+              <Text style={{ marginTop: 20, fontSize: 26, fontWeight: "bold" }}>
+                Set Actions
+              </Text>
+              <View style={[propstyle.lineContainer, { marginTop: 8 }]} />
+              <View
+                style={{
+                  marginTop: 10,
+                  paddingBottom: 0,
+                  flexDirection: "row",
+                  alignSelf: "stretch",
+                  justifyContent: "space-between",
                 }}
               >
+
                 <Icon
                   name="arrow-back"
                   size={35}
@@ -135,89 +158,77 @@ class DeviceProps extends React.Component {
                 </Text>
                 <View style={[propstyle.lineContainer, { marginTop: 8 }]} />
                 <View
+
                   style={{
-                    marginTop: 10,
-                    paddingBottom: 0,
-                    flexDirection: "row",
-                    alignSelf: "stretch",
-                    justifyContent: "space-between",
+                    transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
                   }}
-                >
-                  <Text style={{ fontSize: 20 }}>On/Off</Text>
-                  <Switch
-                    style={{
-                      transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
-                    }}
-                    trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
-                    onValueChange={(x) => {}}
-                  />
-                </View>
-                <View
-                  style={{
-                    marginTop: 20,
-                    paddingBottom: 0,
-                    flexDirection: "row",
-                    alignSelf: "stretch",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Text style={{ fontSize: 20 }}>Brightness</Text>
-                  <Switch
-                    style={{
-                      transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
-                    }}
-                    trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
-                    onValueChange={(x) => {}}
-                  />
-                </View>
-                <View
-                  style={{
-                    marginTop: 20,
-                    paddingBottom: 0,
-                    flexDirection: "row",
-                    alignSelf: "stretch",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Text style={{ fontSize: 20 }}>Color</Text>
-                  <Switch
-                    style={{
-                      transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
-                    }}
-                    trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
-                    onValueChange={(x) => {}}
-                  />
-                </View>
-                <Text
-                  style={{ marginTop: 20, fontSize: 26, fontWeight: "bold" }}
-                >
-                  Set Geofencing
-                </Text>
-                <View style={[propstyle.lineContainer, { marginTop: 8 }]} />
-                <View
-                  style={{
-                    marginTop: 20,
-                    paddingBottom: 0,
-                    flexDirection: "row",
-                    alignSelf: "stretch",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Switch
-                    style={{
-                      transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
-                    }}
-                    trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
-                    onValueChange={(x) => {}}
-                  />
-                </View>
+                  trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
+                  onValueChange={(x) => {}}
+                />
               </View>
-            </ScrollView>
-          </View>
-        }
-      </View>
-    );
-  }
+              <View
+                style={{
+                  marginTop: 20,
+                  paddingBottom: 0,
+                  flexDirection: "row",
+                  alignSelf: "stretch",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ fontSize: 20 }}>Brightness</Text>
+                <Switch
+                  style={{
+                    transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
+                  }}
+                  trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
+                  onValueChange={(x) => {}}
+                />
+              </View>
+              <View
+                style={{
+                  marginTop: 20,
+                  paddingBottom: 0,
+                  flexDirection: "row",
+                  alignSelf: "stretch",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ fontSize: 20 }}>Color</Text>
+                <Switch
+                  style={{
+                    transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
+                  }}
+                  trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
+                  onValueChange={(x) => {}}
+                />
+              </View>
+              <Text style={{ marginTop: 20, fontSize: 26, fontWeight: "bold" }}>
+                Set Geofencing
+              </Text>
+              <View style={[propstyle.lineContainer, { marginTop: 8 }]} />
+              <View
+                style={{
+                  marginTop: 20,
+                  paddingBottom: 0,
+                  flexDirection: "row",
+                  alignSelf: "stretch",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Switch
+                  style={{
+                    transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
+                  }}
+                  trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
+                  onValueChange={(x) => {}}
+                />
+              </View>
+            </View>
+          </ScrollView>
+        </View>
+      }
+    </View>
+  );
 }
 
 const propstyle = StyleSheet.create({
@@ -244,7 +255,6 @@ const propstyle = StyleSheet.create({
     paddingRight: 15,
     paddingBottom: 5,
     marginBottom: 5,
-    marginRight: 50,
   },
   devicecard: {
     justifyContent: "center",
@@ -271,9 +281,21 @@ const propstyle = StyleSheet.create({
     marginBottom: 5,
     marginRight: 0,
   },
+  row: {
+    margin: 2,
+    paddingBottom: 0,
+    flexDirection: "row",
+    alignSelf: "stretch",
+  },
+  rowContainer: {
+    margin: 2,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignSelf: "stretch",
+  },
   column: {
     margin: 2,
-    marginTop: 40,
+    marginTop: 20,
     paddingBottom: 0,
     flexDirection: "column",
     alignSelf: "stretch",

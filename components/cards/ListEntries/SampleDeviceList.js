@@ -28,6 +28,7 @@ function SampleDeviceList(props) {
   const [deviceList, setDeviceList] = useState(props.devices);
 
   useEffect(() => {
+
     // console.log(
     //   "==SAMPLE DEVICE LIST==" +
     //     JSON.stringify(props.sharedAccountsData.sharedAccounts)
@@ -40,9 +41,16 @@ function SampleDeviceList(props) {
     else if (props.screen == 'Devices') setScreen('Devices');
     else if (props.screen == 'Hubs') setScreen('Hubs');
     else console.log('Invalid screen prop passed.');
+r
 
+    // console.log("==SAMPLE DEVICE LIST==" + JSON.stringify(props.sharedAccs));
 
+    if (props.screen == "Guests") setScreen("Guests");
+    else if (props.screen == "Devices") setScreen("Devices");
+    else console.log("Invalid screen prop passed.");
   });
+
+  const convertDevicesName = () => {};
 
   const openModal = () => {
     // setSelected(false);
@@ -51,7 +59,7 @@ function SampleDeviceList(props) {
 
   const openModalDevices = () => {
     setIsVisibleDevices(!isVisibleDevices);
-  }
+  };
 
   const handleClick = () => {
     setIsVisible(false);
@@ -71,7 +79,7 @@ function SampleDeviceList(props) {
   let addButton = (
     <View style={styles.iconAndName}>
       <TouchableOpacity
-        onPress={() => screen == "Devices" ? openModal() : openModalDevices() }
+        onPress={() => (screen == "Devices" ? openModal() : openModalDevices())}
         style={screen == "Devices" ? styles.addGuest : styles.addDevice}
       >
         <Icon name="plus" type="font-awesome" color="#FFFFFF" size={38} />
@@ -162,7 +170,6 @@ function SampleDeviceList(props) {
     </Modal>
   );
 
-
   let modalDevices = (
     <Modal
       visible={isVisibleDevices}
@@ -197,7 +204,6 @@ function SampleDeviceList(props) {
             </View>
           ))}
 
-    
         <View style={{ flex: 1, marginBottom: 30, justifyContent: "flex-end" }}>
           <TouchableOpacity onPress={() => propsClick()}>
             <View
@@ -287,6 +293,7 @@ function SampleDeviceList(props) {
 
   return (
     <View style={styles.container} transparent={true}>
+
       {deviceList.map((d) => (
         <View style={styles.iconAndName} key={d.shared_device_properties_id}>
           {screen === "Devices" ?
@@ -304,6 +311,20 @@ function SampleDeviceList(props) {
         </View>
       ))}
       {screen != 'Hubs' && addButton}
+
+    /*  {props.device &&
+        props.device.map((entry, i) => (
+          <View style={styles.iconAndName} key={i}>
+            <GuestElement
+              deviceName={entry.name}
+              title={props.title}
+              navigation={props.navigation}
+            />
+          </View>
+        ))}
+      {addButton}
+      */
+
       {modal}
       {modal2}
       {modalDevices}
