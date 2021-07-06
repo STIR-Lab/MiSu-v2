@@ -10,10 +10,16 @@ import {
 import Collapsible from "react-native-collapsible";
 import SampleDeviceList from "../../components/cards/ListEntries/SampleDeviceList";
 import LastActionCard from "../../components/cards/LastActionCard";
-import { Icon } from "react-native-elements/dist/icons/Icon";
+
+import { Icon } from "react-native-elements";
+
 
 function DeviceInfoCard(props) {
   const [collapsed, setCollapsed] = useState(true);
+
+  useEffect(() => {
+    // console.log('==DEVICE INFO CARD== ' + props.sharedAccs.devices[0].name);
+  });
 
   // Ugly check to determine icon off of deviceName
   const checkIcon = (deviceName) => {
@@ -54,22 +60,25 @@ function DeviceInfoCard(props) {
     );
   };
 
+
   const alter = () => {
     setCollapsed(!collapsed);
   };
 
   let list;
 
-  if (props.type == "GuestCard")
-    list = (
+  if (props.type == "HubCard")
+    list =
       <SampleDeviceList
-        screen="Guests"
+
+        screen="Hubs"
+        devices={props.devices}
         title={props.title}
         device={props.device}
+
         // sharedAccs={props.sharedAccs}
         navigation={props.navigation}
-      />
-    );
+      />;
   else
     list = (
       <SampleDeviceList
@@ -84,7 +93,9 @@ function DeviceInfoCard(props) {
   const panel = (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.devIcon}>
+
+        {props.type != 'HubCard' ? 
+         <View style={styles.devIcon}>
           <Image
             source={require("../../assets/people.png")}
             resizeMode="stretch"
@@ -96,7 +107,9 @@ function DeviceInfoCard(props) {
               alignItems: "center",
             }}
           />
-        </View>
+        </View> : 
+          <View style={styles.devIcon2}><Icon name="home" type="feather" size={45} /></View>}
+
         <View>
           <Text style={styles.userName}>{props.title}</Text>
         </View>
@@ -115,18 +128,16 @@ function DeviceInfoCard(props) {
       <Collapsible collapsed={collapsed} style={styles.expanded}>
         <View style={styles.activeGuests}>
           <Text style={styles.text}>
-            {props.type == "GuestCard" ? "Devices" : "Active Guests"}
+            {props.type == "DeviceCard" ? "Active Guests" : "Devices"}
           </Text>
         </View>
-        <View style={styles.guestList}>{list}</View>
-        <LastActionCard screen={props.type} />
+        <View style={styles.guestList}>
+          {list}
+        </View>
+        { props.type != "HubCard" && <LastActionCard screen={props.type} />}
       </Collapsible>
     </View>
   );
-
-  useEffect(() => {
-    // console.log('==DEVICE INFO CARD== ' + JSON.stringify(props));
-  });
 
   return (
     <View>
@@ -205,6 +216,12 @@ const styles = StyleSheet.create({
   userName: {
     fontWeight: "bold",
     fontSize: 16,
+  },
+  devIcon2: {
+    height: 46,
+    width: 46,
+    marginHorizontal: 15,
+    borderRadius: 6,
   },
 });
 

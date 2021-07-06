@@ -11,7 +11,7 @@ function YourHubCard(props) {
     } else {
       setRegistering(true);
     }
-  });
+  }, [props.hub_url]);
 
   registerHub = () => {
     props.navigation.navigate('Hub');

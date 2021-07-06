@@ -20,8 +20,8 @@ export const registerHubAction = (
   idToken
 ) => {
   return async (dispatch) => {
-    console.log('ACTION==========');
-    console.log(hub_url, hub_email, hub_password, idToken);
+    // console.log('ACTION==========');
+    // console.log(hub_url, hub_email, hub_password, idToken);
     try {
       dispatch(registerHubStart({ loading: true, success: null, error: null }));
       hub_url = hub_url;
@@ -30,17 +30,18 @@ export const registerHubAction = (
         hub_email,
         hub_password,
       };
-      const data = await createHub(hubDat, idToken);
-
+      const data = await createHub(hubDat, idToken).catch(err => console.log(err));
       dispatch(
-        registerHubSucess({ loading: false, success: true, error: null })
-      );
+        registerHubSucess({ loading: false, success: true, error: null, data: data })
+      )
+      return data;
     } catch (error) {
+      console.log("===================================CATCH BLOCK====================================")
       dispatch(
         registerHubFailed({
           loading: false,
           success: false,
-          error: 'your error message',
+          error: error,
         })
       );
     }

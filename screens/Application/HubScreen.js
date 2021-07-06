@@ -20,14 +20,23 @@ const windowHeight = Dimensions.get('window').height;
 
 function HubScreen(props) {
 
-    // console.log(props);
+  // console.log(props);
 
   const [url, setUrl] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [error, setError] = useState('');
 
-  const handleClick = () => {
+  // ========================================================
+  // To access status codes:
+  // props.registerData.data.statusCode;
+  // 405: invalid URL
+  // 401: Invalid authentications
+  // 400: Server Error
+  // 502: Something Crashed
+  // 200: No error
+  // ========================================================
+  const handleClick = async() => {
     if (
       url == '' ||
       url == null ||
@@ -36,16 +45,29 @@ function HubScreen(props) {
       password == '' ||
       password == null
     ) {
-      setError('Some fields have not been completed');
+      setError('Some fields have not been completed.');
       return;
     } 
         else
         {
-            const state = props.register({
+            await props.register({
                 hub_url: url, 
                 hub_email: email,
                 hub_password: password},
-                props.sessionData.idToken);
+                props.sessionData.idToken)
+            .then((res) => {
+            // console.log("====HUB SCREEN res", res);
+            // console.log(props);
+            if (res.statusCode === 200)
+              props.navigation.pop();
+            else if (res.statusCode === 405)
+              setError('Invalid Hub URL.');
+            else if (res.statusCode === 401)
+              setError('Invalid Email and Password Combination.');
+            else if (res.statusCode === 400 || res.statusCode === 502)
+              setError('Server Error Occured, try again later.');
+            else setError("Unidentified Error")})
+            .catch(err => console.log(err));
             // setError('It probably worked..');
         }
     }

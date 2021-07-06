@@ -25,40 +25,23 @@ function SampleDeviceList(props) {
   const [selected, setSelected] = useState(null);
   const [sharedAccs, setSharedAccs] = useState(null);
   const [guestEmail, setGuestEmail] = useState("");
-  const [deviceList, setDeviceList] = useState({
-    devices: [
-      // Grab Device Name, Device Picture, And device Actions here. Determine what format the database has them in.
-      {
-        deviceName: "Google Home",
-        deviceActions: ["useAssitant", "speaker"],
-        lastAction: "Tom used this",
-        id: 1,
-      },
-      { deviceName: "Ring Doorbell", id: 2 },
-      { deviceName: "Sengled Lightbulb", id: 3 },
-      { deviceName: "Wyze Smart Camera", id: 4 },
-      // {deviceName: "Schlate Smart Lock", id:5},
-      // {deviceName: "Ring Doorbell", id:2},
-      // {deviceName: "Sengled Lightbulb", id:3},
-      // {deviceName: "Wyze Smart Camera", id:4},
-      // {deviceName: "Schlate Smart Lock", id:5},
-      // {deviceName: "Ring Doorbell", id:2},
-      // {deviceName: "Sengled Lightbulb", id:3},
-      // {deviceName: "Wyze Smart Camera", id:4},
-      // {deviceName: "Schlate Smart Lock", id:5},
-      // {deviceName: "Ring Doorbell", id:2},
-      // {deviceName: "Sengled Lightbulb", id:3},
-      // {deviceName: "Wyze Smart Camera", id:4},
-      // {deviceName: "Schlate Smart Lock", id:5},
-      // {deviceName: "Schlate Smart Lock", id:5},
-    ],
-  });
+  const [deviceList, setDeviceList] = useState(props.devices);
 
   useEffect(() => {
-    console.log(
-      "==SAMPLE DEVICE LIST==" +
-        JSON.stringify(props.sharedAccountsData.sharedAccounts)
-    );
+
+    // console.log(
+    //   "==SAMPLE DEVICE LIST==" +
+    //     JSON.stringify(props.sharedAccountsData.sharedAccounts)
+    // );
+
+
+    // console.log('==SAMPLE DEVICE LIST==' + JSON.stringify(props.sharedAccs));
+
+    if (props.screen == 'Guests') setScreen('Guests');
+    else if (props.screen == 'Devices') setScreen('Devices');
+    else if (props.screen == 'Hubs') setScreen('Hubs');
+    else console.log('Invalid screen prop passed.');
+r
 
     // console.log("==SAMPLE DEVICE LIST==" + JSON.stringify(props.sharedAccs));
 
@@ -282,7 +265,7 @@ function SampleDeviceList(props) {
               props.Share(
                 props.sessionData.idToken,
                 guestEmail,
-                { "title:": "Trash Device", description: "Test Desc" },
+                { title: "Push Button Deadbolt", entity_id: "lock.key_free_push_button_deadbolt", type: "lock" },
                 [{ access: 1 }],
                 null
               ),
@@ -310,7 +293,26 @@ function SampleDeviceList(props) {
 
   return (
     <View style={styles.container} transparent={true}>
-      {props.device &&
+
+      {deviceList.map((d) => (
+        <View style={styles.iconAndName} key={d.shared_device_properties_id}>
+          {screen === "Devices" ?
+          <GuestElement
+            deviceName={d.deviceName}
+            navigation={props.navigation}
+          /> :
+          <DeviceElement
+            key={d.shared_device_properties_id}
+            name={d.name}
+            id={d.entity_id}
+            type={d.type}
+            login={d.login_credentials_id}
+          />}
+        </View>
+      ))}
+      {screen != 'Hubs' && addButton}
+
+    /*  {props.device &&
         props.device.map((entry, i) => (
           <View style={styles.iconAndName} key={i}>
             <GuestElement
@@ -322,6 +324,8 @@ function SampleDeviceList(props) {
           </View>
         ))}
       {addButton}
+      */
+
       {modal}
       {modal2}
       {modalDevices}
