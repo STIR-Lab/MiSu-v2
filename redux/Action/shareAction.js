@@ -68,25 +68,26 @@ export const shareAction = (
           devices: [],
         };
 
-        const des = await createADevice(account, idToken, {
-          title: device.title,
-          description: device.description,
-        });
+        // const des = await createADevice(account, idToken, {
+        //   title: device.title,
+        //   entity_id: device.entity_id,
+        //   type: device.type
+        // });
 
-        device.id = des.message;
+        // device.id = des.message;
 
-        await Promise.all(
-          properties.map(
-            async (prop) =>
-              await createProperty(
-                idToken,
-                account.login_credentials_id,
-                device.id,
-                prop,
-                options
-              )
-          )
-        );
+        // await Promise.all(
+        //   properties.map(
+        //     async (prop) =>
+        //       await createProperty(
+        //         idToken,
+        //         account.login_credentials_id,
+        //         device.id,
+        //         prop,
+        //         options
+        //       )
+        //   )
+        // );
         console.log("Sent Share Request");
         showToast("Sent share request");
         dispatch(getSharedAccountsAction(idToken));

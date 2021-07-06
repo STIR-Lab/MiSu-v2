@@ -96,8 +96,69 @@ function DeviceProps(props) {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={{ fontSize: 20 }}>On/Off</Text>
-                <Switch
+
+                <Icon
+                  name="arrow-back"
+                  size={35}
+                  style={{ marginLeft: 16, marginBottom: 10 }}
+                />
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={appStyle.scrollView}>
+              <View style={appStyle.row}>
+                <View style={propstyle.card}>
+                  <View style={appStyle.row}>
+                    <Image source={require("../../assets/people.png")} />
+                    <Text
+                      style={{
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        alignSelf: "center",
+                        fontSize: 16,
+                      }}
+                    >
+                      // this.props.route.params.account.name
+                    </Text>
+                  </View>
+                </View>
+                <View style={propstyle.devicecard}>
+                  <View style={appStyle.row}>
+                    <Image
+                      style={{ marginLeft: 10, alignSelf: "center" }}
+                      source={require("../../assets/zap.png")}
+                    />
+                    <Text
+                      style={{
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        alignSelf: "center",
+                        fontSize: 13,
+                        fontWeight: "bold",
+                        color: "white",
+                      }}
+                    >
+                      Sengled{"\n"}Lightbulb
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              {
+                // Set Schedule Card imported}
+              }
+              <View style={propstyle.column}>
+                <Text style={{ fontSize: 26, fontWeight: "bold" }}>
+                  Set Schedule
+                </Text>
+                <SetScheduleCard />
+
+                <Text
+                  style={{ marginTop: 20, fontSize: 26, fontWeight: "bold" }}
+                >
+                  Set Actions
+                </Text>
+                <View style={[propstyle.lineContainer, { marginTop: 8 }]} />
+                <View
+
                   style={{
                     transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
                   }}

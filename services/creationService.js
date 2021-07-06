@@ -3,7 +3,7 @@ import Moment from "moment";
 export const createADevice = async (
   account,
   idToken,
-  { title, description }
+  { title, entity_id, type }
 ) => {
   const response = await fetch(
     "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/device",
@@ -17,7 +17,8 @@ export const createADevice = async (
       body: JSON.stringify({
         account: account.login_credentials_id,
         name: title,
-        description: description,
+        entity_id: entity_id,
+        type: type
       }),
     }
   );
