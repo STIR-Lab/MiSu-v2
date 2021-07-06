@@ -317,6 +317,7 @@ r
           <View style={styles.iconAndName} key={i}>
             <GuestElement
               deviceName={entry.name}
+              currDevice={entry}
               title={props.title}
               navigation={props.navigation}
             />
