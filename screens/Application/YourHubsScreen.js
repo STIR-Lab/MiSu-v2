@@ -16,6 +16,7 @@ import appStyle from "../../styles/AppStyle";
 import DeviceInfoCard from "../../components/cards/DeviceInfoCard";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Feather";
+import { getSharedDevicesAction } from "../../redux/Action/getSharedDevicesAction";
 
 // AWS Config
 
@@ -25,14 +26,10 @@ import Icon from "react-native-vector-icons/Feather";
 
 function YourHubsScreen(props) {
   const [searchParam, setSearchParam] = useState("");
-  const [isVisible, setIsVisible] = useState(false);
   const [sharedAccs, setSharedAccs] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [refresh, setFresh] = useState(1);
 
-  openModal = () => {
-    setIsVisible(!isVisible);
-  };
-  // console.log(props);
+  let collapsibleList;
 
   // =========================================================================
   // REFRESH LOGIC: TO DO LATER
@@ -56,71 +53,50 @@ function YourHubsScreen(props) {
   // Called when when the screen is about to load, grabs all the info to display
   // THE LACK OF THE [] IN THE SECOND PARAMETER CAUSES INFINITE CONSOLE LOGGING OR RERENDERING IN ACCOUNT SCREEN
   // REQUIRES FURTHER INVESTIGATION
+
   useEffect(() => {
-    // if (props.sessionData != null)
-    // 	props.navigation.setParams({
-    // 		name: props.sessionData.name
-    // 	});
-    // const { idToken } = props.sessionData;
-    console.log(props);
-    const idToken = 0;
-    //getUsageLogs();
-    //getAccessLogs();
-    // onRefresh();
-    fetchData(idToken);
     // console.log(props);
-    // console.log('== GUESTS SCREEN== ' + JSON.stringify(sharedAccs));
+    const idToken = props.sessionData.idToken;
+    fetchData(idToken);
   }, []);
 
-  async function fetchData(idToken) {
-    // console.log('Fetching Data..');
-    // props.getHub(idToken);
-    // props.getDevices(idToken);
-    // props.getSharedDevices(idToken);
-    // props.getAccounts(idToken);
-    setSharedAccs(props.sharedAccountsData.sharedAccounts);
-    // console.log('Data Fetched.');
+  function getResults(results){
+    setSharedAccs(results);
+    console.log(sharedAccs);
+    return;
+  };
 
-    // console.log(props);
-    // console.log("== GUESTS SCREEN== " + JSON.stringify(sharedAccs));
+  async function fetchData(idToken) {
+    await props.getList(idToken)
+    .then((res) => getResults(res))
+    .catch(err => console.log(err));
   };
 
 
-
-  let modal = (
-    <Modal
-      visible={isVisible}
-      transparent={true}
-      onBackdropPress={() => setIsVisible(false)}
-    >
-      <View style={styles.modal}>
-        <Text>Test</Text>
-      </View>
-    </Modal>
-  );
+  collapsibleList = !sharedAccs || !sharedAccs.message ? <Text>Loading...</Text> : 
+  sharedAccs.message.length == 0 ? <Text>Request Access to someone's smart home to gain access to their devices!</Text> :  
+  (
+    sharedAccs.message.map((m) => (
+      <DeviceInfoCard
+        key={m.login_credentials_id} 
+        title={m.sharer_name}
+        devices={m.devices}
+        type={"HubCard"}
+        sharedAccs={m}
+        navigation={props.navigation} />
+    ))
+  )
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={appStyle.container}>
         <View style={styles.header}>
-          <SearchBar setSearchParam={setSearchParam} screen={"Guests"} />
-          <TouchableOpacity style={styles.button} onPress={() => openModal()}>
-            <Icon name="user-plus" size={30} style={{ color: "#44ABFF" }} />
-            <View style={styles.addGuest}>
-              <Text style={{ textAlign: "center" }}>Add Guest</Text>
-            </View>
-          </TouchableOpacity>
+          <SearchBar setSearchParam={setSearchParam} screen={"Devices"} />
         </View>
         {/* <Text>{searchParam}</Text> */}
         <ScrollView style={styles.cardContainer}>
-          <DeviceInfoCard
-            title={"Sam Smith"}
-            type={"GuestCard"}
-            sharedAccs={sharedAccs}
-            navigation={props.navigation}
-          />
+          {collapsibleList}
         </ScrollView>
-        {modal}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -138,34 +114,7 @@ const styles = StyleSheet.create({
     margin: 15,
     justifyContent: "flex-start",
     alignItems: "center",
-  },
-  button: {
-    position: "absolute",
-    flexDirection: "row",
-    backgroundColor: "#FFFFFF",
-    height: 70,
-    right: 0,
-    width: "32%",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 15,
-    padding: 25,
-    shadowColor: "#000",
-    shadowOpacity: 0.8,
-    shadowRadius: 1,
-    elevation: 6,
-  },
-  modal: {
-    backgroundColor: "green",
-    width: 300,
-    height: 500,
-    alignSelf: "center",
-    alignItems: "center",
-  },
-  addGuest: {
-    alignItems: "center",
-    marginLeft: 5,
-  },
+  }
 });
 
 
@@ -177,7 +126,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		register: (data, idToken) => dispatch(registerHubAction(data, idToken)),
-		getHub: (idToken) => dispatch(getHubInfoAction(idToken))
+		getHub: (idToken) => dispatch(getHubInfoAction(idToken)),
+    getList: (idToken) => dispatch(getSharedDevicesAction(idToken))
 	};
 };
 

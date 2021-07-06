@@ -57,7 +57,7 @@ function LoginScreen(props) {
 
         const user = await Auth.signIn(str, password)
           .then(async (user) => {
-            console.log('Login successful!');
+            console.log('===== Login successful! =====');
 
             setErrorMessage('');
             // setMessage('Login successful!');

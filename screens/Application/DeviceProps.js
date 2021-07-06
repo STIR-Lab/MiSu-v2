@@ -94,7 +94,7 @@ class DeviceProps extends React.Component {
                         fontSize: 16,
                       }}
                     >
-                      {this.props.route.params.account.name}
+                      // this.props.route.params.account.name
                     </Text>
                   </View>
                 </View>

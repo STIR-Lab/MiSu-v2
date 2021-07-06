@@ -9,13 +9,14 @@ const setDevices = (type,data,success) =>({
 
 
 export  const getSharedDevicesAction = (idToken) => {
+    // console.log("=== Reached Action ===")
     return  async (dispatch) =>{
         try {
             const data  = await getListofSharedDevices(null,idToken )
 
             
             dispatch(setDevices("SET_SHARED_DEVICES",{devices: data.message}, true))
-            
+            return data;
         } catch (error) {
             //update prevent null fails : will show up as empty 
             dispatch(setDevices("SET_SHARED_DEVICES",{devices: []}, false))
