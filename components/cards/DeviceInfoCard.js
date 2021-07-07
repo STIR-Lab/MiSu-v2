@@ -13,7 +13,6 @@ import LastActionCard from "../../components/cards/LastActionCard";
 
 import { Icon } from "react-native-elements";
 
-
 function DeviceInfoCard(props) {
   const [collapsed, setCollapsed] = useState(true);
 
@@ -60,7 +59,6 @@ function DeviceInfoCard(props) {
     );
   };
 
-
   const alter = () => {
     setCollapsed(!collapsed);
   };
@@ -68,44 +66,53 @@ function DeviceInfoCard(props) {
   let list;
 
   if (props.type == "HubCard")
-    list = 
-      <SampleDeviceList
-        screen="Hubs"
-        devices={props.devices}
-        title={props.title}
-        sharedAccs={props.sharedAccs}
-        navigation={props.navigation}
-      />;
-  else
     list = (
       <SampleDeviceList
-        screen="Devices"
+        screen="Hubs"
         title={props.title}
-        device={props.device}
+        devices={props.devices}
+        sharedAccs={props.sharedAccs}
+        navigation={props.navigation}
+      />
+    );
+  else if (props.type == "GuestCard")
+    list = (
+      <SampleDeviceList
+        screen="Guests"
+        title={props.title}
+        devices={props.device}
         // sharedAccs={props.sharedAccs} attempting to use redux instead
         navigation={props.navigation}
       />
+    );
+  else if (props.type == "DeviceCard")
+    list = (
+      // TODO: Render the Sample Device List from the Devices Screen
+      <View />
     );
 
   const panel = (
     <View style={styles.container}>
       <View style={styles.header}>
-
-        {props.type != 'HubCard' ? 
-         <View style={styles.devIcon}>
-          <Image
-            source={require("../../assets/people.png")}
-            resizeMode="stretch"
-            style={{
-              height: 45,
-              width: 45,
-              alignSelf: "center",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          />
-        </View> : 
-          <View style={styles.devIcon2}><Icon name="home" type="feather" size={45} /></View>}
+        {props.type != "HubCard" ? (
+          <View style={styles.devIcon}>
+            <Image
+              source={require("../../assets/people.png")}
+              resizeMode="stretch"
+              style={{
+                height: 45,
+                width: 45,
+                alignSelf: "center",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            />
+          </View>
+        ) : (
+          <View style={styles.devIcon2}>
+            <Icon name="home" type="feather" size={45} />
+          </View>
+        )}
 
         <View>
           <Text style={styles.userName}>{props.title}</Text>
@@ -128,10 +135,8 @@ function DeviceInfoCard(props) {
             {props.type == "DeviceCard" ? "Active Guests" : "Devices"}
           </Text>
         </View>
-        <View style={styles.guestList}>
-          {list}
-        </View>
-        { props.type != "HubCard" && <LastActionCard screen={props.type} />}
+        <View style={styles.guestList}>{list}</View>
+        {props.type != "HubCard" && <LastActionCard screen={props.type} />}
       </Collapsible>
     </View>
   );

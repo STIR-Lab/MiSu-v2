@@ -28,19 +28,17 @@ function SampleDeviceList(props) {
   const [deviceList, setDeviceList] = useState(props.devices);
 
   useEffect(() => {
-
     // console.log(
     //   "==SAMPLE DEVICE LIST==" +
     //     JSON.stringify(props.sharedAccountsData.sharedAccounts)
     // );
 
-
     // console.log('==SAMPLE DEVICE LIST==' + JSON.stringify(props.sharedAccs));
 
-    if (props.screen == 'Guests') setScreen('Guests');
-    else if (props.screen == 'Devices') setScreen('Devices');
-    else if (props.screen == 'Hubs') setScreen('Hubs');
-    else console.log('Invalid screen prop passed.');
+    if (props.screen == "Guests") setScreen("Guests");
+    else if (props.screen == "Devices") setScreen("Devices");
+    else if (props.screen == "Hubs") setScreen("Hubs");
+    else console.log("Invalid screen prop passed.");
 
     // console.log("==SAMPLE DEVICE LIST==" + JSON.stringify(props.sharedAccs));
 
@@ -264,7 +262,11 @@ function SampleDeviceList(props) {
               props.Share(
                 props.sessionData.idToken,
                 guestEmail,
-                { title: "Push Button Deadbolt", entity_id: "lock.key_free_push_button_deadbolt", type: "lock" },
+                {
+                  title: "Push Button Deadbolt",
+                  entity_id: "lock.key_free_push_button_deadbolt",
+                  type: "lock",
+                },
                 [{ access: 1 }],
                 null
               ),
@@ -294,21 +296,29 @@ function SampleDeviceList(props) {
     <View style={styles.container} transparent={true}>
       {deviceList.map((d) => (
         <View style={styles.iconAndName} key={d.shared_device_properties_id}>
-          {screen === "Devices" ?
-          <GuestElement
-            deviceName={d.deviceName}
-            navigation={props.navigation}
-          /> :
-          <DeviceElement
-            key={d.shared_device_properties_id}
-            name={d.name}
-            id={d.entity_id}
-            type={d.type}
-            login={d.login_credentials_id}
-          />}
+          {screen === "Devices" ? (
+            <GuestElement
+              deviceName={d.name}
+              currDevice={d}
+              title={d.title}
+              navigation={props.navigation}
+            />
+          ) : (
+            <DeviceElement
+              screen={props.screen}
+              key={d.shared_device_properties_id}
+              currDevice={d}
+              title={d.title}
+              name={d.name}
+              id={d.entity_id}
+              type={d.type}
+              login={d.login_credentials_id}
+              navigation={props.navigation}
+            />
+          )}
         </View>
       ))}
-      {screen != 'Hubs' && addButton}
+      {screen != "Hubs" && addButton}
 
       {/* {props.device &&
         props.device.map((entry, i) => (
