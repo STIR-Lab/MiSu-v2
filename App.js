@@ -39,6 +39,7 @@ import LoadingScreen from './screens/index';
 import DevicesScreen from './screens/Application/DevicesScreen';
 import GuestsScreen from './screens/Application/GuestsScreen';
 import YourHubsScreen from './screens/Application/YourHubsScreen';
+import DeviceControlScreen from './screens/Application/DeviceControlScreen';
 
 
 // import HomeScreen from './screens/index';
@@ -136,9 +137,9 @@ function HomeGuestStack() {
         options={{ headerShown: false }}
       /> */}
       <HomeGuestNav.Screen
-        name="Properties"
-        component={DeviceProps}
-        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Properties"/> }}
+        name="DeviceControl"
+        component={DeviceControlScreen}
+        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Control"/> }}
       />
     </HomeGuestNav.Navigator>
   );
