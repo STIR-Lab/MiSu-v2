@@ -70,7 +70,7 @@ function GuestsScreen(props) {
     // 		name: props.sessionData.name
     // 	});
     // const { idToken } = props.sessionData;
-    // console.log(props);
+    console.log("GuestsScreen:", props);
     const idToken = 0;
     //getUsageLogs();
     //getAccessLogs();
@@ -148,7 +148,7 @@ function GuestsScreen(props) {
             props.Share(
               props.sessionData.idToken,
               guestEmail,
-              { "title:": "Trash Device", description: "Test Desc" },
+              { title: "Push Button Deadbolt", entity_id: "lock.key_free_push_button_deadbolt", type: "lock" },
               [{ access: 1 }],
               null
             ),
@@ -191,6 +191,7 @@ function GuestsScreen(props) {
               <DeviceInfoCard
                 key={i}
                 title={entry.name}
+                device={entry.devices}
                 type={"GuestCard"}
                 sharedAccs={sharedAccs}
                 navigation={props.navigation}
