@@ -25,49 +25,52 @@ const DATA = [
   },
 ];
 
-export const getInvites = async (idToken, email) => {
-  const response = await fetch(
-    "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/invitation",
-    {
-      method: "POST",
-      header: {
-        Authorization: "Bearer" + idToken,
-        "Content-type": "application/json",
-        Accept: "*/*",
-      },
-      body: JSON.stringify({
-        email: email,
-      }),
-    }
-  );
-  return response.json();
-};
-
-const Item = ({ name }) => (
-  <View style={styles.item}>
-    <View style={styles.icon}>
-      <Icon name="account-circle" size={50} color="#ffcb5c" />
-    </View>
-
-    <View>
-      <Text style={styles.name}>{name}</Text>
-    </View>
-
-    <View style={styles.buttons}>
-      <TouchableOpacity style={styles.button}>
-        <Icon name="check" size={45} color="#57E455" />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <Icon name="close" size={45} color="#F36464" />
-      </TouchableOpacity>
-    </View>
-  </View>
-);
-const renderItems = DATA.map((data) => {
-  return <Item name={data.name} />;
-});
-
 const NotificationsList = () => {
+  const [data, setData] = useState("");
+
+  getInvites = async (idToken, account, acceptedVal) => {
+    await fetch(
+      "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/invitation",
+      {
+        method: "POST",
+        header: {
+          Authorization: "Bearer" + idToken,
+          "Content-type": "application/json",
+          Accept: "*/*",
+        },
+        body: JSON.stringify({
+          account: account,
+          accepted: acceptedVal,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setData(data));
+  };
+  const Item = ({ name }) => (
+    <View style={styles.item}>
+      <View style={styles.icon}>
+        <Icon name="account-circle" size={50} color="#ffcb5c" />
+      </View>
+
+      <View>
+        <Text style={styles.name}>{name}</Text>
+      </View>
+
+      <View style={styles.buttons}>
+        <TouchableOpacity style={styles.button}>
+          <Icon name="check" size={45} color="#57E455" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button}>
+          <Icon name="close" size={45} color="#F36464" />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+  const renderItems = data.map((user) => {
+    return <Item name={user.name} />;
+  });
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Hub Requests</Text>
