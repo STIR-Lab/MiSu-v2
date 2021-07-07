@@ -19,6 +19,11 @@ function DeviceElement(props) {
         navigation: props.navigation,
       });
     } else {
+      // console.log(props);
+      props.navigation.navigate("DeviceControl",{
+        device: props.currDevice,
+        bearerId: props.idToken
+      });
     }
   }
 
