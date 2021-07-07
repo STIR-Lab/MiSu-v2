@@ -41,7 +41,6 @@ function SampleDeviceList(props) {
     else if (props.screen == 'Devices') setScreen('Devices');
     else if (props.screen == 'Hubs') setScreen('Hubs');
     else console.log('Invalid screen prop passed.');
-r
 
     // console.log("==SAMPLE DEVICE LIST==" + JSON.stringify(props.sharedAccs));
 
@@ -293,7 +292,6 @@ r
 
   return (
     <View style={styles.container} transparent={true}>
-
       {deviceList.map((d) => (
         <View style={styles.iconAndName} key={d.shared_device_properties_id}>
           {screen === "Devices" ?
@@ -312,7 +310,7 @@ r
       ))}
       {screen != 'Hubs' && addButton}
 
-    /*  {props.device &&
+      {/* {props.device &&
         props.device.map((entry, i) => (
           <View style={styles.iconAndName} key={i}>
             <GuestElement
@@ -322,9 +320,8 @@ r
               navigation={props.navigation}
             />
           </View>
-        ))}
-      {addButton}
-      */
+        ))} */}
+      {/* {addButton} */}
 
       {modal}
       {modal2}

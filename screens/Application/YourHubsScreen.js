@@ -55,7 +55,7 @@ function YourHubsScreen(props) {
   // REQUIRES FURTHER INVESTIGATION
 
   useEffect(() => {
-    // console.log(props);
+    console.log(props);
     const idToken = props.sessionData.idToken;
     fetchData(idToken);
   }, []);

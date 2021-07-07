@@ -68,15 +68,12 @@ function DeviceInfoCard(props) {
   let list;
 
   if (props.type == "HubCard")
-    list =
+    list = 
       <SampleDeviceList
-
         screen="Hubs"
         devices={props.devices}
         title={props.title}
-        device={props.device}
-
-        // sharedAccs={props.sharedAccs}
+        sharedAccs={props.sharedAccs}
         navigation={props.navigation}
       />;
   else
