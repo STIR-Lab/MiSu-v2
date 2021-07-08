@@ -135,7 +135,11 @@ function GuestsScreen(props) {
             props.Share(
               props.sessionData.idToken,
               guestEmail,
-              { title: "Push Button Deadbolt", entity_id: "lock.key_free_push_button_deadbolt", type: "lock" },
+              {
+                title: "Push Button Deadbolt",
+                entity_id: "lock.key_free_push_button_deadbolt",
+                type: "lock",
+              },
               [{ access: 1 }],
               null
             ),
@@ -178,6 +182,7 @@ function GuestsScreen(props) {
               <DeviceInfoCard
                 key={i}
                 title={entry.name}
+                user={entry}
                 device={entry.devices}
                 type={"GuestCard"}
                 sharedAccs={sharedAccs}
