@@ -171,7 +171,7 @@ function SampleDeviceList(props) {
           <Icon name="codesandbox" type="feather" color="black" />
           <Text style={{ marginLeft: 10, fontSize: 20 }}>Add Device</Text>
         </View>
-        <View style = {{minHeight: '25%', maxHeight: '50%', width: '100%'}}>
+        <View style = {{minHeight: '30%', maxHeight: '60%', width: '100%'}}>
         <ScrollView>
         {props.sharedAccountsData.sharedAccounts &&
           props.sharedAccountsData.sharedAccounts.map((entry, i) => (
@@ -199,7 +199,7 @@ function SampleDeviceList(props) {
           ))}
         </ScrollView>
         </View>
-        <View style={{ flex: 1, marginBottom: 30, justifyContent: "flex-end" }}>
+        <View style={{ flex: 1, marginBottom: 35, justifyContent: "flex-end" }}>
           <TouchableOpacity onPress={() => propsClick()}>
             <View
               style={{
