@@ -35,12 +35,12 @@ import RegisterScreen from "./screens/Authentication/RegisterScreen";
 //************************************************** */
 // Routing container which swaps screens and adds them to the navigation stack(back button function properly on Android)
 
+
 import LoadingScreen from './screens/index';
 import DevicesScreen from './screens/Application/DevicesScreen';
 import GuestsScreen from './screens/Application/GuestsScreen';
 import YourHubsScreen from './screens/Application/YourHubsScreen';
 import DeviceControlScreen from './screens/Application/DeviceControlScreen';
-
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -50,7 +50,9 @@ import { Icon } from "react-native-elements";
 //Import custom header component
 import Header from "./components/app/Header.js";
 
+
 import SetScheduleScreen from "./screens/Application/SetScheduleScreen";
+
 
 
 Amplify.configure(config);
@@ -139,7 +141,13 @@ function HomeGuestStack() {
       <HomeGuestNav.Screen
         name="DeviceControl"
         component={DeviceControlScreen}
-        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Control"/> }}
+
+        options={{
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Device Control" />,
+        }}
+
       />
     </HomeGuestNav.Navigator>
   );
@@ -147,7 +155,7 @@ function HomeGuestStack() {
 
 const DevicesNav = createStackNavigator();
 
-function DevicesStack() {
+function DevicesStack(props) {
   return (
     <DevicesNav.Navigator>
       <DevicesNav.Screen
@@ -224,8 +232,10 @@ function AppNavBar() {
         component={HomeStack}
         options={{
           tabBarLabel: "Guests",
+
           tabBarIcon: ({ color }) => (
             <Icon name="users" type="feather" color={color} size={31} />
+
           ),
         }}
       />
@@ -246,8 +256,10 @@ function AppNavBar() {
           headerShown: true,
           headerTitle: () => <Header title="Activity Logs" />,
 
+
           tabBarIcon: ({ color }) => (
             <Icon name="file-text" type="feather" color={color} size={31} />
+
           ),
         }}
       />
@@ -274,7 +286,9 @@ function GuestAppNavBar() {
         component={HomeGuestStack}
         options={{
           tabBarLabel: "Hubs",
+
           tabBarIcon: ({}) => <Icon name="home" type="feather" color="black" />,
+
 
         }}
       />
