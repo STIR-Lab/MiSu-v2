@@ -34,26 +34,14 @@ import RegisterScreen from "./screens/Authentication/RegisterScreen";
 // Loading Stack *********************************** */
 //************************************************** */
 // Routing container which swaps screens and adds them to the navigation stack(back button function properly on Android)
-<<<<<<< HEAD
-import LoadingScreen from "./screens/index";
-import DevicesScreen from "./screens/Application/DevicesScreen";
-import GuestsScreen from "./screens/Application/GuestsScreen";
-import YourHubsScreen from "./screens/Application/YourHubsScreen";
-=======
 
 import LoadingScreen from './screens/index';
 import DevicesScreen from './screens/Application/DevicesScreen';
 import GuestsScreen from './screens/Application/GuestsScreen';
 import YourHubsScreen from './screens/Application/YourHubsScreen';
 import DeviceControlScreen from './screens/Application/DeviceControlScreen';
->>>>>>> 4c732bc0c39b0b9161d6e94e98ef4dac486c90ef
 
 
-<<<<<<< HEAD
-=======
-// import HomeScreen from './screens/index';
-
->>>>>>> 4c732bc0c39b0b9161d6e94e98ef4dac486c90ef
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -61,10 +49,9 @@ import { Icon } from "react-native-elements";
 
 //Import custom header component
 import Header from "./components/app/Header.js";
-<<<<<<< HEAD
-=======
+
 import SetScheduleScreen from "./screens/Application/SetScheduleScreen";
->>>>>>> 4c732bc0c39b0b9161d6e94e98ef4dac486c90ef
+
 
 Amplify.configure(config);
 
@@ -120,8 +107,6 @@ function HomeStack() {
           headerShown: true,
           headerTitle: () => <Header title="Device Properties" />,
         }}
-<<<<<<< HEAD
-=======
       />
       <HomeNav.Screen
         name="SetScheduleScreen"
@@ -131,7 +116,6 @@ function HomeStack() {
           headerShown: true,
           headerTitle: () => <Header title="Set Schedule" />,
         }}
->>>>>>> 4c732bc0c39b0b9161d6e94e98ef4dac486c90ef
       />
     </HomeNav.Navigator>
   );
@@ -145,11 +129,7 @@ function HomeGuestStack() {
       <HomeGuestNav.Screen
         name="Home"
         component={YourHubsScreen}
-        options={{
-          headerLeft: () => null,
-          headerShown: true,
-          headerTitle: () => <Header title="Your Hubs" />,
-        }}
+        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Your Hubs"/>}}
       />
       {/* <HomeNav.Screen
         name="Device"
@@ -157,19 +137,9 @@ function HomeGuestStack() {
         options={{ headerShown: false }}
       /> */}
       <HomeGuestNav.Screen
-<<<<<<< HEAD
-        name="Properties"
-        component={DeviceProps}
-        options={{
-          headerLeft: () => null,
-          headerShown: true,
-          headerTitle: () => <Header title="Device Properties" />,
-        }}
-=======
         name="DeviceControl"
         component={DeviceControlScreen}
         options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Control"/> }}
->>>>>>> 4c732bc0c39b0b9161d6e94e98ef4dac486c90ef
       />
     </HomeGuestNav.Navigator>
   );
@@ -254,13 +224,8 @@ function AppNavBar() {
         component={HomeStack}
         options={{
           tabBarLabel: "Guests",
-<<<<<<< HEAD
           tabBarIcon: ({ color }) => (
             <Icon name="users" type="feather" color={color} size={31} />
-=======
-          tabBarIcon: ({}) => (
-            <Icon name="users" type="feather" color="black" />
->>>>>>> 4c732bc0c39b0b9161d6e94e98ef4dac486c90ef
           ),
         }}
       />
@@ -281,13 +246,8 @@ function AppNavBar() {
           headerShown: true,
           headerTitle: () => <Header title="Activity Logs" />,
 
-<<<<<<< HEAD
           tabBarIcon: ({ color }) => (
             <Icon name="file-text" type="feather" color={color} size={31} />
-=======
-          tabBarIcon: ({}) => (
-            <Icon name="file-text" type="feather" color="black" />
->>>>>>> 4c732bc0c39b0b9161d6e94e98ef4dac486c90ef
           ),
         }}
       />
@@ -313,17 +273,9 @@ function GuestAppNavBar() {
         name="HomeGuestStack"
         component={HomeGuestStack}
         options={{
-<<<<<<< HEAD
           tabBarLabel: "Hubs",
           tabBarIcon: ({}) => <Icon name="home" type="feather" color="black" />,
-=======
 
-          tabBarLabel: 'Hubs',
-
-          tabBarIcon: ({}) => (
-            <Icon name="home" type="feather" color="black" />
-          ),
->>>>>>> 4c732bc0c39b0b9161d6e94e98ef4dac486c90ef
         }}
       />
       <GuestNavBar.Screen
