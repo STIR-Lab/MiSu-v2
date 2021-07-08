@@ -80,19 +80,6 @@ function GuestsScreen(props) {
     // console.log('== GUESTS SCREEN== ' + JSON.stringify(sharedAccs));
   }, []);
 
-  const mapDispatchToProps = (dispatch) => {
-    return {
-      ModifyAccess: (title, value) => {
-        dispatch(ModifyAccessStateAction(title, value));
-      },
-      Share: (idToken, email, device, accounts, properties, options) => {
-        dispatch(
-          shareAction(idToken, email, device, accounts, properties, options)
-        );
-      },
-    };
-  };
-
   async function fetchData(idToken) {
     // console.log('Fetching Data..');
     // props.getHub(idToken);
