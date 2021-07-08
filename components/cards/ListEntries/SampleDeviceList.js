@@ -10,7 +10,8 @@ import {
   Text,
   Button,
   TextInput,
-  ScrollView
+  ScrollView,
+  maxHeight
 } from "react-native";
 import { Icon } from "react-native-elements";
 import Modal from "react-native-modal";
@@ -164,13 +165,14 @@ function SampleDeviceList(props) {
       transparent={true}
       onBackdropPress={() => setIsVisibleDevices(false)}
     >
-      <ScrollView>
+     
       <View style={styles.modal}>
         <View style={styles.topGuestModal}>
           <Icon name="codesandbox" type="feather" color="black" />
           <Text style={{ marginLeft: 10, fontSize: 20 }}>Add Device</Text>
         </View>
-      
+        <View style = {{minHeight: '25%', maxHeight: '50%', width: '100%'}}>
+        <ScrollView>
         {props.sharedAccountsData.sharedAccounts &&
           props.sharedAccountsData.sharedAccounts.map((entry, i) => (
             
@@ -195,7 +197,8 @@ function SampleDeviceList(props) {
             </View>
            
           ))}
-
+        </ScrollView>
+        </View>
         <View style={{ flex: 1, marginBottom: 30, justifyContent: "flex-end" }}>
           <TouchableOpacity onPress={() => propsClick()}>
             <View
@@ -226,7 +229,7 @@ function SampleDeviceList(props) {
         </View>
         
       </View>
-      </ScrollView>
+      
     </Modal>
   );
 
