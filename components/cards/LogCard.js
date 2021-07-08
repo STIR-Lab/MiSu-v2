@@ -24,8 +24,18 @@ Props [access] {
 
 function LogCard(props){
 
+  
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [isGuestsVisible, setIsGuestsVisible] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
   const [collapsedGuests, setCollapsedGuests] = useState(true);
+
+
+  const openModal = () => {
+    // setSelected(false);
+    setIsVisible(!isVisible);
+  };
 
   const alterDevices = () => {
     setCollapsed(!collapsed);
@@ -34,16 +44,6 @@ function LogCard(props){
   const alterGuests = () => {
     setCollapsedGuests(!collapsedGuests);
   };
-
-  const [isVisible, setIsVisible] = useState(false);
-  const [isGuestsVisible, setIsGuestsVisible] = useState(false);
-
-
-  const openModal = () => {
-    // setSelected(false);
-    setIsVisible(!isVisible);
-  };
-
   
   let modal2 = (
     <Modal
@@ -121,26 +121,30 @@ function LogCard(props){
    
     <View style = {styles.container}>
       <View style = {styles.buttonContainer}>
-       <TouchableOpacity onPress={() => openModal()}>
-      <View style={styles.button}>
-        <Icon name="sliders" type="feather" color="#008CFF"/>
-        <Text style={{marginLeft: 8}}>Filter</Text>
+        <TouchableOpacity onPress={() => openModal()}>
+
+          <View style={styles.button}>
+            <Icon name="sliders" type="feather" color="#008CFF"/>
+            <Text style={{marginLeft: 8}}>Filter</Text>
+          </View>
+
+        </TouchableOpacity>
       </View>
-      </TouchableOpacity>
-      </View>
+
       <View>
+
         <Text style={LogStyle.rowLeft}>Today</Text>
 
         {/* Need function to seperate by time */}
-       {props.logs
+        {props.logs
          ? props.logs.map((entry, index) => {
               return <LogEntry log={entry} key={index} />;
             })
          : null}
 
-    {modal2}
+        {modal2}
       </View>
-    
+
     </View>
     
   );
