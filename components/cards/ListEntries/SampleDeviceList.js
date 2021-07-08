@@ -10,6 +10,7 @@ import {
   Text,
   Button,
   TextInput,
+  ScrollView
 } from "react-native";
 import { Icon } from "react-native-elements";
 import Modal from "react-native-modal";
@@ -163,14 +164,16 @@ function SampleDeviceList(props) {
       transparent={true}
       onBackdropPress={() => setIsVisibleDevices(false)}
     >
+      <ScrollView>
       <View style={styles.modal}>
         <View style={styles.topGuestModal}>
           <Icon name="codesandbox" type="feather" color="black" />
           <Text style={{ marginLeft: 10, fontSize: 20 }}>Add Device</Text>
         </View>
-
+      
         {props.sharedAccountsData.sharedAccounts &&
           props.sharedAccountsData.sharedAccounts.map((entry, i) => (
+            
             <View key={i} style={styles.cardCon}>
               <TouchableOpacity onPress={() => setSelected(entry)}>
                 <View
@@ -188,14 +191,16 @@ function SampleDeviceList(props) {
                 </View>
               </TouchableOpacity>
               <View style={styles.seperator}></View>
+              
             </View>
+           
           ))}
 
         <View style={{ flex: 1, marginBottom: 30, justifyContent: "flex-end" }}>
           <TouchableOpacity onPress={() => propsClick()}>
             <View
               style={{
-                marginTop: 35,
+                marginTop: 20,
                 backgroundColor: "#289EFF",
                 borderRadius: 10,
                 width: 150,
@@ -215,9 +220,13 @@ function SampleDeviceList(props) {
                 Add Device
               </Text>
             </View>
+            
           </TouchableOpacity>
+          
         </View>
+        
       </View>
+      </ScrollView>
     </Modal>
   );
 
@@ -374,7 +383,6 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderRadius: 10,
     width: 300,
-    height: 500,
     alignSelf: "center",
     alignItems: "center",
   },
