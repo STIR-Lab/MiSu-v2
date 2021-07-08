@@ -35,12 +35,11 @@ import RegisterScreen from "./screens/Authentication/RegisterScreen";
 //************************************************** */
 // Routing container which swaps screens and adds them to the navigation stack(back button function properly on Android)
 
-import LoadingScreen from './screens/index';
-import DevicesScreen from './screens/Application/DevicesScreen';
-import GuestsScreen from './screens/Application/GuestsScreen';
-import YourHubsScreen from './screens/Application/YourHubsScreen';
-import DeviceControlScreen from './screens/Application/DeviceControlScreen';
-
+import LoadingScreen from "./screens/index";
+import DevicesScreen from "./screens/Application/DevicesScreen";
+import GuestsScreen from "./screens/Application/GuestsScreen";
+import YourHubsScreen from "./screens/Application/YourHubsScreen";
+import DeviceControlScreen from "./screens/Application/DeviceControlScreen";
 
 // import HomeScreen from './screens/index';
 
@@ -129,7 +128,11 @@ function HomeGuestStack() {
       <HomeGuestNav.Screen
         name="Home"
         component={YourHubsScreen}
-        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Your Hubs"/>}}
+        options={{
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Your Hubs" />,
+        }}
       />
       {/* <HomeNav.Screen
         name="Device"
@@ -139,7 +142,11 @@ function HomeGuestStack() {
       <HomeGuestNav.Screen
         name="DeviceControl"
         component={DeviceControlScreen}
-        options={{ headerLeft: ()=> null, headerShown: true, headerTitle: ()=><Header title="Device Control"/> }}
+        options={{
+          headerLeft: () => null,
+          headerShown: false,
+          // headerTitle: () => <Header title="Device Control" />,
+        }}
       />
     </HomeGuestNav.Navigator>
   );
@@ -264,12 +271,9 @@ function GuestAppNavBar() {
         name="HomeGuestStack"
         component={HomeGuestStack}
         options={{
+          tabBarLabel: "Hubs",
 
-          tabBarLabel: 'Hubs',
-
-          tabBarIcon: ({}) => (
-            <Icon name="home" type="feather" color="black" />
-          ),
+          tabBarIcon: ({}) => <Icon name="home" type="feather" color="black" />,
         }}
       />
       <GuestNavBar.Screen
