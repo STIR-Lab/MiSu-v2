@@ -11,7 +11,7 @@ import {
   Button,
   TextInput,
   ScrollView,
-  maxHeight
+  maxHeight,
 } from "react-native";
 import { Icon } from "react-native-elements";
 import Modal from "react-native-modal";
@@ -29,17 +29,26 @@ function SampleDeviceList(props) {
   const [guestEmail, setGuestEmail] = useState("");
   const [deviceList, setDeviceList] = useState(props.devices);
 
-  useEffect(() => {
+  var tempDevices = [
+    {
+      id: 1,
+      name: "Schlage Smart Lock",
+    },
+  ];
 
-    // console.log('==SAMPLE DEVICE LIST==' + JSON.stringify(props.sharedAccs));
+  useEffect(() => {
+    // console.log(
+    //   "==SAMPLE DEVICE LIST==" + JSON.stringify(props.user.guest_email)
+    // );
+    if (props.user.guest_email != null) {
+      setGuestEmail(props.user.guest_email);
+    }
 
     if (props.screen == "Guests") setScreen("Guests");
     else if (props.screen == "Devices") setScreen("Devices");
     else if (props.screen == "Hubs") setScreen("Hubs");
     else console.log("Invalid screen prop passed.");
   });
-
-  const convertDevicesName = () => {};
 
   const openModal = () => {
     // setSelected(false);
@@ -65,17 +74,25 @@ function SampleDeviceList(props) {
     });
   };
 
-  let addButton = (
-    <View style={styles.iconAndName}>
-      <TouchableOpacity
-        onPress={() => (screen == "Devices" ? openModal() : openModalDevices())}
-        style={screen == "Devices" ? styles.addGuest : styles.addDevice}
-      >
-        <Icon name="plus" type="font-awesome" color="#FFFFFF" size={38} />
-      </TouchableOpacity>
-      <Text>{screen == "Devices" ? "Add Guest" : "Add Device"}</Text>
-    </View>
-  );
+  const shareDevice = () => {
+    console.log("tes");
+  };
+
+  function addButton() {
+    return (
+      <View style={styles.iconAndName}>
+        <TouchableOpacity
+          onPress={() =>
+            screen == "Devices" ? openModal() : openModalDevices()
+          }
+          style={screen == "Devices" ? styles.addGuest : styles.addDevice}
+        >
+          <Icon name="plus" type="font-awesome" color="#FFFFFF" size={38} />
+        </TouchableOpacity>
+        <Text>{screen == "Devices" ? "Add Guest" : "Add Device"}</Text>
+      </View>
+    );
+  }
 
   let modal = (
     <Modal
@@ -159,79 +176,72 @@ function SampleDeviceList(props) {
     </Modal>
   );
 
-  let modalDevices = (
-    <Modal
-      visible={isVisibleDevices}
-      transparent={true}
-      onBackdropPress={() => setIsVisibleDevices(false)}
-    >
-     
-      <View style={styles.modal}>
-        <View style={styles.topGuestModal}>
-          <Icon name="codesandbox" type="feather" color="black" />
-          <Text style={{ marginLeft: 10, fontSize: 20 }}>Add Device</Text>
-        </View>
-        <View style = {{minHeight: '30%', maxHeight: '60%', width: '100%'}}>
-        <ScrollView>
-        {props.sharedAccountsData.sharedAccounts &&
-          props.sharedAccountsData.sharedAccounts.map((entry, i) => (
-            
-            <View key={i} style={styles.cardCon}>
-              <TouchableOpacity onPress={() => setSelected(entry)}>
-                <View
-                  style={{
-                    paddingLeft: 10,
-                    paddingVertical: 6,
-                    flexDirection: "row",
-                    borderRadius: 10,
-                    elevation: selected == entry ? 2 : 0,
-                    backgroundColor: selected == entry ? "white" : "#F1F1F1",
-                  }}
-                >
-                  <Image source={require("../../../assets/people.png")} />
-                  <Text style={styles.cardText}>{entry.name}</Text>
-                </View>
-              </TouchableOpacity>
-              <View style={styles.seperator}></View>
-              
-            </View>
-           
-          ))}
-        </ScrollView>
-        </View>
-        <View style={{ flex: 1, marginBottom: 35, justifyContent: "flex-end" }}>
-          <TouchableOpacity onPress={() => propsClick()}>
-            <View
-              style={{
-                marginTop: 20,
-                backgroundColor: "#289EFF",
-                borderRadius: 10,
-                width: 150,
-                height: 40,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: 22,
-                  fontWeight: "bold",
-                  color: "white",
-                }}
-              >
-                Add Device
-              </Text>
-            </View>
-            
-          </TouchableOpacity>
-          
-        </View>
-        
-      </View>
-      
-    </Modal>
-  );
+  // let modalDevices = (
+  //   <Modal
+  //     visible={isVisibleDevices}
+  //     transparent={true}
+  //     onBackdropPress={() => setIsVisibleDevices(false)}
+  //   >
+  //     <View style={styles.modal}>
+  //       <View style={styles.topGuestModal}>
+  //         <Icon name="codesandbox" type="feather" color="black" />
+  //         <Text style={{ marginLeft: 10, fontSize: 20 }}>Add Device</Text>
+  //       </View>
+  //       <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
+  //         <ScrollView>
+  //           {props.sharedAccountsData.sharedAccounts &&
+  //             props.sharedAccountsData.sharedAccounts.map((entry, i) => (
+  //               <View key={i} style={styles.cardCon}>
+  //                 <TouchableOpacity onPress={() => setSelected(entry)}>
+  //                   <View
+  //                     style={{
+  //                       paddingLeft: 10,
+  //                       paddingVertical: 6,
+  //                       flexDirection: "row",
+  //                       borderRadius: 10,
+  //                       elevation: selected == entry ? 2 : 0,
+  //                       backgroundColor:
+  //                         selected == entry ? "white" : "#F1F1F1",
+  //                     }}
+  //                   >
+  //                     <Image source={require("../../../assets/people.png")} />
+  //                     <Text style={styles.cardText}>{entry.name}</Text>
+  //                   </View>
+  //                 </TouchableOpacity>
+  //                 <View style={styles.seperator}></View>
+  //               </View>
+  //             ))}
+  //         </ScrollView>
+  //       </View>
+  //       <View style={{ flex: 1, marginBottom: 30, justifyContent: "flex-end" }}>
+  //         <TouchableOpacity onPress={() => propsClick()}>
+  //           <View
+  //             style={{
+  //               marginTop: 20,
+  //               backgroundColor: "#289EFF",
+  //               borderRadius: 10,
+  //               width: 150,
+  //               height: 40,
+  //               alignItems: "center",
+  //               justifyContent: "center",
+  //             }}
+  //           >
+  //             <Text
+  //               style={{
+  //                 textAlign: "center",
+  //                 fontSize: 22,
+  //                 fontWeight: "bold",
+  //                 color: "white",
+  //               }}
+  //             >
+  //               Add Device
+  //             </Text>
+  //           </View>
+  //         </TouchableOpacity>
+  //       </View>
+  //     </View>
+  //   </Modal>
+  // );
 
   let modal2 = (
     <Modal
@@ -294,6 +304,96 @@ function SampleDeviceList(props) {
     </Modal>
   );
 
+  let selectDevice = (
+    <Modal
+      visible={isVisibleDevices}
+      transparent={true}
+      onBackdropPress={() => setIsVisibleDevices(false)}
+    >
+      <View style={styles.modal}>
+        <View style={styles.topGuestModal}>
+          <Icon name="codesandbox" type="feather" color="black" />
+          <Icon name="plus" type="feather" color="black" size={13} />
+          <Text style={{ marginLeft: 10, fontSize: 24 }}>Add Device</Text>
+        </View>
+        <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
+          <ScrollView>
+            {tempDevices &&
+              tempDevices.map((entry, i) => (
+                <View key={i} style={styles.cardCon}>
+                  <TouchableOpacity onPress={() => setSelected(i)}>
+                    <View
+                      style={{
+                        paddingLeft: 10,
+                        paddingVertical: 6,
+                        flexDirection: "row",
+                        borderRadius: 10,
+                        elevation: selected == i ? 2 : 0,
+                        backgroundColor: selected == i ? "white" : "#F1F1F1",
+                      }}
+                    >
+                      <Icon
+                        name="lock"
+                        type="feather"
+                        containerStyle={{
+                          padding: 4,
+                          borderColor: "#60b8ff",
+                          borderWidth: 2,
+                          borderRadius: 4,
+                        }}
+                      />
+                      <Text style={styles.cardText}>{entry.name}</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <View style={styles.seperator}></View>
+                </View>
+              ))}
+          </ScrollView>
+        </View>
+        <View style={{ marginBottom: 30, justifyContent: "flex-end" }}>
+          <TouchableOpacity
+            onPress={() => {
+              props.Share(
+                props.sessionData.idToken,
+                guestEmail,
+                {
+                  title: "Push Button Deadbolt",
+                  entity_id: "lock.key_free_push_button_deadbolt",
+                  type: "lock",
+                },
+                [{ access: 1 }],
+                null
+              ),
+                setIsVisibleDevices(false);
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: "#289EFF",
+                borderRadius: 10,
+                width: 150,
+                height: 40,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 22,
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                Add Device
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
+
   return (
     <View style={styles.container} transparent={true}>
       {deviceList.map((d) => (
@@ -321,7 +421,7 @@ function SampleDeviceList(props) {
           )}
         </View>
       ))}
-      {screen != "Hubs" && addButton}
+      {screen != "Hubs" && addButton()}
 
       {/* {props.device &&
         props.device.map((entry, i) => (
@@ -338,7 +438,7 @@ function SampleDeviceList(props) {
 
       {modal}
       {modal2}
-      {modalDevices}
+      {selectDevice}
     </View>
   );
 }
@@ -418,7 +518,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   topGuestModal: {
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 15,
     flexDirection: "row",
     justifyContent: "space-evenly",

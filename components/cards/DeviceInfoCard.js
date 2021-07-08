@@ -80,6 +80,7 @@ function DeviceInfoCard(props) {
       <SampleDeviceList
         screen="Guests"
         title={props.title}
+        user={props.user}
         devices={props.device}
         // sharedAccs={props.sharedAccs} attempting to use redux instead
         navigation={props.navigation}
