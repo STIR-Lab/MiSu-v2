@@ -154,7 +154,7 @@ function HomeGuestStack() {
 
 const DevicesNav = createStackNavigator();
 
-function DevicesStack() {
+function DevicesStack(props) {
   return (
     <DevicesNav.Navigator>
       <DevicesNav.Screen
