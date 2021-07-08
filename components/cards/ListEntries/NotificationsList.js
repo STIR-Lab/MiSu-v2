@@ -67,7 +67,7 @@ const NotificationsList = () => {
       </View>
     </View>
   );
-  const renderItems = data.map((user) => {
+  const renderItems = data.devices.map((user) => {
     return <Item name={user.name} />;
   });
 
