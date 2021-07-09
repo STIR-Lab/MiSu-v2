@@ -14,7 +14,7 @@ function DeviceElement(props) {
     if (props.screen == "Guests") {
       props.navigation.navigate("Properties", {
         accountName: props.title,
-        deviceName: props.deviceName,
+        deviceName: props.name,
         currDevice: props.currDevice,
         navigation: props.navigation,
       });
@@ -26,7 +26,7 @@ function DeviceElement(props) {
       });
     }
   }
-
+  //console.log(props)
   return (
     <View>
       <TouchableOpacity onPress={handleClick}>

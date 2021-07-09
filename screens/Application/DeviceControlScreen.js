@@ -11,7 +11,7 @@ function DeviceControlScreen(props) {
   const [toggledOn, setToggle] = useState(false);
 
   useEffect(() => {
-    console.log(props);
+    // console.log(props);
     fetchValues();
   }, []);
 

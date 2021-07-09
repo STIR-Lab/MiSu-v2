@@ -30,9 +30,9 @@ const Header = (props) => {
     )
       .then((response) => response.json())
       .then((data2) => {
-        console.log("====Before filter: ", data2);
+        // console.log("====Before filter: ", data2);
         setData(data2.message.filter((tmp) => tmp.accepted == 0));
-        console.log("====After filter: ", data);
+        // console.log("====After filter: ", data);
         //console.log("ATTEMPT 2: ", data.statusCode);
       })
       .catch((error) => {

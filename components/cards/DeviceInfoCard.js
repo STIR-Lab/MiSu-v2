@@ -17,7 +17,7 @@ function DeviceInfoCard(props) {
   const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
-    // console.log('==DEVICE INFO CARD== ' + props.sharedAccs.devices[0].name);
+    // console.log('==DEVICE INFO CARD== ' + JSON.toString(props));
   });
 
   // Ugly check to determine icon off of deviceName
@@ -82,6 +82,7 @@ function DeviceInfoCard(props) {
         title={props.title}
         user={props.user}
         devices={props.device}
+        myDevices={props.myDevices}
         // sharedAccs={props.sharedAccs} attempting to use redux instead
         navigation={props.navigation}
       />
