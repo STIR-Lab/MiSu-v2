@@ -40,12 +40,13 @@ function SampleDeviceList(props) {
     // console.log(
     //   "==SAMPLE DEVICE LIST==" + JSON.stringify(props.user.guest_email)
     // );
-    if (props.user.guest_email != null) {
-      setGuestEmail(props.user.guest_email);
-    }
 
-    if (props.screen == "Guests") setScreen("Guests");
-    else if (props.screen == "Devices") setScreen("Devices");
+    if (props.screen == "Guests") {
+      setScreen("Guests");
+      if (props.user.guest_email != null) {
+        setGuestEmail(props.user.guest_email);
+      }
+    } else if (props.screen == "Devices") setScreen("Devices");
     else if (props.screen == "Hubs") setScreen("Hubs");
     else console.log("Invalid screen prop passed.");
   });

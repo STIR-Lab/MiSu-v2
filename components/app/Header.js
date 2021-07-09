@@ -10,7 +10,7 @@ import { getHubInfoAction } from "../../redux/Action/getHubInfoAction";
 import { registerHubAction } from "../../redux/Action/registerHubAction";
 import { shareAction } from "../../redux/Action/shareAction";
 
-const Header = (props, { title }) => {
+const Header = (props) => {
   const [toggled, setToggled] = useState(false);
   const [data, setData] = useState(["nada"]);
 
@@ -60,7 +60,7 @@ const Header = (props, { title }) => {
         />
       </View>
       <View style={styles.title}>
-        <Text style={styles.headerText}>{title}</Text>
+        <Text style={styles.headerText}>{props.title}</Text>
       </View>
       <TouchableOpacity onPress={toggleBell} style={styles.bell}>
         <Icon name="bell" size={38} />
