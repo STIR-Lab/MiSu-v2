@@ -80,7 +80,7 @@ const NotificationsList = (props) => {
   );
   const renderItems = props.data.map((user) => {
     return (
-      <Item sharer_name={user.sharer_name} id={user.login_credentials_id} />
+      <Item sharer_name={user.sharer_name} id={user.login_credentials_id} key={user.login_credentials_id}/>
     );
   });
 

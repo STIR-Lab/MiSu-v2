@@ -20,7 +20,7 @@ import SetScheduleCard from "../../components/cards/SetScheduleCard";
 
 function DeviceProps(props) {
   var deviceProperties = props.route.params.currDevice.properties;
-  console.log("=====" + JSON.stringify(deviceProperties) + "======");
+  console.log("=====" + JSON.stringify(props) + "======");
 
   return (
     <View style={appStyle.container}>
@@ -83,7 +83,7 @@ function DeviceProps(props) {
               </Text>
 
               <SetScheduleCard
-                deviceProperties={deviceProperties[0]}
+                // deviceProperties={deviceProperties[0]}
                 navigation={props.route.params.navigation}
               />
 

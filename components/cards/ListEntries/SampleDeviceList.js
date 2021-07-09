@@ -18,6 +18,10 @@ import Modal from "react-native-modal";
 import DeviceElement from "../../DeviceElement";
 import GuestElement from "../../GuestElement";
 
+import {
+  createADevice,
+} from "../../../services/creationService";
+
 function SampleDeviceList(props) {
   // Will indicate whether this component is rendered in the devices or the guests screen
   const [screen, setScreen] = useState("");
@@ -28,26 +32,32 @@ function SampleDeviceList(props) {
   const [sharedAccs, setSharedAccs] = useState(null);
   const [guestEmail, setGuestEmail] = useState("");
   const [deviceList, setDeviceList] = useState(props.devices);
-
-  var tempDevices = [
-    {
-      id: 1,
-      name: "Schlage Smart Lock",
-    },
-  ];
+  const [tempDevices, setTempDevices] = useState(props.myDevices);
+  const [choice, setChoice] = useState(null);
+  // var tempDevices = [
+  //   {
+  //     id: 1,
+  //     name: "Schlage Smart Lock",
+  //   },
+  // ];
 
   useEffect(() => {
-    // console.log(
-    //   "==SAMPLE DEVICE LIST==" + JSON.stringify(props.user.guest_email)
-    // );
+    // console.log("==SAMPLE DEVICE LIST USER:", props.user);
+    // console.log("===DEVICES: ", props.devices);
+    // console.log("===MY DEVICES: ", props.myDevices);
+    // console.log("===Bearer ID:", props.sessionData.idToken);
 
     if (props.screen == "Guests") {
       setScreen("Guests");
+      setChoice(props.myDevices[0])
       if (props.user.guest_email != null) {
         setGuestEmail(props.user.guest_email);
       }
     } else if (props.screen == "Devices") setScreen("Devices");
-    else if (props.screen == "Hubs") setScreen("Hubs");
+    else if (props.screen == "Hubs"){
+      setScreen("Hubs"); 
+      // console.log("====== HUB SAMPLE DEVICE LIST", props);
+    }
     else console.log("Invalid screen prop passed.");
   });
 
@@ -64,6 +74,11 @@ function SampleDeviceList(props) {
     setIsVisible(false);
     setIsVisible2(true);
   };
+
+  function getType(stringToParse){
+    const tmp = stringToParse.split('.');
+    return tmp[0];
+  }
 
   const propsClick = () => {
     if (selected == null) {
@@ -343,7 +358,7 @@ function SampleDeviceList(props) {
                           borderRadius: 4,
                         }}
                       />
-                      <Text style={styles.cardText}>{entry.name}</Text>
+                      <Text style={styles.cardText}>{entry.attributes.friendly_name}</Text>
                     </View>
                   </TouchableOpacity>
                   <View style={styles.seperator}></View>
@@ -354,17 +369,9 @@ function SampleDeviceList(props) {
         <View style={{ marginBottom: 30, justifyContent: "flex-end" }}>
           <TouchableOpacity
             onPress={() => {
-              props.Share(
-                props.sessionData.idToken,
-                guestEmail,
-                {
-                  title: "Push Button Deadbolt",
-                  entity_id: "lock.key_free_push_button_deadbolt",
-                  type: "lock",
-                },
-                [{ access: 1 }],
-                null
-              ),
+                const apiRet = createADevice(props.user.login_credentials_id, props.sessionData.idToken, 
+                  {title : choice.attributes.friendly_name, entity_id: choice.entity_id ,type: getType(choice.entity_id) });
+                // console.log(apiRet);
                 setIsVisibleDevices(false);
             }}
           >
@@ -406,7 +413,7 @@ function SampleDeviceList(props) {
               title={d.title}
               navigation={props.navigation}
             />
-          ) : (
+          ) : screen === "Hubs" ? (
             <DeviceElement
               screen={props.screen}
               key={d.shared_device_properties_id}
@@ -419,7 +426,20 @@ function SampleDeviceList(props) {
               navigation={props.navigation}
               idToken={props.sessionData.idToken}
             />
-          )}
+          ) :
+            <DeviceElement
+            screen={props.screen}
+            key={d.shared_device_properties_id}
+            currDevice={d}
+            title={d.title}
+            name={d.name}
+            id={d.entity_id}
+            type={d.type}
+            login={d.login_credentials_id}
+            navigation={props.navigation}
+            idToken={props.sessionData.idToken}
+          />
+          }
         </View>
       ))}
       {screen != "Hubs" && addButton()}

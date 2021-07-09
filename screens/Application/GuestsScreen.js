@@ -18,6 +18,10 @@ import appStyle from "../../styles/AppStyle";
 import DeviceInfoCard from "../../components/cards/DeviceInfoCard";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Feather";
+
+import {
+  createSharedUser,
+} from "../../services/creationService";
 //import { shareAction } from "../../../redux/Action/shareAction";
 
 // AWS Config
@@ -33,14 +37,14 @@ function GuestsScreen(props) {
   const [loading, setLoading] = useState(false);
   const [guestEmail, setGuestEmail] = useState("");
 
-  openModal = () => {
-    setIsVisible(!isVisible);
-  };
+  // openModal = () => {
+  //   setIsVisible(!isVisible);
+  // };
 
   openModal2 = () => {
     setIsVisible2(!isVisible2);
   };
-  // console.log(props);
+  // console.log(props.devicesData.devices);
 
   // =========================================================================
   // REFRESH LOGIC: TO DO LATER
@@ -70,14 +74,12 @@ function GuestsScreen(props) {
     // 		name: props.sessionData.name
     // 	});
     // const { idToken } = props.sessionData;
-    console.log("GuestsScreen:", props);
+    // console.log("GuestsScreen:", props.sharedAccountsData.sharedAccounts);
     const idToken = 0;
     //getUsageLogs();
     //getAccessLogs();
     // onRefresh();
     fetchData(idToken);
-    // console.log(props);
-    // console.log('== GUESTS SCREEN== ' + JSON.stringify(sharedAccs));
   }, []);
 
   async function fetchData(idToken) {
@@ -93,17 +95,18 @@ function GuestsScreen(props) {
     // console.log("== GUESTS SCREEN== " + JSON.stringify(sharedAccs));
   }
 
-  let modal = (
-    <Modal
-      visible={isVisible}
-      transparent={true}
-      onBackdropPress={() => setIsVisible(false)}
-    >
-      <View style={styles.modal}>
-        <Text>Test</Text>
-      </View>
-    </Modal>
-  );
+
+  // let modal = (
+  //   <Modal
+  //     visible={isVisible}
+  //     transparent={true}
+  //     onBackdropPress={() => setIsVisible(false)}
+  //   >
+  //     <View style={styles.modal}>
+  //       <Text>Test</Text>
+  //     </View>
+  //   </Modal>
+  // );
 
   let modal2 = (
     <Modal
@@ -132,17 +135,7 @@ function GuestsScreen(props) {
         />
         <TouchableOpacity
           onPress={() => {
-            props.Share(
-              props.sessionData.idToken,
-              guestEmail,
-              {
-                title: "Push Button Deadbolt",
-                entity_id: "lock.key_free_push_button_deadbolt",
-                type: "lock",
-              },
-              [{ access: 1 }],
-              null
-            ),
+              createSharedUser(props.sessionData.idToken, guestEmail);
               setIsVisible2(false);
           }}
         >
@@ -187,10 +180,11 @@ function GuestsScreen(props) {
                 type={"GuestCard"}
                 sharedAccs={sharedAccs}
                 navigation={props.navigation}
+                myDevices={props.devicesData.devices}
               />
             ))}
         </ScrollView>
-        {modal}
+        {/* {modal} */}
         {modal2}
       </View>
     </TouchableWithoutFeedback>

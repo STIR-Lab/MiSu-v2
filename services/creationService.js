@@ -6,7 +6,7 @@ export const createADevice = async (
   { title, entity_id, type }
 ) => {
   const response = await fetch(
-    "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/device",
+    "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/createashareddevice",
     {
       method: "POST",
       headers: {
@@ -15,15 +15,21 @@ export const createADevice = async (
         Accept: "*/*",
       },
       body: JSON.stringify({
-        account: account.login_credentials_id,
+        account: account,
         name: title,
         entity_id: entity_id,
         type: type
       }),
     }
-  );
-
-  return response.json();
+  ).then(response => response.json())
+  .then(data => {
+    // console.log(data);
+    // console.log(account);
+    // console.log(idToken)
+    // console.log(entity_id)
+    // console.log(type)
+    return data;
+}).catch(err => console.log(err));;
 };
 
 export const checkUserExists = async (idToken, email) => {
