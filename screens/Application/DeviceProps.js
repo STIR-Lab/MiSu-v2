@@ -1,5 +1,5 @@
 import { Route53 } from "aws-sdk";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   TouchableOpacity,
@@ -19,8 +19,20 @@ import appStyle from "../../styles/AppStyle";
 import SetScheduleCard from "../../components/cards/SetScheduleCard";
 
 function DeviceProps(props) {
-  var deviceProperties = props.route.params.currDevice.properties;
-  console.log("=====" + JSON.stringify(props) + "======");
+  const [userName, setUserName] = useState("Unknown");
+  const [deviceName, setDeviceName] = useState("Unknown");
+
+  useEffect(() => {
+    console.log("==DeviceProps==" + JSON.stringify(props) + "======");
+    var accountProperties = props.route.params.accObject;
+    var deviceProperties = props.route.params.currDevice.properties;
+    if (accountProperties.name != null) {
+      setUserName(accountProperties.name);
+    }
+    if (props.route.params.deviceName != null) {
+      setDeviceName(props.route.params.deviceName);
+    }
+  }, []);
 
   return (
     <View style={appStyle.container}>
@@ -49,8 +61,7 @@ function DeviceProps(props) {
                       fontSize: 16,
                     }}
                   >
-                    {props.route.params.accountName &&
-                      props.route.params.accountName}
+                    {userName}
                   </Text>
                 </View>
               </View>
@@ -71,7 +82,7 @@ function DeviceProps(props) {
                       color: "white",
                     }}
                   >
-                    {props.route.params.deviceName}
+                    {deviceName}
                   </Text>
                 </View>
               </View>
@@ -197,9 +208,10 @@ const propstyle = StyleSheet.create({
 
     paddingTop: 5,
     paddingLeft: 5,
-    paddingRight: 15,
+    paddingRight: 12,
     paddingBottom: 5,
     marginBottom: 5,
+    marginRight: 25,
   },
   devicecard: {
     justifyContent: "center",

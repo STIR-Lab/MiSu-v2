@@ -32,7 +32,7 @@ function GuestElement(props) {
       <TouchableOpacity
         onPress={() =>
           props.navigation.navigate("Properties", {
-            accountName: props.title,
+            accObject: props.user,
             deviceName: props.deviceName,
             currDevice: props.currDevice,
             navigation: props.navigation,

@@ -13,16 +13,16 @@ function DeviceElement(props) {
   function handleClick() {
     if (props.screen == "Guests") {
       props.navigation.navigate("Properties", {
-        accountName: props.title,
+        accObject: props.user,
         deviceName: props.name,
         currDevice: props.currDevice,
         navigation: props.navigation,
       });
     } else {
       // console.log(props);
-      props.navigation.navigate("DeviceControl",{
+      props.navigation.navigate("DeviceControl", {
         device: props.currDevice,
-        bearerId: props.idToken
+        bearerId: props.idToken,
       });
     }
   }

@@ -23,7 +23,7 @@ import Header from "../../components/app/Header.js";
 const SetScheduleScreen = () => {
   return (
     <View style={styles.screen}>
-      <Header title="Set Schedule" />
+      {/* <Header title="Set Schedule" /> */}
       <View style={styles.info}>
         <NameBadge name="John Smith" />
         <PropertyBadge property="On/Off" />
@@ -296,14 +296,16 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     flexDirection: "row",
     justifyContent: "space-between",
+    alignContent: "space-between",
     marginRight: 55,
     marginLeft: 55,
-    flex: 0.11,
+    flex: 0.15,
     alignItems: "flex-end",
+    alignSelf: "stretch",
     paddingBottom: 15,
   },
   setTime: {
-    flex: 0.5,
+    flex: 1,
     flexDirection: "column",
   },
   time: {

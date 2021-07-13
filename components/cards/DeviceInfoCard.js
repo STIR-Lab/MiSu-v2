@@ -79,8 +79,11 @@ function DeviceInfoCard(props) {
     list = (
       <SampleDeviceList
         screen="Guests"
+        // Name of the guest
         title={props.title}
+        // Entire entry of the guest
         user={props.user}
+        // Devices is subset of guests user entry
         devices={props.device}
         myDevices={props.myDevices}
         // sharedAccs={props.sharedAccs} attempting to use redux instead
