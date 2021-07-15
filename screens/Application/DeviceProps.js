@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Switch,
   Button,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
@@ -21,6 +22,7 @@ import SetScheduleCard from "../../components/cards/SetScheduleCard";
 function DeviceProps(props) {
   const [userName, setUserName] = useState("Unknown");
   const [deviceName, setDeviceName] = useState("Unknown");
+  const [geoIsEnabled, setGeoIsEnabled] = useState(false);
 
   useEffect(() => {
     console.log("==DeviceProps==" + JSON.stringify(props) + "======");
@@ -33,6 +35,36 @@ function DeviceProps(props) {
       setDeviceName(props.route.params.deviceName);
     }
   }, []);
+
+  const handleGeofencing = () => {
+    setGeoIsEnabled(!geoIsEnabled);
+
+    if (!geoIsEnabled) {
+      Alert.alert("Geofencing set to 1 mile");
+    }
+    /*
+    async function setGeofencing(answer, id, bearer) {
+      const state = await fetch(
+        "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/gps",
+        {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + bearer,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            account: id,
+            accepted: answer,
+          }),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((err) => console.log(err));
+    }*/
+  };
 
   return (
     <View style={appStyle.container}>
@@ -171,12 +203,13 @@ function DeviceProps(props) {
                 }}
               >
                 <Switch
+                  value={geoIsEnabled}
                   style={{
                     transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
                   }}
                   trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
                   // Kolbe api call to set gps location and set deviceProps gps_location
-                  onValueChange={(x) => {}}
+                  onValueChange={handleGeofencing}
                 />
               </View>
             </View>

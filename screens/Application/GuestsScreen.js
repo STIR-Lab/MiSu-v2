@@ -19,9 +19,7 @@ import DeviceInfoCard from "../../components/cards/DeviceInfoCard";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Feather";
 
-import {
-  createSharedUser,
-} from "../../services/creationService";
+import { createSharedUser } from "../../services/creationService";
 //import { shareAction } from "../../../redux/Action/shareAction";
 
 // AWS Config
@@ -95,7 +93,6 @@ function GuestsScreen(props) {
     // console.log("== GUESTS SCREEN== " + JSON.stringify(sharedAccs));
   }
 
-
   // let modal = (
   //   <Modal
   //     visible={isVisible}
@@ -135,8 +132,8 @@ function GuestsScreen(props) {
         />
         <TouchableOpacity
           onPress={() => {
-              createSharedUser(props.sessionData.idToken, guestEmail);
-              setIsVisible2(false);
+            createSharedUser(props.sessionData.idToken, guestEmail);
+            setIsVisible2(false);
           }}
         >
           <View style={styles.submitButton}>
