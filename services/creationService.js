@@ -81,6 +81,33 @@ export const createHub = async (
 }).catch(err => console.log(err));
 }
 
+export const changeRole = async (
+  user_type,
+  idToken
+) => {
+  // console.log('Bearer ' + idToken)
+  // console.log(JSON.stringify({
+  //   hub_url: hub_url,
+  //   hub_email: hub_email,
+  //   hub_password: hub_password}))
+
+  return await fetch('https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/toggleusertype', {
+    method: 'POST',
+    headers: 
+    {
+        Authorization: 'Bearer ' + idToken,
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      user_type: user_type
+  })
+}).then(response => response.json())
+  .then(data => {
+    console.log(data);
+    return data;
+}).catch(err => console.log(err));
+}
+
 export const createSharedUser = async (idToken, email) => {
   const response = await fetch(
     "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/createshareduser",
