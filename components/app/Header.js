@@ -89,9 +89,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerText: {
-    fontSize: 28,
+    fontSize: 25,
     fontWeight: "normal",
-
+    color: "#242424",
     backgroundColor: "transparent",
   },
   tinyLogo: {

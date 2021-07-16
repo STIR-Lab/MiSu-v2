@@ -216,10 +216,8 @@ function DeviceProps(props) {
                 }}
               >
                 <Text style={{ fontSize: 20 }}>Lock/Unlock</Text>
-               
               </View>
-             
-             
+
               <Text style={{ marginTop: 20, fontSize: 26, fontWeight: "bold" }}>
                 Set Geofencing
               </Text>
@@ -272,7 +270,7 @@ const propstyle = StyleSheet.create({
 
     paddingTop: 5,
     paddingLeft: 5,
-    paddingRight: 12,
+    paddingRight: 35,
     paddingBottom: 5,
     marginBottom: 5,
     marginRight: 25,
