@@ -42,10 +42,12 @@ const Header = (props) => {
 
   let notificationsModal = (
     <Modal
-      visible={toggled}
+      isVisible={toggled}
       onBackdropPress={toggleBell}
-      backdropOpacity={0}
-      animationType="slide"
+      backdropColor={"#00000090"}
+      hasBackdrop={true}
+      backdropOpacity={10}
+      style={styles.modal}
     >
       <NotificationsList data={data} bearer={props.sessionData.idToken} />
     </Modal>
@@ -63,7 +65,7 @@ const Header = (props) => {
         <Text style={styles.headerText}>{props.title}</Text>
       </View>
       <TouchableOpacity onPress={toggleBell} style={styles.bell}>
-        <Icon name="bell" size={38} />
+        <Icon name="bell" size={38} color="#1a1a1a" />
       </TouchableOpacity>
       {notificationsModal}
     </View>
@@ -88,27 +90,28 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 28,
-    fontWeight: "bold",
+    fontWeight: "normal",
 
     backgroundColor: "transparent",
   },
   tinyLogo: {
-    width: 90,
-    height: 90,
+    width: 70,
+    height: 70,
   },
 
   image: {
     backgroundColor: "transparent",
     position: "absolute",
     zIndex: 1000,
-    left: -10,
+    left: 0,
     bottom: -15,
   },
   bell: {
     position: "absolute",
     right: 10,
-    top: -20,
+    top: 0,
   },
+  modal: {},
 });
 
 const mapStateToProps = (state) => {

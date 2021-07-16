@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Switch,
@@ -8,19 +8,57 @@ import {
   View,
   Text,
   StyleSheet,
-} from "react-native";
-import MiSuv2 from "../../assets/MISUv2.png";
-import { Avatar, Chip } from "react-native-elements";
-import DropDownPicker from "react-native-dropdown-picker";
-import xtype from "xtypejs";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import DateTimePicker from "@react-native-community/datetimepicker";
+} from 'react-native';
+import MiSuv2 from '../../assets/MISUv2.png';
+import { Avatar, Chip } from 'react-native-elements';
+import DropDownPicker from 'react-native-dropdown-picker';
+import xtype from 'xtypejs';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 //const weekdays = ['Monday', 'Tuesday', 'Wednesday', "Thursday", "Friday", "Saturday", "Sunday"];
 
 //Import Header Component
-import Header from "../../components/app/Header.js";
+import Header from '../../components/app/Header.js';
 
-const SetScheduleScreen = () => {
+const SetScheduleScreen = (props) => {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [allDay, setAllDay] = useState(false);
+
+  function handleSave() {
+    props.navigation.pop();
+  }
+
+  useEffect(() => {
+    if (props.route.params.deviceProperties == null) {
+      return;
+    }
+    var deviceProperties = props.route.params.deviceProperties[0];
+    console.log(
+      '==========setScheduleScreen==========' +
+        JSON.stringify(deviceProperties[0])
+    );
+
+    if (deviceProperties.date_start != null) {
+      if (deviceProperties.date_start != '') {
+        setStartDate(deviceProperties.date_start);
+      }
+    }
+    if (deviceProperties.date_end != null) {
+      if (deviceProperties.date_end != '') {
+        setEndDate(deviceProperties.date_end);
+      }
+    }
+    if (deviceProperties.time_all_day != null) {
+      if (deviceProperties.time_all_day != '') {
+        if (deviceProperties.time_all_day == '1') {
+          console.log('Setting allday true');
+          setAllDay(true);
+        }
+      }
+    }
+  }, []);
+
   return (
     <View style={styles.screen}>
       {/* <Header title="Set Schedule" /> */}
@@ -30,14 +68,14 @@ const SetScheduleScreen = () => {
       </View>
       <View style={styles.setTime}>
         <WeekDays />
-        <AllDay />
+        <AllDay val={allDay} />
         <StartTime />
         <StartDate />
         <EndTime />
         <EndDate />
       </View>
       <View style={styles.setRepeat}>
-        <Button title="Save" />
+        <Button onPress={() => handleSave()} title="Save" />
       </View>
     </View>
   );
@@ -48,7 +86,7 @@ const NameBadge = ({ name }) => {
     <View style={styles.nameChip}>
       <Image
         style={styles.nameBadge}
-        source={require("../../assets/icons/user.png")}
+        source={require('../../assets/icons/user.png')}
       />
       <Text style={styles.nameText}> {name}</Text>
     </View>
@@ -60,7 +98,7 @@ const PropertyBadge = ({ property }) => {
     <View style={styles.propertyChip}>
       <Image
         style={styles.propertyBadge}
-        source={require("../../assets/icons/user.png")}
+        source={require('../../assets/icons/user.png')}
       />
       <Text style={styles.propertyText}> {property}</Text>
     </View>
@@ -71,14 +109,14 @@ const WeekDays = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState([]);
   const [items, setItems] = useState([
-    { label: "All", value: "All" },
-    { label: "Monday", value: "Monday" },
-    { label: "Tuesday", value: "Tuesday" },
-    { label: "Wednesday", value: "Wednesday" },
-    { label: "Thursday", value: "Thursday" },
-    { label: "Friday", value: "Friday" },
-    { label: "Saturday", value: "Saturday" },
-    { label: "Sunday", value: "Sunday" },
+    { label: 'All', value: 'All' },
+    { label: 'Monday', value: 'Monday' },
+    { label: 'Tuesday', value: 'Tuesday' },
+    { label: 'Wednesday', value: 'Wednesday' },
+    { label: 'Thursday', value: 'Thursday' },
+    { label: 'Friday', value: 'Friday' },
+    { label: 'Saturday', value: 'Saturday' },
+    { label: 'Sunday', value: 'Sunday' },
   ]);
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -99,10 +137,10 @@ const WeekDays = () => {
         value={value}
         containerStyle={{
           width: 170,
-          borderColor: "white",
+          borderColor: 'white',
         }}
         selectedItemContainerStyle={{
-          backgroundColor: "#5F9EE950",
+          backgroundColor: '#5F9EE950',
         }}
       />
     </View>
@@ -111,11 +149,26 @@ const WeekDays = () => {
 
 // AllDay swtich component
 
-const AllDay = () => {
+const AllDay = (props) => {
+  const [value, setValue] = useState(false);
+
+  useEffect(() => {
+    setValue(props.val);
+  });
+
+  console.log(value);
+
   return (
     <View style={styles.time}>
       <Text style={styles.timeText}>All Day</Text>
-      <Switch style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }} />
+      <Switch
+        value={value}
+        onValueChange={(val) => {
+          console.log(val);
+          setValue(val);
+        }}
+        style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }}
+      />
     </View>
   );
 };
@@ -136,11 +189,11 @@ const StartTime = () => {
   };
 
   const handleConfirm = (startTime) => {
-    console.warn("A time has been picked: ", startTime);
+    console.warn('A time has been picked: ', startTime);
     setTime(
       startTime.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
+        hour: '2-digit',
+        minute: '2-digit',
         hour12: true,
       })
     );
@@ -177,7 +230,7 @@ const EndTime = () => {
   };
 
   const handleConfirm = (time) => {
-    console.warn("A time has been picked: ", time);
+    console.warn('A time has been picked: ', time);
     hideTimePicker();
   };
 
@@ -209,7 +262,7 @@ const StartDate = () => {
   };
 
   const handleConfirm = (date) => {
-    console.warn("A time has been picked: ", date);
+    console.warn('A time has been picked: ', date);
     hideDatePicker();
   };
   return (
@@ -238,7 +291,7 @@ const EndDate = () => {
   };
 
   const handleConfirm = (date) => {
-    console.warn("A time has been picked: ", date);
+    console.warn('A time has been picked: ', date);
     hideDatePicker();
   };
   return (
@@ -288,68 +341,68 @@ const EndDate = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#F1F1F1",
-    width: "100%",
+    backgroundColor: '#F1F1F1',
+    width: '100%',
   },
 
   info: {
-    backgroundColor: "transparent",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignContent: "space-between",
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'space-between',
     marginRight: 55,
     marginLeft: 55,
     flex: 0.15,
-    alignItems: "flex-end",
-    alignSelf: "stretch",
+    alignItems: 'flex-end',
+    alignSelf: 'stretch',
     paddingBottom: 15,
   },
   setTime: {
     flex: 1,
-    flexDirection: "column",
+    flexDirection: 'column',
   },
   time: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingTop: 13,
     padding: 12,
     paddingRight: 20,
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: 'space-between',
+    alignItems: 'center',
 
-    width: "100%",
+    width: '100%',
   },
   timeText: {
     paddingLeft: 100,
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   picker: {
     paddingLeft: 10,
-    borderColor: "white",
+    borderColor: 'white',
     elevation: 6,
     width: 170,
     height: 40,
   },
   setRepeat: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     flex: 0.15,
   },
   badges: {
-    backgroundColor: "cyan",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    backgroundColor: 'cyan',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   nameChip: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 500,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 170,
     height: 50,
-    overflow: "hidden",
-    shadowColor: "#000",
+    overflow: 'hidden',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 3,
@@ -366,19 +419,19 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: 20,
-    fontWeight: "900",
+    fontWeight: '900',
     marginRight: 10,
   },
   propertyChip: {
-    backgroundColor: "#44ABFF",
+    backgroundColor: '#44ABFF',
     borderRadius: 500,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 120,
     height: 50,
-    overflow: "hidden",
-    shadowColor: "#000",
+    overflow: 'hidden',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 3,
@@ -392,12 +445,12 @@ const styles = StyleSheet.create({
     marginRight: 2,
     height: 35,
     width: 35,
-    tintColor: "white",
+    tintColor: 'white',
   },
   propertyText: {
     fontSize: 17,
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
   },
   switch: {},
 });

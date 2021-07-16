@@ -61,7 +61,7 @@ function HubScreen(props) {
             if (res.statusCode === 200)
               props.navigation.pop();
             else if (res.statusCode === 405)
-              setError('Invalid Hub URL.');
+              setError('Invalid Hub URL. Is your Hub turned on?');
             else if (res.statusCode === 401)
               setError('Invalid Email and Password Combination.');
             else if (res.statusCode === 400 || res.statusCode === 502)

@@ -8,6 +8,7 @@ import {
   FlatList,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import UserAvatar from "react-native-user-avatar";
 import { Avatar, Badge, withBadge } from "react-native-elements";
 
 const DATA = [
@@ -55,7 +56,7 @@ const NotificationsList = (props) => {
   const Item = ({ sharer_name, id }) => (
     <View style={styles.item} key={id}>
       <View style={styles.icon}>
-        <Icon name="account-circle" size={50} color="#ffcb5c" />
+        <UserAvatar size={45} borderRadius={30} name={sharer_name} />
       </View>
 
       <View>
@@ -80,13 +81,17 @@ const NotificationsList = (props) => {
   );
   const renderItems = props.data.map((user) => {
     return (
-      <Item sharer_name={user.sharer_name} id={user.login_credentials_id} key={user.login_credentials_id}/>
+      <Item
+        sharer_name={user.sharer_name}
+        id={user.login_credentials_id}
+        key={user.login_credentials_id}
+      />
     );
   });
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Hub Requests</Text>
+      <Text style={styles.title}>Pending Requests</Text>
       {renderItems}
     </View>
   );
@@ -97,21 +102,24 @@ export default NotificationsList;
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
-    flex: 0.8,
+    flex: 0.5,
     backgroundColor: "#F1F1F1",
     elevation: 12,
     borderRadius: 10,
+    flexWrap: "wrap",
+    paddingBottom: 15,
   },
 
   item: {
     backgroundColor: "white",
     marginTop: 5,
-    flex: 0.15,
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     margin: 10,
     borderRadius: 10,
-    elevation: 7,
+    elevation: 5,
+    flexGrow: 1,
   },
   buttons: {
     flexDirection: "row",
@@ -129,7 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 23,
   },
   title: {
-    fontSize: 35,
+    fontSize: 30,
     textAlign: "center",
     margin: 15,
   },

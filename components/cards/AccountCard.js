@@ -17,34 +17,16 @@ function AccountCard(props) {
   return (
     <View style={style.container}>
 
-      <Icon 
-          name="account-circle"
-          size={70}
-          style={{color: "#FFCB5B", flexBasis: 100, }}/>
+      
      
 
       <View style= {{}}>
         {/* Show user's name */}
         <Text style={style.name}>
-          {props.user.name} {props.user.lastName}
+          Profile
         </Text>
 
-        {/* Weird undefined behavior w/ city, state */}
-        <Text style={style.info}>
-          {props.user.city ===
-          (undefined || null || '' || 'undefined' || 'null') ? (
-            <></>
-          ) : (
-            props.user.city + ', '
-          )}
-
-          {props.user.state ===
-          (undefined || null || '' || 'undefined' || 'null') ? (
-            <></>
-          ) : (
-            props.user.state
-          )}
-        </Text>
+        
       </View>
     </View>
   );
@@ -64,8 +46,9 @@ const style = StyleSheet.create({
     fontSize: 17,
   },
   name: {
-    fontSize: 28,
+    fontSize: 36,
     fontWeight: 'bold',
+    
   },
   icon: {
     height: 80,
