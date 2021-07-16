@@ -392,7 +392,7 @@ export default function App(props) {
   return (
     <Provider store={store}>
       <View style={{ flex: 1 }}>
-        <StatusBar translucent backgroundColor="transparent" />
+        <StatusBar translucent transparent={false} />
         <Spinner
           visible={loading}
           textContent={"Loading..."}
