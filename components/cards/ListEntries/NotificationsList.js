@@ -8,6 +8,7 @@ import {
   FlatList,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+
 import UserAvatar from "react-native-user-avatar";
 import { Avatar, Badge, withBadge } from "react-native-elements";
 
@@ -113,13 +114,12 @@ const styles = StyleSheet.create({
   item: {
     backgroundColor: "white",
     marginTop: 5,
-    flex: 1,
+    flex: 0.3,
     flexDirection: "row",
     alignItems: "center",
     margin: 10,
     borderRadius: 10,
     elevation: 5,
-    flexGrow: 1,
   },
   buttons: {
     flexDirection: "row",

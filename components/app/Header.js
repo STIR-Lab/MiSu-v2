@@ -16,7 +16,7 @@ const Header = (props) => {
 
   async function toggleBell() {
     setToggled(!toggled);
-    console.log("===== LOOK HERE  ===", props.sessionData.idToken);
+    console.log("===============HEADER STUFF=============", props);
 
     //console.log(obj);
     const state = await fetch(
@@ -65,7 +65,7 @@ const Header = (props) => {
         <Text style={styles.headerText}>{props.title}</Text>
       </View>
       <TouchableOpacity onPress={toggleBell} style={styles.bell}>
-        <Icon name="bell" size={38} color="#1a1a1a" />
+        {props.guest ? <Icon name="bell" size={38} color="#1a1a1a" /> : null}
       </TouchableOpacity>
       {notificationsModal}
     </View>
