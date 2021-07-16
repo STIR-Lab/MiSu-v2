@@ -107,6 +107,8 @@ function SampleDeviceList(props) {
     );
   }
 
+  
+
   let modal = (
     <Modal
       visible={isVisible}
@@ -272,6 +274,8 @@ function SampleDeviceList(props) {
             fontWeight: "bold",
             textAlign: "center",
             justifyContent: "center",
+            marginLeft: 5,
+            marginRight: 5,  
           }}
         >
           Send a request to your guest to have them share your home!
@@ -523,7 +527,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#F1F1F1",
     borderWidth: 1,
     borderColor: "black",
-    borderRadius: 10,
+    borderRadius: 20,
+    margin: 5, 
     width: 300,
     height: 300,
     alignSelf: "center",

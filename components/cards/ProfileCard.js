@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, View, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function ProfileCard(props) {
 
@@ -12,27 +13,21 @@ function ProfileCard(props) {
                     <Text>Edit</Text>
                 </View>
             </View>
-
-            <View style={style.infoLine}>
-                <Text style={style.subHeader}>Email</Text>
-                <Text style={style.info}>{props.user.email}</Text>
+            <View style={style.rowInformation}>
+                
+                <Icon 
+                 name="account-circle"
+                size={90}
+                 style={{color: "#FFCB5B", flexBasis: 100, }}/>
+               
+                <View style={style.infoLine}>
+                    
+                    <Text style={style.name}>{props.user.name} {props.user.lastName} </Text>
+                    <Text style={style.info}>{props.user.email}</Text>
+                   
+                </View>
             </View>
-
-            <View style={style.infoLine}>
-                <Text style={style.subHeader}>Phone</Text>
-                <Text style={style.info}>{props.user.phone}</Text>
-            </View>
-
-            <View style={style.infoLine}>
-                <Text style={style.subHeader}>Address</Text>
-                <Text style={style.info}>
-                    {props.user.address === undefined ? (
-                    <></>
-                    ) : (
-                    props.user.address
-                    )}
-                </Text>
-            </View>
+            
         </View>
     );
 }
@@ -60,6 +55,11 @@ const style = StyleSheet.create({
         width: 16,
         marginRight: 5
     },
+    name: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        marginLeft: 8,
+      },
     header: {
       color: "gray",
       fontSize: 22,
@@ -79,14 +79,18 @@ const style = StyleSheet.create({
         width: 100,
         paddingLeft: 15
     },
+    rowInformation:{
+        flexDirection: "row",
+        marginLeft: 15, 
+    },
     info: {
       marginLeft: 10,
       fontSize: 15.5
     },
     infoLine: {
       width: "75%",
-      flexDirection: "row",
-      marginHorizontal: 15,
+      flexDirection: "column",
+      
       marginVertical: 7,
   
     }
