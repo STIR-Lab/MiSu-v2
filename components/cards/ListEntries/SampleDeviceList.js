@@ -272,6 +272,8 @@ function SampleDeviceList(props) {
             fontWeight: "bold",
             textAlign: "center",
             justifyContent: "center",
+            marginLeft: 5,
+            marginRight: 5,
           }}
         >
           Send a request to your guest to have them share your home!
@@ -319,9 +321,12 @@ function SampleDeviceList(props) {
 
   let selectDevice = (
     <Modal
-      visible={isVisibleDevices}
+      isVisible={isVisibleDevices}
       transparent={true}
       onBackdropPress={() => setIsVisibleDevices(false)}
+      backdropColor={"#00000080"}
+      backdropOpacity={1}
+      hasBackdrop={true}
     >
       <View style={styles.modal}>
         <View style={styles.topGuestModal}>
@@ -512,18 +517,17 @@ const styles = StyleSheet.create({
   },
   modal: {
     backgroundColor: "#F1F1F1",
-    borderWidth: 1,
-    borderColor: "black",
     borderRadius: 10,
     width: 300,
     alignSelf: "center",
     alignItems: "center",
+    elevation: 10,
   },
   addGuestmodal: {
     backgroundColor: "#F1F1F1",
-    borderWidth: 1,
-    borderColor: "black",
+
     borderRadius: 10,
+
     width: 300,
     height: 300,
     alignSelf: "center",

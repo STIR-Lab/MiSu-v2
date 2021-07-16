@@ -32,6 +32,29 @@ export const createADevice = async (
 }).catch(err => console.log(err));;
 };
 
+export const deleteHub = async (
+  
+  idToken
+) => {
+  const response = await fetch(
+    "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/hub",
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + idToken,
+        "Content-type": "application/json",
+        Accept: "*/*",
+      },
+     
+    }
+  ).then(response => response.json())
+  .then(data => {
+     console.log(data);
+    
+    return data;
+}).catch(err => console.log(err));;
+};
+
 export const checkUserExists = async (idToken, email) => {
   const response = await fetch(
     "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/checkuserexists",

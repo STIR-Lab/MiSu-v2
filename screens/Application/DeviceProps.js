@@ -21,18 +21,121 @@ import SetScheduleCard from "../../components/cards/SetScheduleCard";
 function DeviceProps(props) {
   const [userName, setUserName] = useState("Unknown");
   const [deviceName, setDeviceName] = useState("Unknown");
+  // Properties
+  const [geofencing, setGeofencing] = useState(false);
+  const [accessType, setAccessType] = useState(false);
+  const [allDayAccess, setAllDayAccess] = useState(false);
+  const [timeStart, setTimeStart] = useState(null);
+  const [timeEnd, setTimeEnd] = useState(null);
+  const [dateStart, setDateStart] = useState(null);
+  const [dateEnd, setDateEnd] = useState(null);
+  const [reoccuringDays, setReoccuringDays] = useState(null);
+  const [reoccuringType, setReoccuringType] = useState(0);
 
   useEffect(() => {
-    console.log("==DeviceProps==" + JSON.stringify(props) + "======");
+    console.log(
+      "==DeviceProps==" +
+        JSON.stringify(props.route.params.currDevice.properties) +
+        "======"
+    );
     var accountProperties = props.route.params.accObject;
-    var deviceProperties = props.route.params.currDevice.properties;
+    var deviceProperties = props.route.params.currDevice.properties[0];
     if (accountProperties.name != null) {
       setUserName(accountProperties.name);
     }
     if (props.route.params.deviceName != null) {
       setDeviceName(props.route.params.deviceName);
     }
+
+    // Geofencing
+    // -> 0: disabled, 1: enabled
+    if (deviceProperties.geofencing != null) {
+      if (deviceProperties.geofencing == "1") {
+        console.log("Setting geofencing true");
+        setGeofencing(true);
+      }
+    }
+
+    // Access-Type
+    // -> 0: nothing, 1: all-in, 2: Time-range
+    if (deviceProperties.access_type != null) {
+      // No Access
+      if (deviceProperties.accessType == "0") {
+      }
+      // All-In
+      if (deviceProperties.accessType == "1") {
+      }
+      // Time-Range
+      if (deviceProperties.accessType == "2") {
+      }
+    }
+
+    // Time-all-day
+    // -> 0: No, 1: Yes
+    if (deviceProperties.time_all_day != null) {
+      if (deviceProperties.time_all_day == "1") {
+        setAllDayAccess(true);
+      }
+    }
+
+    // Time Start
+    if (deviceProperties.time_start != null) {
+      // Only set time start/end if allDayAccess not enabled
+      if (!allDayAccess) {
+        setTimeStart(deviceProperties.time_start);
+      }
+    }
+
+    // Time End
+    if (deviceProperties.time_end != null) {
+      if (!allDayAccess) {
+        setTimeEnd(deviceProperties.time_end);
+      }
+    }
+
+    // Date Start
+    if (deviceProperties.date_start != null) {
+      setDateStart(deviceProperties.date_start);
+    }
+
+    // Date End
+    if (deviceProperties.date_end != null) {
+      setDateEnd(deviceProperties.date_end);
+    }
+
+    // Days Reoccuring
+    // -> array[0-6] = array[sunday, monday, tuesday, ...]
+    if (deviceProperties.days_reoccuring != null) {
+      console.log(deviceProperties.days_reoccuring);
+    }
+
+    // Reoccuring Type
+    // -> 0: Not reoccuring, 1: Weekly, 2: Bi-weekly
+    if (deviceProperties.reoccuringType != null) {
+      setReoccuringType(deviceProperties.reoccuringType);
+    }
   }, []);
+
+  // async function fetchValues() {
+  //   const response = await fetch(
+  //     'https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/property',
+  //     {
+  //       method: 'POST',
+  //       headers: {
+  //         Authorization: 'Bearer ' + props.route.params.bearerId,
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         account: props.route.params.device.login_credentials_id,
+  //         device: props.route.params.device.shared_device_properties_id,
+  //       }),
+  //     }
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //     });
+  // }
 
   return (
     <View style={appStyle.container}>
@@ -94,7 +197,7 @@ function DeviceProps(props) {
               </Text>
 
               <SetScheduleCard
-                // deviceProperties={deviceProperties[0]}
+                deviceProperties={props.route.params.currDevice.properties}
                 navigation={props.route.params.navigation}
               />
 
@@ -175,6 +278,7 @@ function DeviceProps(props) {
                     transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
                   }}
                   trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
+                  value={geofencing}
                   // Kolbe api call to set gps location and set deviceProps gps_location
                   onValueChange={(x) => {}}
                 />

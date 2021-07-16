@@ -2,8 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
+import { CardStyleInterpolators } from 'react-navigation-stack';
+import {deleteHub} from "../../services/creationService";
+
+import Modal from "react-native-modal";
 function YourHubCard(props) {
   const [registering, setRegistering] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [IsVisibleGuests, setIsVisibleGuests] = useState(false);
 
   useEffect(() => {
     if (props.hub_url == '') {
@@ -17,6 +23,125 @@ function YourHubCard(props) {
     props.navigation.navigate('Hub');
     // setRegistering(true);
   };
+
+
+  const openModal = () => {
+    // setSelected(false);
+    setIsVisible(!isVisible);
+  };
+
+  const openRemoveGuestsModal = () => {
+    // setSelected(false);
+    setIsVisibleGuests(!isVisible);
+  };
+
+
+  let disconnectModal =
+  (
+    <Modal
+    visible={isVisible}
+    transparent={true}
+    onBackdropPress={() => setIsVisible(false)}
+    >
+    <View style={style.disconnectModal}>
+        <View style={style.disconnectHeader}>
+         
+          <Text style={{ marginLeft: 10, fontSize: 20 }}>Disconnect Hub</Text>
+        </View>
+        <Text
+          style={{
+            fontWeight: "bold",
+            textAlign: "center",
+            justifyContent: "center",
+            marginLeft: 5,
+            marginRight: 5,  
+          }}
+        >
+          Are you sure you want to disconnect your hub? 
+         
+        </Text>
+
+        
+        
+        <TouchableOpacity
+          onPress={
+            () => {
+              deleteHub(props.idToken);
+              setRegistering(false);
+              setIsVisible(false);
+              console.log(
+                "-------------------------"
+              )
+              console.log(props);
+            }
+            //Share(idToken, guestEmail, device, shareProperties, shareOptions)
+          }
+        >
+          <View style={style.submitButton}>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 22,
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
+              Disconnect Hub
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </Modal>
+  );
+
+  let removeGuestsModal =
+  (
+    <Modal
+    visible={IsVisibleGuests}
+    transparent={true}
+    onBackdropPress={() => setIsVisibleGuests(false)}
+    >
+    <View style={style.disconnectModal}>
+        <View style={style.disconnectHeader}>
+         
+          <Text style={{ marginLeft: 10, fontSize: 20 }}>Remove Guests</Text>
+        </View>
+        <Text
+          style={{
+            fontWeight: "bold",
+            textAlign: "center",
+            justifyContent: "center",
+            marginLeft: 5,
+            marginRight: 5,  
+          }}
+        >
+     
+        </Text>
+        
+        <TouchableOpacity
+          onPress={
+            () => {
+              
+            }
+            
+          }
+        >
+          <View style={style.submitButton}>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 22,
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
+              Remove Guests
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </Modal>
+  );
 
   return (
     <View style={style.container}>
@@ -33,22 +158,54 @@ function YourHubCard(props) {
         )}
       </View>
       {registering == true && (
-        <View style={style.userHubInfo}>
-          <View style={style.hubDisplay}>
-            <Image
-              style={style.raspPi}
-              source={require('../../assets/icons/raspberry.png')}
-            />
-            <View>
-              <Text style={style.hardwareType}>Raspberry Pi</Text>
-              <Text style={style.softwareType}>Home Assistant</Text>
+        
+
+          <View style={style.userHubInfo}>
+            <View style={style.verticleColumns}>
+              <View style={style.hubDisplay}>
+                <Image
+                   style={style.raspPi}
+                source={require('../../assets/icons/raspberry.png')}
+              />
+              <View>
+                <Text style={style.hardwareType}>Raspberry Pi</Text>
+                <Text style={style.softwareType}>Home Assistant</Text>
+              </View>
+
+            </View>
+            <View style={style.redButtonDisconnect}>
+              <TouchableOpacity onPress={() => openModal()}>
+
+              
+                
+              <View>
+                <Text style={style.redButtonText}>Disconnect</Text>
+     
+              </View>
+              </TouchableOpacity>
             </View>
           </View>
-          <View style={style.hubStats}>
-            <Text style={style.status}>Connected</Text>
-            <Text style={style.numGuests}>X Guests</Text>
+          <View style={style.verticleMiddleColumns}>
+            <View style={style.hubStats}>
+              <Text style={style.status}>Connected</Text>
+              <Text style={style.numGuests}>0 Guests</Text>
+            </View>
+            
+            <View style={style.redButton}>
+              <TouchableOpacity onPress={() => openRemoveGuestsModal()}>
+                
+                <View>
+                  <Text style={style.redButtonText}>Remove Guests</Text>
+                </View>
+                </TouchableOpacity>
+            </View>
+          
           </View>
-        </View>
+        
+          </View>
+       
+
+      
       )}
       {registering == false && (
         <View style={style.noHub}>
@@ -61,6 +218,8 @@ function YourHubCard(props) {
           </TouchableOpacity>
         </View>
       )}
+      {disconnectModal}
+      {removeGuestsModal}
     </View>
   );
 }
@@ -85,11 +244,79 @@ const style = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
+
+  },
+
+  redButtonDisconnect: {
+    backgroundColor: '#ea5f5f',
+    marginTop: 10,
+    borderRadius: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    
+    height: 40,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 20,
+      height: 5,
+    },
+    shadowOpacity: 0.9,
+    shadowRadius: 2.62,
+    borderWidth: 1.4,
+    borderColor: '#cc9797',
+    paddingHorizontal: 20,
+    elevation: 6,
+    marginLeft: 23, 
+  },
+  redButton: {
+    backgroundColor: '#ea5f5f',
+    marginTop: 10,
+    borderRadius: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 20,
+      height: 5,
+    },
+    shadowOpacity: 0.9,
+    shadowRadius: 2.62,
+    borderWidth: 1.4,
+    borderColor: '#cc9797',
+    paddingHorizontal: 20,
+    elevation: 6,
   },
   raspPi: {
     height: 35,
     width: 35,
     marginRight: 5,
+  },
+  modal: {
+    backgroundColor: "#F1F1F1",
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 10,
+    width: 300,
+    alignSelf: "center",
+    alignItems: "center",
+  },
+  verticleColumns:{
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    marginLeft: 10, 
+  },
+  verticleMiddleColumns:{
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    marginLeft: 30, 
+  },
+  newColumn: {
+  width: '100%', 
+  marginTop: 10,
+     
   },
   userHubInfo: {
     flexDirection: 'row',
@@ -102,18 +329,19 @@ const style = StyleSheet.create({
     backgroundColor: '#61B8FF',
     borderRadius: 15,
     height: '60%',
-    width: '45%',
-    marginRight: 30,
-    marginLeft: 40,
+    width: '107%',
+    
+   
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   hubStats: {
     justifyContent: 'center',
-    width: '40%',
+    
     height: '60%',
-    paddingLeft: 10,
+    marginLeft: 30, 
+ 
   },
   editBox: {
     position: 'absolute',
@@ -145,6 +373,12 @@ const style = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+
+  redButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
   softwareType: {
     color: 'white',
     fontSize: 13,
@@ -157,6 +391,35 @@ const style = StyleSheet.create({
     height: '60%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  disconnectModal: {
+    backgroundColor: "#F1F1F1",
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 20,
+    margin: 5, 
+    width: 300,
+    height:  230,
+    alignSelf: "center",
+    alignItems: "center",
+  },
+
+  disconnectHeader: {
+    marginTop: 25,
+    marginBottom: 15,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+
+  submitButton: {
+    marginTop: 35,
+    backgroundColor: "#289EFF",
+    borderRadius: 10,
+    width: 200,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

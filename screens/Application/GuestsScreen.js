@@ -20,9 +20,7 @@ import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Feather";
 import { getSharedAccountsAction } from '../../redux/Action/getSharedAccountsAction';
 
-import {
-  createSharedUser,
-} from "../../services/creationService";
+import { createSharedUser } from "../../services/creationService";
 //import { shareAction } from "../../../redux/Action/shareAction";
 
 // AWS Config
@@ -37,6 +35,7 @@ function GuestsScreen(props) {
   const [sharedAccs, setSharedAccs] = useState(null);
   const [loading, setLoading] = useState(false);
   const [guestEmail, setGuestEmail] = useState("");
+  const [opacity, setOpacity] = useState(0);
 
   // openModal = () => {
   //   setIsVisible(!isVisible);
@@ -95,7 +94,7 @@ function GuestsScreen(props) {
     // console.log("==SHARED ACCS:", sharedAccs);
     // console.log("== GUESTS SCREEN== " + JSON.stringify(sharedAccs));
   }
-
+  
   async function addNewGuest(){
     await createSharedUser(props.sessionData.idToken, guestEmail)
       .then(response => {})
@@ -105,7 +104,6 @@ function GuestsScreen(props) {
       .then(setIsVisible2(false))
       .catch(err => console.log(err));
   }
-
   // let modal = (
   //   <Modal
   //     visible={isVisible}
@@ -120,9 +118,12 @@ function GuestsScreen(props) {
 
   let modal2 = (
     <Modal
-      visible={isVisible2}
+      isVisible={isVisible2}
       transparent={true}
       onBackdropPress={() => setIsVisible2(false)}
+      backdropColor={"#00000080"}
+      backdropOpacity={1}
+      hasBackdrop={true}
     >
       <View style={styles.addGuestmodal}>
         <View style={styles.addGuestHeader}>
@@ -246,12 +247,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     flexDirection: "row",
     backgroundColor: "#FFFFFF",
-    height: 70,
+    height: 50,
     right: 0,
     width: "32%",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 15,
+    borderRadius: 10,
     padding: 25,
     shadowColor: "#000",
     shadowOpacity: 0.8,
@@ -272,8 +273,6 @@ const styles = StyleSheet.create({
 
   addGuestmodal: {
     backgroundColor: "#F1F1F1",
-    borderWidth: 1,
-    borderColor: "black",
     borderRadius: 10,
     width: 300,
     height: 300,
@@ -290,8 +289,7 @@ const styles = StyleSheet.create({
 
   input: {
     borderRadius: 10,
-    borderColor: "black",
-    borderWidth: 0.5,
+    elevation: 5,
     backgroundColor: "#F4F4F4",
     alignSelf: "stretch",
     paddingLeft: 20,
