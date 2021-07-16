@@ -21,16 +21,17 @@ export default function LoadingScreen(props) {
 	// });
 
 	useEffect(() => {
+		// console.log("===LOADING SCREEN:", props);
 
 		const { idToken } = props.sessionData;
 		fetchData(idToken);
-		// console.log(props);
-		if (props.hubInfoData.hub_url == '') {
+		
+		if (props.hubInfoData.user_type == 0) {
 			props.navigation.navigate('GuestApp');
-		  } else {
+		  } else if (props.hubInfoData.user_type == 1) {
 			props.navigation.navigate('App');
-		  }
-	}, [props.hubInfoData.hub_url]);
+		  } else props.getHub(idToken);
+	}, [props.hubInfoData.user_type]);
 	
 	async function fetchData(idToken) {
 	// console.log('Fetching Data..');
