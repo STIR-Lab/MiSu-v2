@@ -3,6 +3,7 @@ import { Image, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import { CardStyleInterpolators } from 'react-navigation-stack';
+import {deleteHub} from "../../services/creationService";
 
 import Modal from "react-native-modal";
 function YourHubCard(props) {
@@ -65,7 +66,13 @@ function YourHubCard(props) {
         <TouchableOpacity
           onPress={
             () => {
+              deleteHub(props.idToken);
               setRegistering(false);
+              setIsVisible(false);
+              console.log(
+                "-------------------------"
+              )
+              console.log(props);
             }
             //Share(idToken, guestEmail, device, shareProperties, shareOptions)
           }
@@ -181,7 +188,7 @@ function YourHubCard(props) {
           <View style={style.verticleMiddleColumns}>
             <View style={style.hubStats}>
               <Text style={style.status}>Connected</Text>
-              <Text style={style.numGuests}>X Guests</Text>
+              <Text style={style.numGuests}>0 Guests</Text>
             </View>
             
             <View style={style.redButton}>
@@ -333,7 +340,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     
     height: '60%',
-    marginLeft: 35, 
+    marginLeft: 30, 
  
   },
   editBox: {

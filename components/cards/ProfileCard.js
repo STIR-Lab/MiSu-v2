@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import UserAvatar from 'react-native-user-avatar';
 
 function ProfileCard(props) {
 
@@ -14,12 +15,9 @@ function ProfileCard(props) {
                 </View>
             </View>
             <View style={style.rowInformation}>
-                
-                <Icon 
-                 name="account-circle"
-                size={90}
-                 style={{color: "#FFCB5B", flexBasis: 100, }}/>
-               
+               <View style={style.profileIcon}>
+              <UserAvatar size={90} borderRadius={50} name={props.user.name} />
+              </View>
                 <View style={style.infoLine}>
                     
                     <Text style={style.name}>{props.user.name} {props.user.lastName} </Text>
@@ -39,7 +37,7 @@ const style = StyleSheet.create({
         flexDirection: "column",
         borderBottomColor: "#828282",
         borderBottomWidth: .9,
-        marginBottom: 10
+        marginBottom: 10,
     },
     editBox: {
       position: "absolute",
@@ -54,6 +52,10 @@ const style = StyleSheet.create({
         height: 16,
         width: 16,
         marginRight: 5
+    },
+    profileIcon: {
+        width: '20%', 
+        height: 60, 
     },
     name: {
         fontSize: 26,
@@ -82,6 +84,7 @@ const style = StyleSheet.create({
     rowInformation:{
         flexDirection: "row",
         marginLeft: 15, 
+        marginTop: 15, 
     },
     info: {
       marginLeft: 10,
@@ -90,8 +93,9 @@ const style = StyleSheet.create({
     infoLine: {
       width: "75%",
       flexDirection: "column",
-      
+      marginLeft: 15, 
       marginVertical: 7,
+      marginBottom: 5, 
   
     }
   });
