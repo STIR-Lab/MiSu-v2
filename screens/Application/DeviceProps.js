@@ -32,11 +32,9 @@ function DeviceProps(props) {
   const [reoccuringDays, setReoccuringDays] = useState(null);
   const [reoccuringType, setReoccuringType] = useState(0);
 
-  /*useEffect(() => {
+  useEffect(() => {
     console.log(
-      "==DeviceProps==" +
-        JSON.stringify(props.route.params.currDevice.properties) +
-        "======"
+      "==DeviceProps==" + JSON.stringify(props.route.params) + "======"
     );
     var accountProperties = props.route.params.accObject;
     var deviceProperties = props.route.params.currDevice.properties[0];
@@ -45,6 +43,10 @@ function DeviceProps(props) {
     }
     if (props.route.params.deviceName != null) {
       setDeviceName(props.route.params.deviceName);
+    }
+
+    if (deviceProperties == null) {
+      return;
     }
 
     // Geofencing
@@ -115,7 +117,6 @@ function DeviceProps(props) {
       setReoccuringType(deviceProperties.reoccuringType);
     }
   }, []);
-  */
 
   // async function fetchValues() {
   //   const response = await fetch(
