@@ -8,6 +8,7 @@ import {
   FlatList,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import UserAvatar from "react-native-user-avatar";
 import { Avatar, Badge, withBadge } from "react-native-elements";
 
 const DATA = [
@@ -55,7 +56,7 @@ const NotificationsList = (props) => {
   const Item = ({ sharer_name, id }) => (
     <View style={styles.item} key={id}>
       <View style={styles.icon}>
-        <Icon name="account-circle" size={50} color="#ffcb5c" />
+        <UserAvatar size={45} borderRadius={30} name={sharer_name} />
       </View>
 
       <View>
@@ -80,7 +81,11 @@ const NotificationsList = (props) => {
   );
   const renderItems = props.data.map((user) => {
     return (
-      <Item sharer_name={user.sharer_name} id={user.login_credentials_id} key={user.login_credentials_id}/>
+      <Item
+        sharer_name={user.sharer_name}
+        id={user.login_credentials_id}
+        key={user.login_credentials_id}
+      />
     );
   });
 
