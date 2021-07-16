@@ -29,7 +29,7 @@ const SetScheduleScreen = (props) => {
     props.navigation.pop();
   }
 
-  useEffect(() => {
+ /* useEffect(() => {
     if (props.route.params.deviceProperties == null) {
       return;
     }
@@ -58,6 +58,7 @@ const SetScheduleScreen = (props) => {
       }
     }
   }, []);
+  */
 
   return (
     <View style={styles.screen}>

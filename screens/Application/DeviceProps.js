@@ -19,8 +19,8 @@ import appStyle from "../../styles/AppStyle";
 import SetScheduleCard from "../../components/cards/SetScheduleCard";
 
 function DeviceProps(props) {
-  const [userName, setUserName] = useState("Unknown");
-  const [deviceName, setDeviceName] = useState("Unknown");
+  const [userName, setUserName] = useState("Placeholder");
+  const [deviceName, setDeviceName] = useState("Placeholder");
   // Properties
   const [geofencing, setGeofencing] = useState(false);
   const [accessType, setAccessType] = useState(false);
@@ -32,7 +32,7 @@ function DeviceProps(props) {
   const [reoccuringDays, setReoccuringDays] = useState(null);
   const [reoccuringType, setReoccuringType] = useState(0);
 
-  useEffect(() => {
+  /*useEffect(() => {
     console.log(
       "==DeviceProps==" +
         JSON.stringify(props.route.params.currDevice.properties) +
@@ -115,6 +115,7 @@ function DeviceProps(props) {
       setReoccuringType(deviceProperties.reoccuringType);
     }
   }, []);
+  */
 
   // async function fetchValues() {
   //   const response = await fetch(
@@ -202,7 +203,7 @@ function DeviceProps(props) {
               />
 
               <Text style={{ marginTop: 20, fontSize: 26, fontWeight: "bold" }}>
-                Set Actions
+                Available Actions
               </Text>
               <View style={[propstyle.lineContainer, { marginTop: 8 }]} />
               <View
@@ -214,52 +215,11 @@ function DeviceProps(props) {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={{ fontSize: 20 }}>On/Off</Text>
-                <Switch
-                  style={{
-                    transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
-                  }}
-                  trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
-                  onValueChange={(x) => {}}
-                />
+                <Text style={{ fontSize: 20 }}>Lock/Unlock</Text>
+               
               </View>
-              <View
-                style={{
-                  marginTop: 20,
-                  paddingBottom: 0,
-                  flexDirection: "row",
-                  alignSelf: "stretch",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={{ fontSize: 20 }}>Brightness</Text>
-                {/* Easy solution would be to set deviceProps readOnly to true if switched */}
-                <Switch
-                  style={{
-                    transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
-                  }}
-                  trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
-                  onValueChange={(x) => {}}
-                />
-              </View>
-              <View
-                style={{
-                  marginTop: 20,
-                  paddingBottom: 0,
-                  flexDirection: "row",
-                  alignSelf: "stretch",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={{ fontSize: 20 }}>Color</Text>
-                <Switch
-                  style={{
-                    transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
-                  }}
-                  trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
-                  onValueChange={(x) => {}}
-                />
-              </View>
+             
+             
               <Text style={{ marginTop: 20, fontSize: 26, fontWeight: "bold" }}>
                 Set Geofencing
               </Text>

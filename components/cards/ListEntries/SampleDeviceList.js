@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { shareAction } from "../../../redux/Action/shareAction";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { shareAction } from '../../../redux/Action/shareAction';
 import {
   Image,
   StyleSheet,
@@ -12,23 +12,23 @@ import {
   TextInput,
   ScrollView,
   maxHeight,
-} from "react-native";
-import { Icon } from "react-native-elements";
-import Modal from "react-native-modal";
-import DeviceElement from "../../DeviceElement";
-import GuestElement from "../../GuestElement";
+} from 'react-native';
+import { Icon } from 'react-native-elements';
+import Modal from 'react-native-modal';
+import DeviceElement from '../../DeviceElement';
+import GuestElement from '../../GuestElement';
 
-import { createADevice } from "../../../services/creationService";
+import { createADevice, createProperty } from '../../../services/creationService';
 
 function SampleDeviceList(props) {
   // Will indicate whether this component is rendered in the devices or the guests screen
-  const [screen, setScreen] = useState("");
+  const [screen, setScreen] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [isVisible2, setIsVisible2] = useState(false);
   const [isVisibleDevices, setIsVisibleDevices] = useState(false);
   const [selected, setSelected] = useState(null);
   const [sharedAccs, setSharedAccs] = useState(null);
-  const [guestEmail, setGuestEmail] = useState("");
+  const [guestEmail, setGuestEmail] = useState('');
   const [deviceList, setDeviceList] = useState(props.devices);
   const [tempDevices, setTempDevices] = useState(props.myDevices);
   const [choice, setChoice] = useState(null);
@@ -45,17 +45,17 @@ function SampleDeviceList(props) {
     // console.log("===MY DEVICES: ", props.myDevices);
     // console.log("===Bearer ID:", props.sessionData.idToken);
 
-    if (props.screen == "Guests") {
-      setScreen("Guests");
+    if (props.screen == 'Guests') {
+      setScreen('Guests');
       setChoice(props.myDevices[0]);
       if (props.user.guest_email != null) {
         setGuestEmail(props.user.guest_email);
       }
-    } else if (props.screen == "Devices") setScreen("Devices");
-    else if (props.screen == "Hubs") {
-      setScreen("Hubs");
+    } else if (props.screen == 'Devices') setScreen('Devices');
+    else if (props.screen == 'Hubs') {
+      setScreen('Hubs');
       // console.log("====== HUB SAMPLE DEVICE LIST", props);
-    } else console.log("Invalid screen prop passed.");
+    } else console.log('Invalid screen prop passed.');
   });
 
   const openModal = () => {
@@ -73,22 +73,22 @@ function SampleDeviceList(props) {
   };
 
   function getType(stringToParse) {
-    const tmp = stringToParse.split(".");
+    const tmp = stringToParse.split('.');
     return tmp[0];
   }
 
   const propsClick = () => {
     if (selected == null) {
-      console.log("Selected cannot be null");
+      console.log('Selected cannot be null');
       return;
     }
-    props.navigation.navigate("Properties", {
+    props.navigation.navigate('Properties', {
       account: selected,
     });
   };
 
   const shareDevice = () => {
-    console.log("tes");
+    console.log('tes');
   };
 
   function addButton() {
@@ -96,16 +96,18 @@ function SampleDeviceList(props) {
       <View style={styles.iconAndName}>
         <TouchableOpacity
           onPress={() =>
-            screen == "Devices" ? openModal() : openModalDevices()
+            screen == 'Devices' ? openModal() : openModalDevices()
           }
-          style={screen == "Devices" ? styles.addGuest : styles.addDevice}
+          style={screen == 'Devices' ? styles.addGuest : styles.addDevice}
         >
           <Icon name="plus" type="font-awesome" color="#FFFFFF" size={38} />
         </TouchableOpacity>
-        <Text>{screen == "Devices" ? "Add Guest" : "Add Device"}</Text>
+        <Text>{screen == 'Devices' ? 'Add Guest' : 'Add Device'}</Text>
       </View>
     );
   }
+
+  
 
   let modal = (
     <Modal
@@ -127,13 +129,13 @@ function SampleDeviceList(props) {
                   style={{
                     paddingLeft: 10,
                     paddingVertical: 6,
-                    flexDirection: "row",
+                    flexDirection: 'row',
                     borderRadius: 10,
                     elevation: selected == entry ? 2 : 0,
-                    backgroundColor: selected == entry ? "white" : "#F1F1F1",
+                    backgroundColor: selected == entry ? 'white' : '#F1F1F1',
                   }}
                 >
-                  <Image source={require("../../../assets/people.png")} />
+                  <Image source={require('../../../assets/people.png')} />
                   <Text style={styles.cardText}>{entry.name}</Text>
                 </View>
               </TouchableOpacity>
@@ -152,32 +154,32 @@ function SampleDeviceList(props) {
                 size={18}
               />
               <Text
-                style={{ fontSize: 16, alignSelf: "center", marginLeft: 20 }}
+                style={{ fontSize: 16, alignSelf: 'center', marginLeft: 20 }}
               >
                 Add New Guest
               </Text>
             </View>
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1, marginBottom: 30, justifyContent: "flex-end" }}>
+        <View style={{ flex: 1, marginBottom: 30, justifyContent: 'flex-end' }}>
           <TouchableOpacity onPress={() => propsClick()}>
             <View
               style={{
                 marginTop: 35,
-                backgroundColor: "#289EFF",
+                backgroundColor: '#289EFF',
                 borderRadius: 10,
                 width: 150,
                 height: 40,
-                alignItems: "center",
-                justifyContent: "center",
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               <Text
                 style={{
-                  textAlign: "center",
+                  textAlign: 'center',
                   fontSize: 22,
-                  fontWeight: "bold",
-                  color: "white",
+                  fontWeight: 'bold',
+                  color: 'white',
                 }}
               >
                 Add Guest
@@ -269,18 +271,20 @@ function SampleDeviceList(props) {
         </View>
         <Text
           style={{
+
             fontWeight: "bold",
             textAlign: "center",
             justifyContent: "center",
             marginLeft: 5,
-            marginRight: 5,
+            marginRight: 5,  
+
           }}
         >
           Send a request to your guest to have them share your home!
         </Text>
         <TextInput
           style={styles.input}
-          placeholder={"Guest Email"}
+          placeholder={'Guest Email'}
           onChangeText={(text) => setGuestEmail(text)}
         />
         <TouchableOpacity
@@ -290,9 +294,9 @@ function SampleDeviceList(props) {
                 props.sessionData.idToken,
                 guestEmail,
                 {
-                  title: "Push Button Deadbolt",
-                  entity_id: "lock.key_free_push_button_deadbolt",
-                  type: "lock",
+                  title: 'Push Button Deadbolt',
+                  entity_id: 'lock.key_free_push_button_deadbolt',
+                  type: 'lock',
                 },
                 [{ access: 1 }],
                 null
@@ -305,10 +309,10 @@ function SampleDeviceList(props) {
           <View style={styles.submitButton}>
             <Text
               style={{
-                textAlign: "center",
+                textAlign: 'center',
                 fontSize: 22,
-                fontWeight: "bold",
-                color: "white",
+                fontWeight: 'bold',
+                color: 'white',
               }}
             >
               Send Request
@@ -334,7 +338,7 @@ function SampleDeviceList(props) {
           <Icon name="plus" type="feather" color="black" size={13} />
           <Text style={{ marginLeft: 10, fontSize: 24 }}>Add Device</Text>
         </View>
-        <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
+        <View style={{ minHeight: '25%', maxHeight: '50%', width: '100%' }}>
           <ScrollView>
             {tempDevices &&
               tempDevices.map((entry, i) => (
@@ -344,10 +348,10 @@ function SampleDeviceList(props) {
                       style={{
                         paddingLeft: 10,
                         paddingVertical: 6,
-                        flexDirection: "row",
+                        flexDirection: 'row',
                         borderRadius: 10,
                         elevation: selected == i ? 2 : 0,
-                        backgroundColor: selected == i ? "white" : "#F1F1F1",
+                        backgroundColor: selected == i ? 'white' : '#F1F1F1',
                       }}
                     >
                       <Icon
@@ -355,7 +359,7 @@ function SampleDeviceList(props) {
                         type="feather"
                         containerStyle={{
                           padding: 4,
-                          borderColor: "#60b8ff",
+                          borderColor: '#60b8ff',
                           borderWidth: 2,
                           borderRadius: 4,
                         }}
@@ -370,7 +374,7 @@ function SampleDeviceList(props) {
               ))}
           </ScrollView>
         </View>
-        <View style={{ marginBottom: 30, justifyContent: "flex-end" }}>
+        <View style={{ marginBottom: 30, justifyContent: 'flex-end' }}>
           <TouchableOpacity
             onPress={() => {
               const apiRet = createADevice(
@@ -382,26 +386,28 @@ function SampleDeviceList(props) {
                   type: getType(choice.entity_id),
                 }
               );
+
+
               // console.log(apiRet);
               setIsVisibleDevices(false);
             }}
           >
             <View
               style={{
-                backgroundColor: "#289EFF",
+                backgroundColor: '#289EFF',
                 borderRadius: 10,
                 width: 150,
                 height: 40,
-                alignItems: "center",
-                justifyContent: "center",
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               <Text
                 style={{
-                  textAlign: "center",
+                  textAlign: 'center',
                   fontSize: 22,
-                  fontWeight: "bold",
-                  color: "white",
+                  fontWeight: 'bold',
+                  color: 'white',
                 }}
               >
                 Add Device
@@ -417,14 +423,14 @@ function SampleDeviceList(props) {
     <View style={styles.container} transparent={true}>
       {deviceList.map((d) => (
         <View style={styles.iconAndName} key={d.shared_device_properties_id}>
-          {screen === "Devices" ? (
+          {screen === 'Devices' ? (
             <GuestElement
               deviceName={d.name}
               currDevice={d}
               title={d.title}
               navigation={props.navigation}
             />
-          ) : screen === "Hubs" ? (
+          ) : screen === 'Hubs' ? (
             <DeviceElement
               screen={props.screen}
               // Most of the account data is in the user object
@@ -456,7 +462,7 @@ function SampleDeviceList(props) {
           )}
         </View>
       ))}
-      {screen != "Hubs" && addButton()}
+      {screen != 'Hubs' && addButton()}
 
       {/* {props.device &&
         props.device.map((entry, i) => (
@@ -481,41 +487,42 @@ function SampleDeviceList(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "94%",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    flexWrap: "wrap",
+    width: '94%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
   },
   iconHolder: {
-    backgroundColor: "green",
+    backgroundColor: 'green',
     width: 70,
     height: 70,
   },
   iconAndName: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     marginVertical: 8,
     marginHorizontal: 10,
   },
   text: {
     fontSize: 10,
     width: 70,
-    textAlign: "center",
+    textAlign: 'center',
   },
   addGuest: {
-    backgroundColor: "#57E455",
-    justifyContent: "center",
+    backgroundColor: '#57E455',
+    justifyContent: 'center',
     borderRadius: 41,
     width: 70,
     height: 70,
   },
   addDevice: {
-    backgroundColor: "#57E455",
-    justifyContent: "center",
+    backgroundColor: '#57E455',
+    justifyContent: 'center',
     borderRadius: 5,
     width: 70,
     height: 70,
   },
   modal: {
+
     backgroundColor: "#F1F1F1",
     borderRadius: 10,
     width: 300,
@@ -529,22 +536,34 @@ const styles = StyleSheet.create({
     borderRadius: 10,
 
     width: 300,
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  addGuestmodal: {
+    backgroundColor: '#F1F1F1',
+    borderWidth: 1,
+
+    borderColor: "black",
+    borderRadius: 20,
+    margin: 5, 
+
+    width: 300,
     height: 300,
-    alignSelf: "center",
-    alignItems: "center",
+    alignSelf: 'center',
+    alignItems: 'center',
   },
   seperator: {
     marginTop: 10,
     marginBottom: 10,
     borderWidth: 0.5,
-    borderColor: "#888888",
+    borderColor: '#888888',
   },
   input: {
     borderRadius: 10,
-    borderColor: "black",
+    borderColor: 'black',
     borderWidth: 0.5,
-    backgroundColor: "#F4F4F4",
-    alignSelf: "stretch",
+    backgroundColor: '#F4F4F4',
+    alignSelf: 'stretch',
     paddingLeft: 20,
     height: 48,
     fontSize: 16,
@@ -554,41 +573,41 @@ const styles = StyleSheet.create({
   topGuestModal: {
     marginTop: 20,
     marginBottom: 15,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
   cardText: {
     fontSize: 16,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginLeft: 20,
   },
   cardCon: {
-    flexDirection: "column",
-    alignSelf: "flex-start",
+    flexDirection: 'column',
+    alignSelf: 'flex-start',
     marginLeft: 20,
     marginRight: 20,
-    alignSelf: "stretch",
+    alignSelf: 'stretch',
   },
   iconCon: {
     paddingLeft: 4,
-    flexDirection: "row",
+    flexDirection: 'row',
     borderRadius: 10,
-    backgroundColor: "#F1F1F1",
+    backgroundColor: '#F1F1F1',
   },
   addGuestHeader: {
     marginTop: 25,
     marginBottom: 15,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
   submitButton: {
     marginTop: 35,
-    backgroundColor: "#289EFF",
+    backgroundColor: '#289EFF',
     borderRadius: 10,
     width: 200,
     height: 50,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
