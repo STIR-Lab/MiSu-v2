@@ -520,7 +520,7 @@ const styles = StyleSheet.create({
     height: 70,
   },
   modal: {
-<<<<<<< HEAD
+
     backgroundColor: "#F1F1F1",
     borderRadius: 10,
     width: 300,
@@ -532,11 +532,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F1F1F1",
 
     borderRadius: 10,
-=======
-    backgroundColor: '#F1F1F1',
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 10,
+
     width: 300,
     alignSelf: 'center',
     alignItems: 'center',
@@ -549,7 +545,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     margin: 5, 
 
->>>>>>> 324a7c8aa6c33604ebbcfe9acafd00d348defc5b
     width: 300,
     height: 300,
     alignSelf: 'center',
