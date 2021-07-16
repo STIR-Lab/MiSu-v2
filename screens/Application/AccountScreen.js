@@ -38,6 +38,7 @@ function AccountScreen(props) {
         // props.screenProps.setLoadingFalse();
       })
       .then(() => {
+        console.log("LOGOUT PROPS: ", props)
         props.navigation.navigate('Login');
       });
   };
@@ -78,6 +79,7 @@ function AccountScreen(props) {
         idToken={props.sessionData.idToken}
         user={props.hubInfoData}
         navigation={props.navigation}
+        getHub={props.getHub}
       />
       <View style={{ alignItems: "center", justifyContent: "center", marginTop: 25, paddingBottom: 0,  flex: .1}}>
           <TouchableOpacity

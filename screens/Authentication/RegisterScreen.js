@@ -15,6 +15,7 @@ import appStyle from '../../styles/AppStyle';
 import authStyle from '../../styles/AuthStyle';
 import ConfirmCodePopup from '../../components/popup/ConfirmCodePopup';
 import { Icon } from 'react-native-elements';
+import { changeRole } from "../../services/creationService";
 
 function RegisterScreen(props) {
   const [name, setName] = useState('');
@@ -58,7 +59,7 @@ function RegisterScreen(props) {
           email: username,
           phone_number: '+11111111111',
           address: 'null',
-          // user_type: accessLevel,
+          'custom:user_type': accessLevel === "Owner" ? '1' : '0',
           // phone_number: '+1' + phone.replace(/\D/g, ''),
           // 'custom:city': city,
           // 'custom:state': state,
@@ -80,6 +81,8 @@ function RegisterScreen(props) {
           console.log('==ERROR DURING SIGNUP PROCESS==', error.message);
         });
     }
+
+
     setIsLoading(false);
   };
 
