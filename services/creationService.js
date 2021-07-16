@@ -126,13 +126,13 @@ export const changeRole = async (
   })
 }).then(response => response.json())
   .then(data => {
-    console.log(data);
+    // console.log(data);
     return data;
 }).catch(err => console.log(err));
 }
 
 export const createSharedUser = async (idToken, email) => {
-  const response = await fetch(
+ return await fetch(
     "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/createshareduser",
     {
       method: "POST",
@@ -146,10 +146,13 @@ export const createSharedUser = async (idToken, email) => {
         email: email,
       }),
     }
-  );
+  ).then(response => response.json())
+  .then(data => {
+    // console.log("====CREATE SHARED USER: ",data);
+    return data;
+  }).catch(err => console.log(err));
+}
 
-  return response.json();
-};
 
 // Sends a command to a hub
 export const useSharedDevice = async (account, device, property) => {

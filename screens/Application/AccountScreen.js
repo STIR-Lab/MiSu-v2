@@ -38,7 +38,7 @@ function AccountScreen(props) {
         // props.screenProps.setLoadingFalse();
       })
       .then(() => {
-        console.log("LOGOUT PROPS: ", props)
+        // console.log("LOGOUT PROPS: ", props)
         props.navigation.navigate('Login');
       });
   };

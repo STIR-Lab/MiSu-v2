@@ -76,7 +76,7 @@ function YourHubsScreen(props) {
   collapsibleList = !sharedAccs || !sharedAccs.message ? <Text>Loading...</Text> : 
   sharedAccs.message.length == 0 ? <Text>Request Access to someone's smart home to gain access to their devices!</Text> :  
   (
-    sharedAccs.message.map((m) => (
+    sharedAccs.message.filter(hub => hub.sharer_name.includes(searchParam)).map((m) => (
       <DeviceInfoCard
         key={m.login_credentials_id} 
         title={m.sharer_name}
