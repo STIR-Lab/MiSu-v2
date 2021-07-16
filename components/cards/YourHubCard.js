@@ -69,10 +69,8 @@ function YourHubCard(props) {
               deleteHub(props.idToken);
               setRegistering(false);
               setIsVisible(false);
-              console.log(
-                "-------------------------"
-              )
-              console.log(props);
+              
+             
             }
             //Share(idToken, guestEmail, device, shareProperties, shareOptions)
           }
