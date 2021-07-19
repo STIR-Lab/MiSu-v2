@@ -73,6 +73,8 @@ function DeviceInfoCard(props) {
         screen="Hubs"
         title={props.title}
         devices={props.devices}
+        entityId={props.entityId}
+        deviceType={props.deviceType}
         sharedAccs={props.sharedAccs}
         navigation={props.navigation}
       />
@@ -95,21 +97,29 @@ function DeviceInfoCard(props) {
   else if (props.type == 'DeviceCard')
     list = (
       // TODO: Render the Sample Device List from the Devices Screen
-      <View />
+      <SampleDeviceList
+        screen="Devices"
+        guests={props.guests}
+        title={props.title}
+        deviceType={props.deviceType}
+        entityId={props.entityId}
+        navigation={props.navigation}
+      />
     );
 
   const panel = (
     <View style={styles.container}>
       <View style={styles.header}>
-        {props.type != 'HubCard' ? (
+        {props.type == 'GuestCard' ? (
           <View style={styles.devIcon}>
             <UserAvatar size={45} borderRadius={30} name={props.title} />
           </View>
-        ) : (
+        ) : props.type == 'HubCard' ? (
           <View style={styles.devIcon2}>
             <Icon name="home" type="feather" size={45} />
           </View>
-        )}
+        ) :
+          <View style={styles.devIcon} />}
 
         <View>
           <Text style={styles.userName}>{props.title}</Text>

@@ -28,7 +28,9 @@ function DevicesScreen(props) {
 
   async function fetchData(idToken) {
     await getListofSharedAccountsDevicesScreen(props.sessionData.idToken)
-      .then(response => console.log(response))
+      .then(response => {
+        // console.log("Devices Screen", response);
+        setSharedAccs(response);})
       .catch(err => console.log(err));
   }
 
@@ -38,16 +40,20 @@ function DevicesScreen(props) {
         <View style={styles.header}>
           <SearchBar setSearchParam={setSearchParam} screen={"Devices"} />
         </View>
-        {/* <Text>This is the Devices page</Text> */}
-        {/* <View style={{backgroundColor: 'red'}}>
-						<TouchableOpacity
-							onPress={() => console.log( searchParam)}
-						>
-							<Text style={{ color: '#FFF', fontSize: 25 }}>Print</Text>
-						</TouchableOpacity>
-					</View> */}
+        
         <ScrollView style={styles.cardContainer}>
-          {/* <DeviceInfoCard navigation={props.navigation}/> */}
+          {sharedAccs &&
+            sharedAccs.message.filter(guest => guest.name.includes(searchParam)).map((entry, i) => (
+              <DeviceInfoCard
+                key={i}
+                type={'DeviceCard'}
+                title={entry.name}
+                guests={entry.guests}
+                deviceType={entry.type}
+                entityId={entry.entity_id}
+                navigation={props.navigation}
+              />
+            ))}
         </ScrollView>
       </View>
     </TouchableWithoutFeedback>

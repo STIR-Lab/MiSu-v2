@@ -29,7 +29,7 @@ function SampleDeviceList(props) {
   const [selected, setSelected] = useState(null);
   const [sharedAccs, setSharedAccs] = useState(null);
   const [guestEmail, setGuestEmail] = useState('');
-  const [deviceList, setDeviceList] = useState(props.devices);
+  const [deviceList, setDeviceList] = useState([""]);
   const [tempDevices, setTempDevices] = useState(props.myDevices);
   const [choice, setChoice] = useState(null);
   // var tempDevices = [
@@ -47,13 +47,18 @@ function SampleDeviceList(props) {
 
     if (props.screen == 'Guests') {
       setScreen('Guests');
+      setDeviceList(props.devices);
       setChoice(props.myDevices[0]);
       if (props.user.guest_email != null) {
         setGuestEmail(props.user.guest_email);
       }
-    } else if (props.screen == 'Devices') setScreen('Devices');
+    } else if (props.screen == 'Devices') {
+      setScreen('Devices');
+      setDeviceList(props.guests);
+    }
     else if (props.screen == 'Hubs') {
       setScreen('Hubs');
+      setDeviceList(props.devices);
       // console.log("====== HUB SAMPLE DEVICE LIST", props);
     } else console.log('Invalid screen prop passed.');
   });
@@ -425,10 +430,13 @@ function SampleDeviceList(props) {
         <View style={styles.iconAndName} key={d.shared_device_properties_id}>
           {screen === 'Devices' ? (
             <GuestElement
-              deviceName={d.name}
-              currDevice={d}
-              title={d.title}
+              guestName={d.name}
+              currGuest={d}
+              title={props.title}
               navigation={props.navigation}
+              idToken={props.sessionData.idToken}
+              entityId={props.entityId}
+              deviceType={props.deviceType}
             />
           ) : screen === 'Hubs' ? (
             <DeviceElement
