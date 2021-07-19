@@ -437,6 +437,7 @@ function SampleDeviceList(props) {
               idToken={props.sessionData.idToken}
               entityId={props.entityId}
               deviceType={props.deviceType}
+              key={d.shared_device_properties_id}
             />
           ) : screen === 'Hubs' ? (
             <DeviceElement
