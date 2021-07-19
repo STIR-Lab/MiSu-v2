@@ -199,8 +199,10 @@ function DeviceProps(props) {
               </Text>
 
               <SetScheduleCard
-                deviceProperties={props.route.params.currDevice.properties}
+                accObject={props.route.params.accObject}
+                deviceProperties={props.route.params.currDevice.properties[0]}
                 navigation={props.route.params.navigation}
+                idToken={props.route.params.idToken}
               />
 
               <Text style={{ marginTop: 20, fontSize: 26, fontWeight: "bold" }}>

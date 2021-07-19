@@ -17,6 +17,7 @@ function DeviceElement(props) {
         deviceName: props.name,
         currDevice: props.currDevice,
         navigation: props.navigation,
+        idToken: props.idToken,
       });
     } else {
       // console.log(props);
