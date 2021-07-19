@@ -37,17 +37,19 @@ function DeviceProps(props) {
       "==DeviceProps==" + JSON.stringify(props.route.params) + "======"
     );
     var accountProperties = props.route.params.accObject;
-    var deviceProperties = props.route.params.currDevice.properties[0];
     if (accountProperties.name != null) {
       setUserName(accountProperties.name);
     }
     if (props.route.params.deviceName != null) {
       setDeviceName(props.route.params.deviceName);
     }
-
-    if (deviceProperties == null) {
+    if (
+      props.route.params.currDevice.properties == null ||
+      props.route.params.currDevice.properties == ""
+    ) {
       return;
     }
+    var deviceProperties = props.route.params.currDevice.properties[0];
 
     // Geofencing
     // -> 0: disabled, 1: enabled
