@@ -74,7 +74,7 @@ function GuestsScreen(props) {
     // 		name: props.sessionData.name
     // 	});
     // const { idToken } = props.sessionData;
-    console.log("GuestsScreen:", props.sessionData.idToken);
+    // console.log("GuestsScreen:", props.sessionData.idToken);
     const idToken = 0;
     //getUsageLogs();
     //getAccessLogs();

@@ -9,17 +9,23 @@ function SettingsCard(props) {
   const [accessLevel, setAccess] = useState(props.user.user_type);
   const [initialRole, setInitialRole] = useState(props.user.user_type);
   // console.log(props)
-  function handleClick() {
+  async function handleClick() {
     if (initialRole != accessLevel) {
-      changeRole(accessLevel, props.idToken);
+      await changeRole(accessLevel, props.idToken)
+      .then(
+        setTimeout(() => {
+          props.getHub(props.idToken)
+        }, 1000)
+      )
+
       setIsRoleVisible(false);
-      props.getHub(props.idToken);
       // console.log("HANDLE CLICK :", props);
       props.navigation.navigate("Loading");
     } else {
       setIsRoleVisible(false);
     }
   }
+
 
   let roleModal = (
     <Modal

@@ -174,6 +174,15 @@ function DevicesStack(props) {
           headerTitle: () => <Header title="Device Properties" guest={false} />,
         }}
       />
+      <DevicesNav.Screen
+        name="SetScheduleScreen"
+        component={SetScheduleScreen}
+        options={{
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Set Schedule" guest={false} />,
+        }}
+      />
     </DevicesNav.Navigator>
   );
 }
