@@ -66,6 +66,19 @@ export const getListofSharedAccounts = async (hasNextToken = null, idToken) => {
 	return response.json();
 };
 
+export const getListofSharedAccountsDevicesScreen = async (idToken) => {
+	return await fetch('https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/getdevices', {
+		method: 'GET',
+		headers: {
+			Authorization: 'Bearer ' + idToken
+		}
+	}).then(response => response.json())
+	.then(data => {
+	  // console.log(data);
+	  return data;
+  }).catch(err => console.log(err));
+};
+
 export const getValueForSharedDeviceProperty = async (account, device, property) => {
 	const response = await fetch('https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/getvalues', {
 		method: 'POST',

@@ -9,30 +9,57 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 const SetScheduleCard = (props) => {
   const [startDate, setStartDate] = useState("None");
   const [endDate, setEndDate] = useState("None");
-  const [reoccuring, setReoccuring] = useState("Reoccuring not initiated");
+  const [reoccuring, setReoccuring] = useState("No Reoccuring");
+  const [reoccuringDays, setReoccuringDays] = useState("None");
   const [tempTimeStart, setTimeStart] = useState("None");
   const [tempTimeEnd, setTimeEnd] = useState("None");
 
   const [gpsLocation, setGpsStatus] = useState(false);
 
   useEffect(() => {
-    // console.log("setScheduleCard: " + JSON.stringify(props.deviceProperties));
+    console.log("setScheduleCard: " + JSON.stringify(props));
     if (props.deviceProperties == null) {
       return;
     }
 
-    if (props.deviceProperties.time_range_start_date != "")
-      setStartDate(props.deviceProperties.time_range_start_date);
-    if (props.deviceProperties.time_range_end_date != "")
-      setEndDate(props.deviceProperties.time_range_end_date);
-    if (props.deviceProperties.time_range_reoccuring != "")
-      setReoccuring(props.deviceProperties.time_range_end_date);
-    if (props.deviceProperties.temp_time_range_start != "")
-      setTimeStart(props.deviceProperties.temp_time_range_start);
-    if (props.deviceProperties.temp_time_range_end != "")
-      setTimeEnd(props.deviceProperties.temp_time_range_end);
-    //
-    if (props.deviceProperties.gps_location != null) setGpsStatus(true);
+    if (props.deviceProperties.date_start != null) {
+      if (props.deviceProperties.date_start != "") {
+        setStartDate(props.deviceProperties.date_start);
+      }
+    }
+    if (props.deviceProperties.date_end != null) {
+      if (props.deviceProperties.date_end != "") {
+        setEndDate(props.deviceProperties.date_end);
+      }
+    }
+
+    if (props.deviceProperties.reoccuring_type != null) {
+      if (props.deviceProperties.reoccuring_type == "0") {
+        setReoccuring("Not Reoccuring");
+      }
+      if (props.deviceProperties.reoccuring_type == "1") {
+        setReoccuring("Weekly");
+      }
+      if (props.deviceProperties.reoccuring_type == "2") {
+        setReoccuring("Bi-Weekly");
+      }
+    }
+
+    if (props.deviceProperties.days_reoccuring != null) {
+      // TODO: loop thru array and find days
+      setReoccuringDays("Mon, Tu");
+    }
+
+    if (props.deviceProperties.time_start != null) {
+      if (props.deviceProperties.time_start != "") {
+        setTimeStart(props.deviceProperties.time_start);
+      }
+    }
+    if (props.deviceProperties.time_end != null) {
+      if (props.deviceProperties.time_end != "") {
+        setTimeEnd(props.deviceProperties.time_end);
+      }
+    }
   }, []);
 
   return (
@@ -49,7 +76,7 @@ const SetScheduleCard = (props) => {
         <View style={styles.contentRow}>
           <Icon name="schedule" size={25} style={styles.icons} />
           <Text style={styles.font}>
-            {tempTimeStart} - {tempTimeEnd}
+            {reoccuringDays} / {tempTimeStart} - {tempTimeEnd}
           </Text>
         </View>
         <View style={styles.contentRow}>
@@ -65,7 +92,14 @@ const SetScheduleCard = (props) => {
       </View>
       <View style={{ flexGrow: 0, flexBasis: 85 }}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate("SetScheduleScreen")}
+          onPress={() =>
+            props.navigation.navigate("SetScheduleScreen", {
+              deviceProperties: props.deviceProperties,
+              accObject: props.accObject,
+              navigation: props.navigation,
+              idToken: props.idToken,
+            })
+          }
           style={styles.editButton}
         >
           <Text style={{ fontSize: 25, color: "white" }}>Edit</Text>

@@ -89,7 +89,7 @@ function HomeStack() {
         options={{
           headerLeft: () => null,
           headerShown: true,
-          headerTitle: () => <Header title="Your Guests" />,
+          headerTitle: () => <Header title="Your Guests" guest={false} />,
         }}
       />
       {/* <HomeNav.Screen
@@ -103,7 +103,7 @@ function HomeStack() {
         options={{
           headerLeft: () => null,
           headerShown: true,
-          headerTitle: () => <Header title="Device Properties" />,
+          headerTitle: () => <Header title="Device Properties" guest={false} />,
         }}
       />
       <HomeNav.Screen
@@ -112,7 +112,7 @@ function HomeStack() {
         options={{
           headerLeft: () => null,
           headerShown: true,
-          headerTitle: () => <Header title="Set Schedule" />,
+          headerTitle: () => <Header title="Set Schedule" guest={false} />,
         }}
       />
     </HomeNav.Navigator>
@@ -130,7 +130,7 @@ function HomeGuestStack() {
         options={{
           headerLeft: () => null,
           headerShown: true,
-          headerTitle: () => <Header title="Your Hubs" />,
+          headerTitle: () => <Header title="Your Hubs" guest={true} />,
         }}
       />
       {/* <HomeNav.Screen
@@ -144,7 +144,7 @@ function HomeGuestStack() {
         options={{
           headerLeft: () => null,
           headerShown: true,
-          headerTitle: () => <Header title="Device Control" />,
+          headerTitle: () => <Header title="Device Control" guest={true} />,
         }}
       />
     </HomeGuestNav.Navigator>
@@ -162,7 +162,7 @@ function DevicesStack(props) {
         options={{
           headerLeft: () => null,
           headerShown: true,
-          headerTitle: () => <Header title="Your Devices" />,
+          headerTitle: () => <Header title="Your Devices" guest={false} />,
         }}
       />
       <DevicesNav.Screen
@@ -171,7 +171,16 @@ function DevicesStack(props) {
         options={{
           headerLeft: () => null,
           headerShown: true,
-          headerTitle: () => <Header title="Device Properties" />,
+          headerTitle: () => <Header title="Device Properties" guest={false} />,
+        }}
+      />
+      <DevicesNav.Screen
+        name="SetScheduleScreen"
+        component={SetScheduleScreen}
+        options={{
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Set Schedule" guest={false} />,
         }}
       />
     </DevicesNav.Navigator>
@@ -392,7 +401,7 @@ export default function App(props) {
   return (
     <Provider store={store}>
       <View style={{ flex: 1 }}>
-        <StatusBar translucent backgroundColor="transparent" />
+        <StatusBar translucent transparent={false} />
         <Spinner
           visible={loading}
           textContent={"Loading..."}

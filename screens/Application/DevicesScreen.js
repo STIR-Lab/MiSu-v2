@@ -1,5 +1,5 @@
 import { Auth } from "aws-amplify";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   TouchableWithoutFeedback,
   StyleSheet,
@@ -16,8 +16,23 @@ import { getHubInfoAction } from "../../redux/Action/getHubInfoAction";
 import { registerHubAction } from "../../redux/Action/registerHubAction";
 import appStyle from "../../styles/AppStyle";
 
+import {getListofSharedAccountsDevicesScreen} from "../../services/listDevice";
+
 function DevicesScreen(props) {
   const [searchParam, setSearchParam] = useState("");
+  const [sharedAccs, setSharedAccs] = useState(null);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData(idToken) {
+    await getListofSharedAccountsDevicesScreen(props.sessionData.idToken)
+      .then(response => {
+        // console.log("Devices Screen", response);
+        setSharedAccs(response);})
+      .catch(err => console.log(err));
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -25,16 +40,20 @@ function DevicesScreen(props) {
         <View style={styles.header}>
           <SearchBar setSearchParam={setSearchParam} screen={"Devices"} />
         </View>
-        {/* <Text>This is the Devices page</Text> */}
-        {/* <View style={{backgroundColor: 'red'}}>
-						<TouchableOpacity
-							onPress={() => console.log( searchParam)}
-						>
-							<Text style={{ color: '#FFF', fontSize: 25 }}>Print</Text>
-						</TouchableOpacity>
-					</View> */}
+        
         <ScrollView style={styles.cardContainer}>
-          {/* <DeviceInfoCard navigation={props.navigation}/> */}
+          {sharedAccs &&
+            sharedAccs.message.filter(guest => guest.name.includes(searchParam)).map((entry, i) => (
+              <DeviceInfoCard
+                key={i}
+                type={'DeviceCard'}
+                title={entry.name}
+                guests={entry.guests}
+                deviceType={entry.type}
+                entityId={entry.entity_id}
+                navigation={props.navigation}
+              />
+            ))}
         </ScrollView>
       </View>
     </TouchableWithoutFeedback>

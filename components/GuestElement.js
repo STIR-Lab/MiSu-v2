@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Image,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { Icon } from "react-native-elements/dist/icons/Icon";
+import UserAvatar from 'react-native-user-avatar';
 
 function GuestElement(props) {
   // Ugly check to determine icon off of deviceName
@@ -27,28 +28,36 @@ function GuestElement(props) {
     return "smartphone";
   };
 
+  useEffect(() => {
+    // console.log(props);
+  });
+
   return (
     <View>
       <TouchableOpacity
         onPress={() =>
           props.navigation.navigate("Properties", {
-            accObject: props.user,
-            deviceName: props.deviceName,
-            currDevice: props.currDevice,
+            accObject: props.currGuest,
+            deviceName: props.title,
+            currDevice: {
+              login_credentials_id: props.currGuest.login_credentials_id,
+              entity_id: props.entityId,
+              shared_device_properties_id: props.currGuest.shared_device_properties_id,
+              name: props.title,
+              type: props.deviceType,
+              //  properties array goes here
+              },
             navigation: props.navigation,
+            idToken: props.idToken
           })
+          // console.log(props)
         }
       >
         <View style={styles.iconHolder}>
-          <Icon
-            name={checkIcon(props.deviceName)}
-            type="feather"
-            color="black"
-            size={30}
-          />
+          <UserAvatar size={70} borderRadius={41} name={props.guestName} />
         </View>
       </TouchableOpacity>
-      <Text style={styles.text}>{props.deviceName} </Text>
+      <Text style={styles.text}>{props.guestName} </Text>
     </View>
   );
 }
@@ -56,9 +65,10 @@ function GuestElement(props) {
 const styles = StyleSheet.create({
   iconHolder: {
     justifyContent: "center",
+    alignSelf: "center",
     borderColor: "#60b8ff",
-    borderWidth: 3,
-    borderRadius: 10,
+    borderWidth: 0,
+    borderRadius: 41,
     width: 70,
     height: 70,
   },
