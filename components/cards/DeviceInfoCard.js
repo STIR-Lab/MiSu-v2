@@ -18,8 +18,18 @@ function DeviceInfoCard(props) {
   const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
-    // console.log('==DEVICE INFO CARD== ' + JSON.toString(props));
+    // console.log('==DEVICE INFO CARD== ' + props.user);
   });
+
+  function handleClick() {
+    if (props.type == "GuestCard") {
+      props.navigation.navigate("GuestRemove", {
+        user: props.user
+      });
+    } else {
+        alter();
+    }
+  }
 
   // Ugly check to determine icon off of deviceName
   const checkIcon = (deviceName) => {
@@ -109,7 +119,7 @@ function DeviceInfoCard(props) {
 
   const panel = (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <TouchableOpacity style={styles.header} onPress={() => handleClick()}>
         {props.type == 'GuestCard' ? (
           <View style={styles.devIcon}>
             <UserAvatar size={45} borderRadius={30} name={props.title} />
@@ -135,7 +145,7 @@ function DeviceInfoCard(props) {
             <Icon name="chevron-down" type="feather" size={35} />
           )}
         </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
       <Collapsible collapsed={collapsed} style={styles.expanded}>
         <View style={styles.activeGuests}>
           <Text style={styles.text}>

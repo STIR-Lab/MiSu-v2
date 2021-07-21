@@ -24,8 +24,7 @@ function ProfileCard(props) {
                     <Text style={style.info}>{props.user.email}</Text>
                    
                 </View>
-            </View>
-            
+            </View>    
         </View>
     );
 }
