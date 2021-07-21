@@ -27,6 +27,7 @@ function LogCard(props) {
 
   const openModal = () => {
     // setSelected(false);
+    
     setIsVisible(!isVisible);
   };
 
@@ -69,11 +70,21 @@ function LogCard(props) {
             <Icon name="chevron-down" type="feather" color="white" />
           </TouchableOpacity>
         </View>
-        <Collapsible collapsed={collapsed} style={styles.expanded}>
-          <View style={styles.input}>
-            <Text>123</Text>
-          </View>
-        </Collapsible>
+        
+          
+          {props.logs.map((entry, i) => 
+          <Collapsible collapsed={collapsed} style={styles.expanded}  key={i}>
+            <View style={styles.input}>
+              <Text> {entry.device_name} </Text>
+            </View>
+          </Collapsible>
+            )
+             }
+          
+          
+             
+         
+       
         <View style={styles.textHeader}>
           <Icon name="users" type="feather" color="black" />
           <Text style={styles.textHeader}>Guests</Text>
@@ -87,7 +98,7 @@ function LogCard(props) {
         </View>
         <Collapsible collapsed={collapsedGuests} style={styles.expanded}>
           <View style={styles.input}>
-            <Text>123</Text>
+            <Text>{props.logs.secondary_user}</Text>
           </View>
         </Collapsible>
 
@@ -121,7 +132,7 @@ function LogCard(props) {
       </View>
 
       <View>
-        <Text style={LogStyle.rowLeft}>Today</Text>
+        
 
         {/* Need function to seperate by time */}
         {props.logs
@@ -157,6 +168,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: "flex-end",
     alignItems: "flex-end",
+    marginBottom: 10, 
   },
   container: {
     flex: 1,

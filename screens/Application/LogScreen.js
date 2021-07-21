@@ -85,29 +85,21 @@ class LogScreen extends React.Component {
 	};
 
 	renderLogs = () => {
-		if (this.state.usageLogs.length > 0 && this.state.accessLogs <= 0) {
+		
+		if (this.props.hubInfoData.user_type == 1) {
 			return <LogCard type="Activity" logs={this.state.usageLogs} />;
-		} else if (this.state.accessLogs.length > 0 && this.state.usageLogs <= 0) {
+		}
+		
+		else {
 			return <LogCard type="Access" logs={this.state.accessLogs} />;
-		} else if (this.state.accessLogs.length > 0 && this.state.usageLogs > 0) {
-			return (
-				<View>
-					<LogCard type="Activity" logs={this.state.usageLogs} />
-					<LogCard type="Access" logs={this.state.accessLogs} />
-				</View>
-			);
-		} else
-			return (
-				<View>
-				 <LogCard type="Access" logs={this.state.accessLogs} />
-				</View>
-			);
+		} 
 	};
 
 	render() {
 		return (
 			<View style={[appStyle.container, { alignItems: 'stretch', marginHorizontal: -5 }]}>
 				<ScrollView style={appStyle.scrollView}>
+					
 					{this.renderLogs()}
 					{/*
                     {this.state.usageLogs.length > 0 ? <LogCard type='Usage' logs={this.state.usageLogs}/> : null}
