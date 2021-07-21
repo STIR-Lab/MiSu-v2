@@ -27,6 +27,7 @@ function YourHubCard(props) {
 
   const openModal = () => {
     // setSelected(false);
+    console.log(props);
     setIsVisible(!isVisible);
   };
 
@@ -155,7 +156,7 @@ function YourHubCard(props) {
           </View>
         )}
       </View>
-      {registering == true && (
+      {registering == true && props.user.user_type == 1 &&(
         
 
           <View style={style.userHubInfo}>
@@ -203,17 +204,32 @@ function YourHubCard(props) {
           </View>
        
 
+        
       
       )}
-      {registering == false && (
+
+      {registering == false && props.user.user_type == 1 &&(
+        
+
+       
         <View style={style.noHub}>
-          <Text style={{ fontSize: 17 }}>No Hub Connected</Text>
-          <TouchableOpacity
-            style={style.connectButton}
-            onPress={() => registerHub()}
-          >
-            <Text style={{ color: '#15A3DF' }}>Connect Hub</Text>
-          </TouchableOpacity>
+        <Text style={{ fontSize: 17 }}>No Hub Connected</Text>
+        <TouchableOpacity
+          style={style.connectButton}
+          onPress={() => registerHub()}
+        >
+          <Text style={{ color: '#15A3DF' }}>Connect Hub</Text>
+        </TouchableOpacity>
+      </View>
+
+      
+    
+    )}
+      {registering == false && props.user.user_type == 0 &&(
+        <View style={style.noHub}>
+          <Text style={{ fontSize: 17 }}>New page here</Text>
+          
+         
         </View>
       )}
       {disconnectModal}
