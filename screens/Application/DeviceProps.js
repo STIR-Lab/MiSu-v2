@@ -20,17 +20,6 @@ import appStyle from "../../styles/AppStyle";
 import SetScheduleCard from "../../components/cards/SetScheduleCard";
 
 function DeviceProps(props) {
-<<<<<<< HEAD
-  const [userName, setUserName] = useState("Unknown");
-  const [deviceName, setDeviceName] = useState("Unknown");
-  const [geoIsEnabled, setGeoIsEnabled] = useState(false);
-  const [userID, setUserID] = useState("Unknown");
-  const [token, setToken] = useState("");
-  const [accept, setAccept] = useState(-1);
-
-  useEffect(() => {
-    //console.log("==DeviceProps==", props);
-=======
   const [userName, setUserName] = useState("Placeholder");
   const [deviceName, setDeviceName] = useState("Placeholder");
   // Properties
@@ -48,7 +37,6 @@ function DeviceProps(props) {
     console.log(
       "==DeviceProps==" + JSON.stringify(props.route.params) + "======"
     );
->>>>>>> 241699c1a162c4f4dd944fa428e7f38147247fd7
     var accountProperties = props.route.params.accObject;
     if (accountProperties.name != null) {
       setUserName(accountProperties.name);
@@ -56,64 +44,6 @@ function DeviceProps(props) {
     if (props.route.params.deviceName != null) {
       setDeviceName(props.route.params.deviceName);
     }
-<<<<<<< HEAD
-
-    /// setting geolocation state
-    if (accountProperties.login_credentials_id != null) {
-      setUserID(accountProperties.login_credentials_id);
-    }
-    if (props.sessionData.idToken != null) {
-      setToken(props.sessionData.idToken);
-    }
-  }, []);
-
-  const handleGeofencing = () => {
-    setGeoIsEnabled(!geoIsEnabled);
-    if (!geoIsEnabled) {
-      Alert.alert("Geofencing set to 1 mile");
-    }
-
-    async function setGeoFencing(answer, id, bearer) {
-      const state = await fetch(
-        "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/gps",
-        {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + bearer,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            account: id,
-            accepted: answer,
-          }),
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((err) => console.log(err));
-    }
-
-    if (geoIsEnabled == true) {
-      // Sending 0 to request
-      setAccept(0);
-      //console.log("DECLINE geo", accept);
-      console.log(
-        "Sending 0  \n" + "\nUSER ID: " + userID + "\nBEARER:  " + token
-      );
-      setGeoFencing(0, userID, token);
-    } else if (geoIsEnabled == false) {
-      //Sending 1 to request
-      console.log(
-        "Sending 1  \n" + "\nUSER ID: " + userID + "\nBEARER:  " + token
-      );
-      setAccept(1);
-      setGeoFencing(1, userID, token);
-      //console.log("ACCEPT geo", accept);
-    }
-  };
-=======
     if (
       props.route.params.currDevice.properties == null ||
       props.route.params.currDevice.properties == ""
@@ -211,7 +141,6 @@ function DeviceProps(props) {
   //       console.log(data);
   //     });
   // }
->>>>>>> 241699c1a162c4f4dd944fa428e7f38147247fd7
 
   return (
     <View style={appStyle.container}>
