@@ -24,6 +24,7 @@ const SetScheduleScreen = (props) => {
   const [name, setName] = useState("User");
   const [endDate, setEndDate] = useState(null);
   const [accessType, setAccessType] = useState("Off");
+  const [accessDigit, setAccessDigit] = useState("0");
   const [allDay, setAllDay] = useState(false);
 
   // Start Time
@@ -52,6 +53,24 @@ const SetScheduleScreen = (props) => {
     props.navigation.pop();
   }
 
+  function handleAccessType() {
+    if (accessType === "Off") {
+      setAccessType("On");
+      setAccessDigit("10");
+      return;
+    }
+    if (accessType === "On") {
+      setAccessType("Schedule");
+      setAccessDigit("2");
+      return;
+    }
+    if (accessType === "Schedule") {
+      setAccessType("Off");
+      setAccessDigit("0");
+      return;
+    }
+  }
+
   async function editProperties() {
     const response = await fetch(
       "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/property",
@@ -69,7 +88,7 @@ const SetScheduleScreen = (props) => {
           shared_property_id:
             props.route.params.deviceProperties.shared_property_id,
           geofencing: props.route.params.deviceProperties.geofencing,
-          access_type: "0",
+          access_type: accessDigit,
           all_day: allDay ? "1" : "0",
           time_start: startTime,
           time_end: endTime,
@@ -118,6 +137,11 @@ const SetScheduleScreen = (props) => {
       if (deviceProperties.access_type != "") {
         if (deviceProperties.access_type == "1") {
           setAccessType("On");
+          setAccessDigit("1");
+        }
+        if (deviceProperties.access_type == "2") {
+          setAccessType("Schedule");
+          setAccessDigit("2");
         }
       }
     }
@@ -137,13 +161,15 @@ const SetScheduleScreen = (props) => {
 
   const PropertyBadge = ({ property }) => {
     return (
-      <View style={styles.propertyChip}>
-        <Image
-          style={styles.propertyBadge}
-          source={require("../../assets/icons/user.png")}
-        />
-        <Text style={styles.propertyText}> {property}</Text>
-      </View>
+      <TouchableOpacity onPress={() => handleAccessType()}>
+        <View style={styles.propertyChip}>
+          <Image
+            style={styles.propertyBadge}
+            source={require("../../assets/icons/user.png")}
+          />
+          <Text style={styles.propertyText}> {accessType}</Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -338,7 +364,7 @@ const SetScheduleScreen = (props) => {
       {/* <Header title="Set Schedule" /> */}
       <View style={styles.info}>
         <NameBadge name={name} />
-        <PropertyBadge property={accessType} />
+        <PropertyBadge />
       </View>
       <View style={styles.setTime}>
         <WeekDays />

@@ -11,6 +11,7 @@ import {
   Button,
   Alert,
 } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import DeviceCard from "../../components/cards/DeviceCard";
@@ -18,8 +19,10 @@ import appStyle from "../../styles/AppStyle";
 
 // importing set schedule card from ./cards
 import SetScheduleCard from "../../components/cards/SetScheduleCard";
+import { set } from "react-native-reanimated";
 
 function DeviceProps(props) {
+  const isFocused = useIsFocused();
   const [userName, setUserName] = useState("Placeholder");
   const [deviceName, setDeviceName] = useState("Placeholder");
   // Properties
@@ -34,16 +37,17 @@ function DeviceProps(props) {
   const [reoccuringType, setReoccuringType] = useState(0);
 
   useEffect(() => {
-    console.log(
-      "==DeviceProps==" + JSON.stringify(props.route.params) + "======"
-    );
+    console.log("Entered deviceProps");
+    // console.log("==DeviceProps==" + JSON.stringify(props) + "======");
     var accountProperties = props.route.params.accObject;
+
     if (accountProperties.name != null) {
       setUserName(accountProperties.name);
     }
     if (props.route.params.deviceName != null) {
       setDeviceName(props.route.params.deviceName);
     }
+
     if (
       props.route.params.currDevice.properties == null ||
       props.route.params.currDevice.properties == ""
@@ -56,7 +60,6 @@ function DeviceProps(props) {
     // -> 0: disabled, 1: enabled
     if (deviceProperties.geofencing != null) {
       if (deviceProperties.geofencing == "1") {
-        console.log("Setting geofencing true");
         setGeofencing(true);
       }
     }
@@ -119,28 +122,44 @@ function DeviceProps(props) {
     if (deviceProperties.reoccuringType != null) {
       setReoccuringType(deviceProperties.reoccuringType);
     }
-  }, []);
+  }, [props, isFocused]);
 
-  // async function fetchValues() {
-  //   const response = await fetch(
-  //     'https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/property',
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         Authorization: 'Bearer ' + props.route.params.bearerId,
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         account: props.route.params.device.login_credentials_id,
-  //         device: props.route.params.device.shared_device_properties_id,
-  //       }),
-  //     }
-  //   )
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //     });
-  // }
+  async function handleSwitch(x) {
+    setGeofencing(x);
+    const response = await fetch(
+      "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/property",
+      {
+        method: "PUT",
+        headers: {
+          Authorization: "Bearer " + props.route.params.idToken,
+          "Content-Type": "application/json",
+          Accept: "*/*",
+        },
+        body: JSON.stringify({
+          account: props.route.params.accObject.login_credentials_id,
+          device: props.route.params.currDevice.shared_device_properties_id,
+          shared_property_id:
+            props.route.params.currDevice.properties[0].shared_property_id,
+          geofencing: x,
+          access_type: "0",
+          all_day: props.route.params.currDevice.properties[0].time_all_day,
+          time_start: props.route.params.currDevice.properties[0].time_start,
+          time_end: props.route.params.currDevice.properties[0].time_end,
+          date_start: props.route.params.currDevice.properties[0].date_start,
+          date_end: props.route.params.currDevice.properties[0].date_end,
+          reoccuring: null,
+          reoccuring_type: "0",
+        }),
+      }
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        if (data.statusCode != 200) {
+          setGeofencing(!x);
+        }
+      });
+  }
 
   return (
     <View style={appStyle.container}>
@@ -245,7 +264,13 @@ function DeviceProps(props) {
                   trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
                   value={geofencing}
                   // Kolbe api call to set gps location and set deviceProps gps_location
+<<<<<<< HEAD
                   onValueChange={handleGeofencing}
+=======
+                  onValueChange={(x) => {
+                    handleSwitch(x);
+                  }}
+>>>>>>> 0f63494808c169f8474ea660d3bab2aeb8d5db77
                 />
               </View>
             </View>

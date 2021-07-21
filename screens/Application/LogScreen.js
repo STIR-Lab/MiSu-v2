@@ -85,7 +85,7 @@ class LogScreen extends React.Component {
 	};
 
 	renderLogs = () => {
-		console.log(this.state);
+		
 		if (this.props.hubInfoData.user_type == 1) {
 			return <LogCard type="Activity" logs={this.state.usageLogs} />;
 		}
@@ -99,6 +99,7 @@ class LogScreen extends React.Component {
 		return (
 			<View style={[appStyle.container, { alignItems: 'stretch', marginHorizontal: -5 }]}>
 				<ScrollView style={appStyle.scrollView}>
+					
 					{this.renderLogs()}
 					{/*
                     {this.state.usageLogs.length > 0 ? <LogCard type='Usage' logs={this.state.usageLogs}/> : null}
