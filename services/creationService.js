@@ -2,6 +2,7 @@ import Moment from "moment";
 
 export const createADevice = async (
   account,
+  device,
   idToken,
   { title, entity_id, type }
 ) => {
@@ -31,7 +32,7 @@ export const createADevice = async (
       // console.log(type)
 
       // vv This line may break everything vv
-      propertyTest(account, entity_id, idToken, data.message);
+      propertyTest(account, device, idToken, data.message);
       return data;
     })
     .catch((err) => console.log(err));
