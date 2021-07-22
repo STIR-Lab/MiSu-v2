@@ -1,30 +1,30 @@
-import React, {useEffect, useState} from 'react'
-import { Switch, Text, TouchableOpacity, ToastAndroid, View, Image } from 'react-native';
-import * as Location from 'expo-location';
-import MapView, {
-    PROVIDER_GOOGLE,
-    ProviderPropType,
-    Marker,
-    Polyline,
-    AnimatedRegion,
-    Callout,
-  } from "react-native-maps";
+import React, { useEffect, useState } from "react";
+import {
+  Switch,
+  Text,
+  TouchableOpacity,
+  ToastAndroid,
+  View,
+  Image,
+} from "react-native";
+import * as Location from "expo-location";
+
 import haversine from "haversine";
 
-const GPS = () => {
-    const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
-    //Lat and Long
+const GPS = ({ token, hubLong, hubLat }) => {
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  //Lat and Long
 
-    const [latitude, setLatitude] = useState(null);
-    const [longitude , setLongitude]= useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
 
-    const[hubLong, sethubLong] = useState(-85.802324);
-    const[hubLat, setHubLat] = useState(10.304313);
+  //const [hubLong, sethubLong] = useState(-85.802324);
+  //const [hubLat, setHubLat] = useState(10.304313);
 
-    const [distance, setDistance] = useState(null);
+  const [theDistance, setTheDistance] = useState(null);
 
-    /*
+  /*
     calcDistance = () => {
       console.log(latitude + " " + longitude);
       console.log(hubLat + " " + hubLong)
@@ -33,49 +33,79 @@ const GPS = () => {
     };
 */
 
-    useEffect(() => {
-    (
-      async () => {
+  useEffect(() => {
+    (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission Denied');
+      if (status !== "granted") {
+        setErrorMsg("Permission Denied");
         return;
       }
-
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
       //Changes
       setLatitude(location.coords.latitude);
       setLongitude(location.coords.longitude);
 
-
       const calcDistance = async () => {
-        try{
+        try {
           //console.log(latitude + " " + longitude);
           //console.log(hubLat + " " + hubLong);
-          setDistance(haversine({"latitude": hubLat, "longitude":hubLong}, {"latitude":latitude,"longitude": longitude}, {unit: 'mile'}));
-          console.log("Distance: " + distance + "miles");
+          setTheDistance(
+            haversine(
+              { latitude: hubLat, longitude: hubLong },
+              { latitude: latitude, longitude: longitude },
+              { unit: "mile" }
+            )
+          );
+          console.log("Distance: " + theDistance + " miles");
+
+          //============================================================
+          // Request
+
+          const state = await fetch(
+            "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/gps",
+            {
+              method: "POST",
+              headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                distance: theDistance,
+              }),
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+            })
+            .catch((err) => console.log(err));
+
+          //
+          // END REQUEST
+        } catch (error) {
+          console.log(error);
         }
-        catch (error) {
-          console.log(error)
-        }
-      }
-  
+      };
 
       calcDistance();
 
+      // const interval = setTimeout(() => {
+      //   calcDistance();
+      // }, 10000);
+
+      // return () => {
+      //   clearInterval(interval);
+      // };
     })();
   });
 
+  return (
+    <View>
+      <Text>Latitude: {latitude}</Text>
+      <Text>Longitude: {longitude}</Text>
+    </View>
+  );
+};
 
-    return (
-       <View>
-           <Text>This is GPS</Text>
-           <Switch/>
-           <Text>Latitude: {latitude}</Text>
-           <Text>Longitude: {longitude}</Text>
-       </View>
-    )
-}
-
-export default GPS
+export default GPS;

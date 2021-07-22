@@ -21,6 +21,11 @@ import appStyle from "../../styles/AppStyle";
 import SetScheduleCard from "../../components/cards/SetScheduleCard";
 import { set } from "react-native-reanimated";
 
+// imorting gps functionality
+import GPS from "../../components/GPS";
+import * as Location from "expo-location";
+import haversine from "haversine";
+
 function DeviceProps(props) {
   const isFocused = useIsFocused();
   const [userName, setUserName] = useState("Placeholder");
@@ -37,7 +42,7 @@ function DeviceProps(props) {
   const [reoccuringType, setReoccuringType] = useState(0);
 
   useEffect(() => {
-    console.log("Entered deviceProps");
+    console.log("Entered deviceProps", props);
     // console.log("==DeviceProps==" + JSON.stringify(props) + "======");
     var accountProperties = props.route.params.accObject;
 
@@ -161,6 +166,10 @@ function DeviceProps(props) {
       });
   }
 
+  ////////////////////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////////////////////////////////////////////////////
+
   return (
     <View style={appStyle.container}>
       {
@@ -257,21 +266,24 @@ function DeviceProps(props) {
                 }}
               >
                 <Switch
-                  value={geoIsEnabled}
                   style={{
                     transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
                   }}
                   trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
                   value={geofencing}
                   // Kolbe api call to set gps location and set deviceProps gps_location
-<<<<<<< HEAD
-                  onValueChange={handleGeofencing}
-=======
                   onValueChange={(x) => {
                     handleSwitch(x);
                   }}
->>>>>>> 0f63494808c169f8474ea660d3bab2aeb8d5db77
                 />
+
+                {geofencing ? (
+                  <GPS
+                    token={props.route.params.idToken}
+                    hubLong={props.hubInfoData.hub_longitude}
+                    hubLat={props.hubInfoData.hub_latitude}
+                  />
+                ) : null}
               </View>
             </View>
           </ScrollView>
@@ -362,14 +374,26 @@ const propstyle = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const { devicesData, sessionData, sharedDevicesData, sharedAccountsData } =
-    state;
-  return { devicesData, sessionData, sharedDevicesData, sharedAccountsData };
+  const {
+    hubInfoData,
+    devicesData,
+    sessionData,
+    sharedDevicesData,
+    sharedAccountsData,
+  } = state;
+  return {
+    hubInfoData,
+    devicesData,
+    sessionData,
+    sharedDevicesData,
+    sharedAccountsData,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     dosomething: () => {},
+    getHub: (idToken) => dispatch(getHubInfoAction(idToken)),
   };
 };
 
