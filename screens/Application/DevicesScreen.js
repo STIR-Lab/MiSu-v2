@@ -30,7 +30,11 @@ function DevicesScreen(props) {
     await getListofSharedAccountsDevicesScreen(props.sessionData.idToken)
       .then(response => {
         // console.log("Devices Screen", response);
-        setSharedAccs(response);})
+        if(response.statusCode == 200)
+        {
+          setSharedAccs(response);
+        }
+      })
       .catch(err => console.log(err));
   }
 

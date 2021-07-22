@@ -46,7 +46,7 @@ function SampleDeviceList(props) {
     console.log("==SAMPLE DEVICE LIST USER:", JSON.stringify(props));
     // console.log("===DEVICES: ", props.devices);
     // console.log("===MY DEVICES: ", props.myDevices);
-    // console.log("===Bearer ID:", props.sessionData.idToken);
+    // console.log("===Bearer ID:", deviceList);
 
     if (props.screen == "Guests") {
       setScreen("Guests");
@@ -423,9 +423,9 @@ function SampleDeviceList(props) {
 
   return (
     <View style={styles.container} transparent={true}>
-      {deviceList.map((d) => (
-        <View style={styles.iconAndName} key={d.shared_device_properties_id}>
-          {screen === "Devices" ? (
+      {deviceList.map((d, i) => (
+        <View style={styles.iconAndName} key={i}>
+          {screen === 'Devices' ? (
             <GuestElement
               guestName={d.name}
               currGuest={d}
@@ -434,6 +434,7 @@ function SampleDeviceList(props) {
               idToken={props.sessionData.idToken}
               entityId={props.entityId}
               deviceType={props.deviceType}
+              key={d.shared_device_properties_id}
             />
           ) : screen === "Hubs" ? (
             <DeviceElement

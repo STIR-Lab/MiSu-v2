@@ -15,7 +15,7 @@ const formatEntryText = (log) => {
           >
             {log.primary_user}{" "}
           </Text>
-          shared access with you
+          has invited you to their hub
         </Text>
       );
     else if (log.operation === "Delete")
@@ -47,11 +47,25 @@ const formatEntryText = (log) => {
         <Text>
           <Text
             onPress={() => {}}
+            style={{ color: "black" }}
+          >
+            You{" "}
+          </Text>
+          accepted {log.primary_user}'s invitation
+        </Text>
+      );
+     
+    }
+    else if (log.operation === "Decline") {
+      return (
+        <Text>
+          <Text
+            onPress={() => {}}
             style={{ fontWeight: "bold", color: "#2393FB" }}
           >
             You{" "}
           </Text>
-          accepted access
+          declined {log.primary_user}'s invitation
         </Text>
       );
     } else return log.operation;
@@ -61,7 +75,7 @@ const formatEntryText = (log) => {
       <Text onPress={() => {}} style={{ fontWeight: "bold", color: "#2393FB" }}>
         {log.secondary_user}{" "}
       </Text>
-      set the {log.property_name} property of {log.device_name} to{" "}
+      performed the {log.device_action} action on the {log.device_name} 
       {log.value == true ? "On" : log.value == false ? "Off" : log.value}
     </Text>
   );
