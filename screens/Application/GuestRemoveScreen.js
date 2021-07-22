@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Icon } from 'react-native-elements';
 import appStyle from '../../styles/AppStyle';
+import {deleteASharedAccount} from '../../services/deleteService';
 import LastActionCard from '../../components/cards/LastActionCard';
 //Import Header Component
 import Header from "../../components/app/Header.js";
@@ -19,9 +20,19 @@ const GuestRemoveScreen = (props) => {
   const [deviceList, setDeviceList] = useState(props.route.params.user.devices);
 
     useEffect(() => {
-        // console.log('==Guest Remove Screen== ', props.route.params.user);
+        console.log('==Guest Remove Screen== ', props);
         // console.log('==Guest Remove Screen DeviceList= ', props.route.params.user.devices);
       });
+
+    async function deleteGuest(id, idToken) {
+     await deleteASharedAccount(id, idToken)
+     .then(response => {})
+      .then(setTimeout(() => {
+        props.route.params.delete(idToken)
+      }, 1000))
+      .then(props.navigation.pop())
+      .catch(err => console.log(err));
+    }
     return (
         <View style={appStyle.container}>
           <View style={styles.rowInformation}>
@@ -46,7 +57,7 @@ const GuestRemoveScreen = (props) => {
           {/* <LastActionCard screen={'GuestCard'} /> */}
           <TouchableOpacity
             style={styles.redButton}
-            onPress={() => console.log("TODO")}
+            onPress={() => deleteGuest(props.route.params.user.login_credentials_id, props.route.params.idToken)}
           >
             <Text style={styles.redButtonText}>Revoke Access</Text>
           </TouchableOpacity>

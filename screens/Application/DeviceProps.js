@@ -36,8 +36,8 @@ function DeviceProps(props) {
   const [reoccuringType, setReoccuringType] = useState(0);
 
   useEffect(() => {
-    console.log("Entered deviceProps");
-    // console.log("==DeviceProps==" + JSON.stringify(props) + "======");
+    // console.log("Entered deviceProps");
+    console.log("==DeviceProps==", props, "======");
     var accountProperties = props.route.params.accObject;
 
     if (accountProperties.name != null) {

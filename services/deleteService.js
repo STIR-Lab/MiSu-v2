@@ -21,13 +21,19 @@ export const  deleteASharedAccount = async (id, idToken) => {
         headers: 
         {
             Authorization: 'Bearer ' + idToken,
+            "Content-type": "application/json",
+            Accept: "*/*"
         },
         body: JSON.stringify({
           id: id,
         })
+      }).then((response) => response.json())
+      .then((data) => {
+        console.log("HELLO", data);
+  
+        return data;
       })
-      const val = response.json();
-      return val;
+      .catch((err) => console.log(err));
 }
 
 

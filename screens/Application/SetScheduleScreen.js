@@ -53,6 +53,8 @@ const SetScheduleScreen = (props) => {
     props.navigation.pop();
   }
 
+  console.log("SET SCHEDULE", props)
+
   function handleAccessType() {
     if (accessType === "Off") {
       setAccessType("On");
@@ -106,10 +108,10 @@ const SetScheduleScreen = (props) => {
       return;
     }
     var deviceProperties = props.route.params.deviceProperties;
-    console.log(
-      "==========setScheduleScreen==========" +
-        JSON.stringify(props.route.params)
-    );
+    // console.log(
+    //   "==========setScheduleScreen==========" +
+    //     JSON.stringify(props.route.params)
+    // );
 
     if (props.route.params.accObject.name != null) {
       setName(props.route.params.accObject.name);

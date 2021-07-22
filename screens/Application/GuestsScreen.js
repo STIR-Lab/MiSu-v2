@@ -44,6 +44,7 @@ function GuestsScreen(props) {
   openModal2 = () => {
     setIsVisible2(!isVisible2);
   };
+
   // console.log(props.devicesData.devices);
 
   // =========================================================================
@@ -92,7 +93,7 @@ function GuestsScreen(props) {
     // console.log('Data Fetched.');
 
     // console.log("==SHARED ACCS:", sharedAccs);
-    // console.log("== GUESTS SCREEN== " + JSON.stringify(sharedAccs));
+    // console.log("== GUESTS SCREEN== ", props);
   }
   
   async function addNewGuest(){
@@ -189,6 +190,8 @@ function GuestsScreen(props) {
                 sharedAccs={sharedAccs}
                 navigation={props.navigation}
                 myDevices={props.devicesData.devices}
+                idToken={props.sessionData.idToken}
+                delete={props.getAccounts}
               />
             ))}
         </ScrollView>

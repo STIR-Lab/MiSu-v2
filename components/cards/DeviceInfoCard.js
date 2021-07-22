@@ -18,13 +18,16 @@ function DeviceInfoCard(props) {
   const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
-    // console.log('==DEVICE INFO CARD== ' + props.user);
+    // console.log('==DEVICE INFO CARD== ', props);
   });
 
   function handleClick() {
     if (props.type == "GuestCard") {
       props.navigation.navigate("GuestRemove", {
-        user: props.user
+        user: props.user,
+        idToken: props.idToken,
+        sharedAccs: props.sharedAccs,
+        delete: props.delete
       });
     } else {
         alter();

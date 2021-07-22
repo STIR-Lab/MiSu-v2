@@ -17,7 +17,7 @@ const SetScheduleCard = (props) => {
   const [gpsLocation, setGpsStatus] = useState(false);
 
   useEffect(() => {
-    console.log("setScheduleCard: " + JSON.stringify(props));
+    console.log("setScheduleCard: ", props);
     if (props.deviceProperties == null) {
       return;
     }

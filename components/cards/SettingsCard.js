@@ -15,7 +15,7 @@ function SettingsCard(props) {
       .then(
         setTimeout(() => {
           props.getHub(props.idToken)
-        }, 1000)
+        }, 1500)
       )
 
       setIsRoleVisible(false);
