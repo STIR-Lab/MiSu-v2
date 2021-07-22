@@ -2,7 +2,6 @@ import Moment from "moment";
 
 export const createADevice = async (
   account,
-  device,
   idToken,
   { title, entity_id, type }
 ) => {
@@ -32,18 +31,13 @@ export const createADevice = async (
       // console.log(type)
 
       // vv This line may break everything vv
-      propertyTest(account, device, idToken, data.message);
+      propertyTest(account, idToken, data.message);
       return data;
     })
     .catch((err) => console.log(err));
 };
 
-export const propertyTest = async (
-  account,
-  deviceID,
-  idToken,
-  sharedPropertyID
-) => {
+export const propertyTest = async (account, idToken, sharedPropertyID) => {
   const response = await fetch(
     "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/property",
     {
@@ -55,8 +49,7 @@ export const propertyTest = async (
       },
       body: JSON.stringify({
         account: account,
-        device: deviceID,
-        shared_property_id: sharedPropertyID,
+        device: sharedPropertyID,
         geofencing: "0",
         access_type: "0",
         all_day: "0",

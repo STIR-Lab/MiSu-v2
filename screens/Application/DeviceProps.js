@@ -24,7 +24,12 @@ function DeviceProps(props) {
   const isFocused = useIsFocused();
   const [userName, setUserName] = useState("Placeholder");
   const [deviceName, setDeviceName] = useState("Placeholder");
+
+  const [account, setAccount] = useState("");
+  const [deviceId, setDeviceId] = useState("");
+
   // Properties
+  const [propertiesObj, setPropertiesObj] = useState({});
   const [geofencing, setGeofencing] = useState(false);
   const [accessType, setAccessType] = useState(false);
   const [allDayAccess, setAllDayAccess] = useState(false);
@@ -40,6 +45,14 @@ function DeviceProps(props) {
     console.log("==DeviceProps==", props, "======");
     var accountProperties = props.route.params.accObject;
 
+    if (accountProperties.devices[0].login_credentials_id != null) {
+      setAccount(accountProperties.devices[0].login_credentials_id);
+    }
+
+    if (accountProperties.devices[0].shared_device_properties_id != null) {
+      setDeviceId(accountProperties.devices[0].shared_device_properties_id);
+    }
+
     if (accountProperties.name != null) {
       setUserName(accountProperties.name);
     }
@@ -53,8 +66,39 @@ function DeviceProps(props) {
     ) {
       return;
     }
-    var deviceProperties = props.route.params.currDevice.properties[0];
+    setTimeout(() => {
+      getDeviceProperties(account, deviceId);
+    }, 1000);
+  }, [props, geofencing, isFocused]);
 
+  async function getDeviceProperties(accountID, deviceID) {
+    console.log("Fetching with: " + accountID + " : " + deviceID);
+    const response = await fetch(
+      "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/getproperty",
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + props.route.params.idToken,
+          "Content-Type": "application/json",
+          Accept: "*/*",
+        },
+        body: JSON.stringify({
+          account: accountID,
+          device_id: deviceID,
+        }),
+      }
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        if (data.properties != null) {
+          setProperties(data.properties);
+          setPropertiesObj(data.properties);
+        }
+      });
+  }
+
+  function setProperties(deviceProperties) {
     // Geofencing
     // -> 0: disabled, 1: enabled
     if (deviceProperties.geofencing != null) {
@@ -121,7 +165,7 @@ function DeviceProps(props) {
     if (deviceProperties.reoccuringType != null) {
       setReoccuringType(deviceProperties.reoccuringType);
     }
-  }, [props, isFocused]);
+  }
 
   async function handleSwitch(x) {
     setGeofencing(x);
@@ -139,7 +183,7 @@ function DeviceProps(props) {
           device: props.route.params.currDevice.shared_device_properties_id,
           shared_property_id:
             props.route.params.currDevice.properties[0].shared_property_id,
-          geofencing: x,
+          geofencing: x == true ? "1" : "0",
           access_type: "0",
           all_day: props.route.params.currDevice.properties[0].time_all_day,
           time_start: props.route.params.currDevice.properties[0].time_start,
@@ -221,7 +265,7 @@ function DeviceProps(props) {
 
               <SetScheduleCard
                 accObject={props.route.params.accObject}
-                deviceProperties={props.route.params.currDevice.properties[0]}
+                deviceProperties={propertiesObj}
                 navigation={props.route.params.navigation}
                 idToken={props.route.params.idToken}
               />

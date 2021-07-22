@@ -43,7 +43,7 @@ function SampleDeviceList(props) {
   // ];
 
   useEffect(() => {
-    // console.log("==SAMPLE DEVICE LIST USER:", JSON.stringify(props.devices));
+    console.log("==SAMPLE DEVICE LIST USER:", JSON.stringify(props));
     // console.log("===DEVICES: ", props.devices);
     // console.log("===MY DEVICES: ", props.myDevices);
     // console.log("===Bearer ID:", deviceList);
@@ -382,7 +382,6 @@ function SampleDeviceList(props) {
             onPress={() => {
               const apiRet = createADevice(
                 props.user.login_credentials_id,
-                props.devices[0].shared_device_properties_id,
                 props.sessionData.idToken,
                 {
                   title: choice.attributes.friendly_name,
