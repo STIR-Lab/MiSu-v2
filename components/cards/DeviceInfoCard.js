@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Image,
   StyleSheet,
@@ -6,37 +6,37 @@ import {
   View,
   Text,
   TouchableWithoutFeedback,
-} from 'react-native';
-import Collapsible from 'react-native-collapsible';
-import SampleDeviceList from '../../components/cards/ListEntries/SampleDeviceList';
-import LastActionCard from '../../components/cards/LastActionCard';
-import UserAvatar from 'react-native-user-avatar';
+} from "react-native";
+import Collapsible from "react-native-collapsible";
+import SampleDeviceList from "../../components/cards/ListEntries/SampleDeviceList";
+import LastActionCard from "../../components/cards/LastActionCard";
+import UserAvatar from "react-native-user-avatar";
 
-import { Icon } from 'react-native-elements';
+import { Icon } from "react-native-elements";
 
 function DeviceInfoCard(props) {
   const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
-    // console.log('==DEVICE INFO CARD== ' + JSON.toString(props));
+    // console.log("==DEVICE INFO CARD== " + JSON.stringify(props));
   });
 
   // Ugly check to determine icon off of deviceName
   const checkIcon = (deviceName) => {
     // Needed for before data is loaded
     //  -> deviceName should **never** be null once deployed
-    if (deviceName == null) return 'aperture';
+    if (deviceName == null) return "aperture";
     var dName = deviceName.toString().toLowerCase();
-    if (dName.includes('bulb')) {
-      return 'zap';
+    if (dName.includes("bulb")) {
+      return "zap";
     }
-    if (dName.includes('lock')) {
-      return 'lock';
+    if (dName.includes("lock")) {
+      return "lock";
     }
-    if (dName.includes('speaker') || dName.includes('google')) {
-      return 'speaker';
+    if (dName.includes("speaker") || dName.includes("google")) {
+      return "speaker";
     }
-    return 'aperture';
+    return "aperture";
   };
 
   const deviceIcons = () => {
@@ -67,7 +67,7 @@ function DeviceInfoCard(props) {
 
   let list;
 
-  if (props.type == 'HubCard')
+  if (props.type == "HubCard")
     list = (
       <SampleDeviceList
         screen="Hubs"
@@ -79,7 +79,7 @@ function DeviceInfoCard(props) {
         navigation={props.navigation}
       />
     );
-  else if (props.type == 'GuestCard')
+  else if (props.type == "GuestCard")
     list = (
       <SampleDeviceList
         screen="Guests"
@@ -94,7 +94,7 @@ function DeviceInfoCard(props) {
         navigation={props.navigation}
       />
     );
-  else if (props.type == 'DeviceCard')
+  else if (props.type == "DeviceCard")
     list = (
       // TODO: Render the Sample Device List from the Devices Screen
       <SampleDeviceList
@@ -110,16 +110,17 @@ function DeviceInfoCard(props) {
   const panel = (
     <View style={styles.container}>
       <View style={styles.header}>
-        {props.type == 'GuestCard' ? (
+        {props.type == "GuestCard" ? (
           <View style={styles.devIcon}>
             <UserAvatar size={45} borderRadius={30} name={props.title} />
           </View>
-        ) : props.type == 'HubCard' ? (
+        ) : props.type == "HubCard" ? (
           <View style={styles.devIcon2}>
             <Icon name="home" type="feather" size={45} />
           </View>
-        ) :
-          <View style={styles.devIcon} />}
+        ) : (
+          <View style={styles.devIcon} />
+        )}
 
         <View>
           <Text style={styles.userName}>{props.title}</Text>
@@ -139,11 +140,11 @@ function DeviceInfoCard(props) {
       <Collapsible collapsed={collapsed} style={styles.expanded}>
         <View style={styles.activeGuests}>
           <Text style={styles.text}>
-            {props.type == 'DeviceCard' ? 'Active Guests' : 'Devices'}
+            {props.type == "DeviceCard" ? "Active Guests" : "Devices"}
           </Text>
         </View>
         <View style={styles.guestList}>{list}</View>
-        {props.type != 'HubCard' && <LastActionCard screen={props.type} />}
+        {props.type != "HubCard" && <LastActionCard screen={props.type} />}
       </Collapsible>
     </View>
   );
@@ -157,55 +158,55 @@ function DeviceInfoCard(props) {
 
 const styles = StyleSheet.create({
   activeGuests: {
-    alignContent: 'center',
+    alignContent: "center",
     padding: 15,
   },
   text: {
-    fontWeight: '700',
+    fontWeight: "700",
     fontSize: 18,
-    color: '#404040',
+    color: "#404040",
   },
   container: {
-    width: '100%',
+    width: "100%",
     marginBottom: 15,
   },
   header: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     height: 80,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
-    flexDirection: 'row',
-    alignItems: 'center',
-    shadowColor: '#000',
+    flexDirection: "row",
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOpacity: 0.8,
     shadowRadius: 1,
     elevation: 6,
   },
   guestList: {
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
   },
   dropDownButtom: {
-    backgroundColor: '#FFFFFF',
-    position: 'absolute',
+    backgroundColor: "#FFFFFF",
+    position: "absolute",
     right: 0,
     borderTopRightRadius: 5,
-    height: '100%',
-    width: '20%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: "100%",
+    width: "20%",
+    justifyContent: "center",
+    alignItems: "center",
     borderLeftWidth: 0.5,
   },
   expanded: {
-    position: 'absolute',
-    backgroundColor: '#FFFFFF',
-    width: '100%',
+    position: "absolute",
+    backgroundColor: "#FFFFFF",
+    width: "100%",
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
   },
   devIcon: {
-    alignSelf: 'center',
+    alignSelf: "center",
     height: 46,
     width: 46,
     marginHorizontal: 10,
@@ -213,17 +214,17 @@ const styles = StyleSheet.create({
   iconContainer: {
     height: 30,
     width: 30,
-    alignSelf: 'center',
-    justifyContent: 'center',
+    alignSelf: "center",
+    justifyContent: "center",
   },
   row: {
     margin: 2,
     marginLeft: 40,
     paddingBottom: 0,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   userName: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
   },
   devIcon2: {
