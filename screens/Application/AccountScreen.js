@@ -80,6 +80,7 @@ function AccountScreen(props) {
         user={props.hubInfoData}
       />
       <YourHubCard
+        sharedData ={props.sharedAccountsData.sharedAccounts}
         register={props.register}
         idToken={props.sessionData.idToken}
         user={props.hubInfoData}

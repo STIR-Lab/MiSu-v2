@@ -4,12 +4,16 @@ import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import { CardStyleInterpolators } from 'react-navigation-stack';
 import {deleteHub} from "../../services/creationService";
-
+import UserAvatar from 'react-native-user-avatar';
 import Modal from "react-native-modal";
+import { ScrollView } from 'react-native';
 function YourHubCard(props) {
   const [registering, setRegistering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [IsVisibleGuests, setIsVisibleGuests] = useState(false);
+  const [IsVisibleGuestsDisconnect, setIsVisibleGuestsDisconnect] = useState(false);
+  const [hubEntryName, setHubEntryName] = useState("");
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     if (props.hub_url == '') {
@@ -34,6 +38,12 @@ function YourHubCard(props) {
   const openRemoveGuestsModal = () => {
     // setSelected(false);
     setIsVisibleGuests(!isVisible);
+  };
+
+  const openGuestDisconnectModal = (name) => {
+    // setSelected(false);
+    setIsVisibleGuestsDisconnect(!isVisible);
+    setHubEntryName(name);
   };
 
 
@@ -93,17 +103,17 @@ function YourHubCard(props) {
     </Modal>
   );
 
-  let removeGuestsModal =
+  let guestDisconnectModal =
   (
     <Modal
-    visible={IsVisibleGuests}
+    visible={IsVisibleGuestsDisconnect}
     transparent={true}
-    onBackdropPress={() => setIsVisibleGuests(false)}
+    onBackdropPress={() => setIsVisibleGuestsDisconnect(false)}
     >
     <View style={style.disconnectModal}>
         <View style={style.disconnectHeader}>
          
-          <Text style={{ marginLeft: 10, fontSize: 20 }}>Remove Guests</Text>
+          <Text style={{ marginLeft: 10, fontSize: 20 }}>Disconnect Guest</Text>
         </View>
         <Text
           style={{
@@ -114,8 +124,89 @@ function YourHubCard(props) {
             marginRight: 5,  
           }}
         >
-     
+          Are you sure you want to disconnect from {hubEntryName}'s hub? 
+         
         </Text>
+
+        
+        
+        <TouchableOpacity
+          onPress={
+            () => {
+             
+              
+             
+            }
+            //Share(idToken, guestEmail, device, shareProperties, shareOptions)
+          }
+        >
+          <View style={style.submitButton}>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 22,
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
+              Disconnect Hub
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </Modal>
+  );
+
+
+  let removeGuestsModal =
+  (
+    <Modal
+    visible={IsVisibleGuests}
+    transparent={true}
+    onBackdropPress={() => setIsVisibleGuests(false)}
+    >
+    <View style={style.removeGuestsModal}>
+        <View style={style.disconnectHeader}>
+         
+          <Text style={{ marginLeft: 10, fontSize: 20 }}>Remove Guests</Text>
+        </View>
+       
+        <View style={style.item}>
+
+     
+    </View>
+    <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
+       <ScrollView>
+       {props.sharedData.map((entry, i) => (
+             
+                
+                <View key={i} style={style.cardCon}>
+                  <TouchableOpacity onPress={() => setSelected(i)}>
+                    <View
+                      style={{
+                        paddingLeft: 10,
+                        paddingVertical: 6,
+                        flexDirection: "row",
+                        borderRadius: 10,
+                        elevation: selected == i ? 2 : 0,
+                        backgroundColor: selected == i ? "white" : "#F1F1F1",
+                      }}
+                    >
+                      <UserAvatar size={40} borderRadius={41} name={entry.name} />
+                      <Text style={style.cardText}>
+                        {entry.name}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <View style={style.seperator}></View>
+                </View>
+             
+        
+
+             
+            ))}
+       </ScrollView>
+       </View>
         
         <TouchableOpacity
           onPress={
@@ -134,7 +225,7 @@ function YourHubCard(props) {
                 color: "white",
               }}
             >
-              Remove Guests
+              Remove Guest
             </Text>
           </View>
         </TouchableOpacity>
@@ -146,6 +237,7 @@ function YourHubCard(props) {
     <View style={style.container}>
       <View style={style.headerLine}>
         <Text style={style.header}>Your Hub</Text>
+        
         {registering == true && (
           <View style={style.editBox}>
             <Image
@@ -156,6 +248,7 @@ function YourHubCard(props) {
           </View>
         )}
       </View>
+      
       {registering == true && props.user.user_type == 1 &&(
         
 
@@ -225,15 +318,50 @@ function YourHubCard(props) {
       
     
     )}
+    <ScrollView>
       {registering == false && props.user.user_type == 0 &&(
-        <View style={style.noHub}>
-          <Text style={{ fontSize: 17 }}>New page here</Text>
-          
-         
-        </View>
+            <View >
+
+           
+            {props.sharedData.map((entry, i) => (
+              <View style={style.verticleCentralColumns}>
+                
+      
+                  <View style={style.horizonalRows}>
+
+                  <View>
+                  <Text style={style.guestHubText}>{entry.name}'s hub</Text>
+                  </View>
+                  
+                  <View style={style.redButton}>
+                  <TouchableOpacity onPress={() => openGuestDisconnectModal(entry.name)}>
+                    <View>
+                        <Text style={style.guestRedButtonText}>Disconnect</Text>
+                    </View>
+                    </TouchableOpacity>
+                  </View>
+
+                  
+                  </View>
+              
+               
+    
+
+              </View>
+            ))}
+
+      
+
+
+        
+ 
+         </View>
       )}
+      </ScrollView>
       {disconnectModal}
       {removeGuestsModal}
+      {guestDisconnectModal}
+      
     </View>
   );
 }
@@ -260,7 +388,28 @@ const style = StyleSheet.create({
     justifyContent: 'center',
 
   },
+  guestHubText:
+  {
+    marginRight: 40,
+    fontSize: 16, 
+  },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
 
+  button: {
+    backgroundColor: "#F6F6F6",
+    borderRadius: 10,
+    elevation: 4,
+    marginRight: 13,
+  },
+  guestRedButtonText:
+  {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
   redButtonDisconnect: {
     backgroundColor: '#ea5f5f',
     marginTop: 10,
@@ -281,6 +430,26 @@ const style = StyleSheet.create({
     paddingHorizontal: 20,
     elevation: 6,
     marginLeft: 23, 
+  },
+
+  horizonalRows: {
+    flexDirection: 'row',
+    justifyContent: "flex-start",
+    alignItems: 'flex-start',
+  },
+
+  seperator: {
+    marginTop: 10,
+    marginBottom: 10,
+    borderWidth: 0.5,
+    borderColor: "#888888",
+  },
+  
+  verticleCentralColumns: {
+    justifyContent: "flex-start",
+    alignItems: 'flex-start',
+    flexDirection: 'column',
+    
   },
   redButton: {
     backgroundColor: '#ea5f5f',
@@ -305,6 +474,14 @@ const style = StyleSheet.create({
     height: 35,
     width: 35,
     marginRight: 5,
+  },
+  cardCon: {
+    flexDirection: "column",
+    alignSelf: "center",
+    justifyContent: "center",
+    marginLeft: 20,
+    marginRight: 20,
+    alignSelf: "stretch",
   },
   modal: {
     backgroundColor: "#F1F1F1",
@@ -401,6 +578,11 @@ const style = StyleSheet.create({
     color: '#2DC62A',
     marginBottom: 5,
   },
+  cardText: {
+    fontSize: 16,
+    alignSelf: "center",
+    marginLeft: 20,
+  },
   noHub: {
     height: '60%',
     alignItems: 'center',
@@ -414,7 +596,17 @@ const style = StyleSheet.create({
     borderRadius: 20,
     margin: 5, 
     width: 300,
-    height:  230,
+    alignSelf: "center",
+    alignItems: "center",
+  },
+
+  removeGuestsModal: {
+    backgroundColor: "#F1F1F1",
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 20,
+    margin: 5, 
+    width: 300,
     alignSelf: "center",
     alignItems: "center",
   },
@@ -434,6 +626,7 @@ const style = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 25, 
   },
 });
 

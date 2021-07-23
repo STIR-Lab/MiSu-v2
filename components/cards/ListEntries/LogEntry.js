@@ -4,6 +4,89 @@ import { Card, Icon, Avatar } from "react-native-elements";
 import appStyle from "../../../styles/AppStyle";
 import LogStyle from "../../../styles/LogStyle";
 
+const formatImage = (log) => {
+  if (log.operation !== undefined) {
+    if (log.operation === "Create")
+      return (
+        <Icon
+        containerStyle={{
+          alignItems: "flex-start",
+          marginTop: 10,
+        }}
+        size={45}
+        color="#7DEA7B"
+        rounded
+        name="unlock"
+        type="antdesign"
+      />
+      );
+
+      else if (log.operation === "Delete")
+      return (
+        <Icon
+        containerStyle={{
+          alignItems: "flex-start",
+          marginTop: 10,
+        }}
+        size={45}
+        color="#7DEA7B"
+        rounded
+        name="unlock"
+        type="antdesign"
+      />
+      );
+      else if (log.operation === "Ended sharing early")
+      return (
+        <Icon
+        containerStyle={{
+          alignItems: "flex-start",
+          marginTop: 10,
+        }}
+        size={45}
+        color="#7DEA7B"
+        rounded
+        name="FiX"
+        type="feather"
+      />
+      );
+    else if (log.operation === "Accept") {
+      return (
+        <Icon
+        containerStyle={{
+          alignItems: "flex-start",
+          marginTop: 10,
+        }}
+        size={45}
+        color="#7DEA7B"
+        rounded
+        name="check"
+        type="feather"
+      />
+      );
+
+      
+  }
+  else return <Icon containerStyle={{
+    alignItems: "flex-start",
+    marginTop: 10,
+  }}
+  size={45}
+  color="#7DEA7B"
+  rounded
+  name="unlock"
+  type="antdesign"/>
+}
+else return <Icon containerStyle={{
+  alignItems: "flex-start",
+  marginTop: 10,
+}}
+size={45}
+color="#7DEA7B"
+rounded
+name="unlock"
+type="antdesign"/>
+}
+
 const formatEntryText = (log) => {
   if (log.operation !== undefined) {
     if (log.operation === "Create")
@@ -85,17 +168,8 @@ const LogEntry = (props) => {
   var log = props.log;
   return (
     <View style={LogStyle.Lcard}>
-      <Icon
-        containerStyle={{
-          alignItems: "flex-start",
-          marginTop: 10,
-        }}
-        size={45}
-        color="#7DEA7B"
-        rounded
-        name="unlock"
-        type="antdesign"
-      />
+      {formatImage(log)}
+      
 
       <Text style={LogStyle.textLog}>{formatEntryText(log)}</Text>
 
