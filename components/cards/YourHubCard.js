@@ -434,8 +434,8 @@ const style = StyleSheet.create({
 
   horizonalRows: {
     flexDirection: 'row',
-    justifyContent: "flex-start",
-    alignItems: 'flex-start',
+    justifyContent: "center",
+    alignItems: 'center',
   },
 
   seperator: {
@@ -446,8 +446,8 @@ const style = StyleSheet.create({
   },
   
   verticleCentralColumns: {
-    justifyContent: "flex-start",
-    alignItems: 'flex-start',
+    justifyContent: "center",
+    alignItems: 'center',
     flexDirection: 'column',
     
   },
