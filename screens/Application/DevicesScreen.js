@@ -18,20 +18,31 @@ import appStyle from "../../styles/AppStyle";
 
 import {getListofSharedAccountsDevicesScreen} from "../../services/listDevice";
 
+function useForceUpdate(){
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value => value + 1); // update the state to force render
+}
+
 function DevicesScreen(props) {
   const [searchParam, setSearchParam] = useState("");
   const [sharedAccs, setSharedAccs] = useState(null);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  });
+
+  function forceUpdate(){
+    useForceUpdate();
+  }
 
   async function fetchData(idToken) {
+    console.log("refreshing");
     await getListofSharedAccountsDevicesScreen(props.sessionData.idToken)
       .then(response => {
-        // console.log("Devices Screen", response);
+        console.log("Devices Screen", response);
         if(response.statusCode == 200)
         {
+          console.log("changine");
           setSharedAccs(response);
         }
       })
@@ -56,6 +67,8 @@ function DevicesScreen(props) {
                 deviceType={entry.type}
                 entityId={entry.entity_id}
                 navigation={props.navigation}
+                refresh={fetchData}
+                
               />
             ))}
         </ScrollView>

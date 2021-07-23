@@ -105,6 +105,8 @@ function DeviceInfoCard(props) {
         myDevices={props.myDevices}
         // sharedAccs={props.sharedAccs} attempting to use redux instead
         navigation={props.navigation}
+        refresh={props.delete}
+        refreshNum={0}
       />
     );
   else if (props.type == "DeviceCard")
@@ -117,6 +119,8 @@ function DeviceInfoCard(props) {
         deviceType={props.deviceType}
         entityId={props.entityId}
         navigation={props.navigation}
+        refresh={props.refresh}
+        refreshNum={props.refreshNum}
       />
     );
 

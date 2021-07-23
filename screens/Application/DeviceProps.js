@@ -42,8 +42,9 @@ function DeviceProps(props) {
 
   useEffect(() => {
     // console.log("Entered deviceProps");
-    console.log("==DeviceProps==", props, "======");
+    // console.log("==DeviceProps==", props, "======");
     var accountProperties = props.route.params.accObject;
+    console.log("==DeviceProps==", accountProperties, "======");
 
     if (accountProperties.devices[0].login_credentials_id != null) {
       setAccount(accountProperties.devices[0].login_credentials_id);
@@ -72,7 +73,7 @@ function DeviceProps(props) {
   }, [props, geofencing, isFocused]);
 
   async function getDeviceProperties(accountID, deviceID) {
-    console.log("Fetching with: " + accountID + " : " + deviceID);
+    console.log("Fetching with:// " + accountID + " : " + deviceID);
     const response = await fetch(
       "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/getproperty",
       {
@@ -313,6 +314,12 @@ function DeviceProps(props) {
               </View>
             </View>
           </ScrollView>
+          <TouchableOpacity
+            style={propstyle.redButton}
+            onPress={() => deleteGuest(props.route.params.user.login_credentials_id, props.route.params.idToken)}
+          >
+            <Text style={propstyle.redButtonText}>Revoke Access</Text>
+          </TouchableOpacity>
         </View>
       }
     </View>
@@ -396,6 +403,30 @@ const propstyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "stretch",
+  },
+  redButton: {
+    backgroundColor: '#ea5f5f',
+    borderRadius: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: "center",
+    height: 60,
+    width: 185,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 20,
+      height: 5,
+    },
+    shadowOpacity: 0.9,
+    shadowRadius: 2.62,
+    borderWidth: 1.4,
+    borderColor: '#cc9797',
+    elevation: 6,
+  },
+  redButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 18,
   },
 });
 

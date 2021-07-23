@@ -35,6 +35,7 @@ function SampleDeviceList(props) {
   const [deviceList, setDeviceList] = useState([""]);
   const [tempDevices, setTempDevices] = useState(props.myDevices);
   const [choice, setChoice] = useState(null);
+  const [addGuestList, setAddGuestList] = useState([]);
   // var tempDevices = [
   //   {
   //     id: 1,
@@ -43,7 +44,7 @@ function SampleDeviceList(props) {
   // ];
 
   useEffect(() => {
-    console.log("==SAMPLE DEVICE LIST USER:", JSON.stringify(props));
+    // console.log("==SAMPLE DEVICE LIST PROPS:", props);
     // console.log("===DEVICES: ", props.devices);
     // console.log("===MY DEVICES: ", props.myDevices);
     // console.log("===Bearer ID:", deviceList);
@@ -55,15 +56,22 @@ function SampleDeviceList(props) {
       if (props.user.guest_email != null) {
         setGuestEmail(props.user.guest_email);
       }
+      // console.log("tempDevices FOR", props.title, ":", props.myDevices)
     } else if (props.screen == "Devices") {
       setScreen("Devices");
       setDeviceList(props.guests);
+      // console.log("SHARED ACCOUNTS ON DEVICE SCREEN LIST", props.sharedAccountsData.sharedAccounts);
+      // console.log("GUESTS ON DEVICE SCREEN LIST", props.guests);
+      const results = props.sharedAccountsData.sharedAccounts.filter(({ name: id1 }) => !props.guests.some(({ name: id2 }) => id2 === id1));
+      setAddGuestList(results);
+      console.log("==SAMPLE DEVICE LIST PROPS:", props);
+      // console.log(results);
     } else if (props.screen == "Hubs") {
       setScreen("Hubs");
       setDeviceList(props.devices);
-      // console.log("====== HUB SAMPLE DEVICE LIST", props);
+      console.log("====== HUB SAMPLE DEVICE LIST", props);
     } else console.log("Invalid screen prop passed.");
-  });
+  }, [props.guests]);
 
   const openModal = () => {
     // setSelected(false);
@@ -79,6 +87,14 @@ function SampleDeviceList(props) {
     setIsVisible2(true);
   };
 
+  const selectUser = (i) => {
+    if (i === selected) setSelected(null);
+    else {
+      setSelected(i);
+      // console.log(i);
+    }
+  }
+
   function getType(stringToParse) {
     const tmp = stringToParse.split(".");
     return tmp[0];
@@ -89,13 +105,57 @@ function SampleDeviceList(props) {
       console.log("Selected cannot be null");
       return;
     }
-    props.navigation.navigate("Properties", {
-      account: selected,
-    });
+    else
+    {
+      shareDevice(selected.login_credentials_id, props.title, props.entityId, props.deviceType);
+      setIsVisible(false)
+    }
   };
 
-  const shareDevice = () => {
-    console.log("tes");
+  const guestSideShare = () => {
+    if (selected == null) {
+      console.log("Selected cannot be null");
+      return;
+    }
+    else
+    {
+      shareDevice(props.user.login_credentials_id, selected.attributes.friendly_name, selected.entity_id, getType(selected.entity_id));
+    }
+  };
+
+  // async function deleteGuest(id, idToken) {
+  //   await deleteASharedAccount(id, idToken)
+  //   .then(response => {})
+  //    .then(setTimeout(() => {
+  //      props.route.params.delete(idToken)
+  //    }, 1000))
+  //    .then(props.navigation.pop())
+  //    .catch(err => console.log(err));
+  //  }
+
+
+  async function shareDevice(login_id, devName, entity_id, type ) {
+    await createADevice(
+      login_id,
+      props.sessionData.idToken,
+      {
+        title: devName,
+        entity_id: entity_id,
+        type: type,
+      }
+    ).then(response => {
+      // console.log("API SHARE DEVICE RETURN:");
+      // console.log("===", response);
+      if (response.statusCode == 200)
+      {
+        setTimeout(() => {
+          props.refresh(props.sessionData.idToken)
+        }, 1000)
+      }
+    });
+
+    // console.log(apiRet);
+    setIsVisibleDevices(false);
   };
 
   function addButton() {
@@ -126,10 +186,12 @@ function SampleDeviceList(props) {
           <Text style={{ marginLeft: 10, fontSize: 20 }}>Add Guest</Text>
         </View>
 
-        {props.sharedAccountsData.sharedAccounts &&
-          props.sharedAccountsData.sharedAccounts.map((entry, i) => (
+        <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
+        <ScrollView>
+        {addGuestList &&
+          addGuestList.map((entry, i) => (
             <View key={i} style={styles.cardCon}>
-              <TouchableOpacity onPress={() => setSelected(entry)}>
+              <TouchableOpacity onPress={() => selectUser(entry)}>
                 <View
                   style={{
                     paddingLeft: 10,
@@ -147,6 +209,8 @@ function SampleDeviceList(props) {
               <View style={styles.seperator}></View>
             </View>
           ))}
+        </ScrollView>
+        </View>
 
         <View style={styles.cardCon}>
           <TouchableOpacity onPress={() => handleClick()}>
@@ -166,7 +230,7 @@ function SampleDeviceList(props) {
             </View>
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1, marginBottom: 30, justifyContent: "flex-end" }}>
+        <View style={{ marginBottom: 30, justifyContent: "flex-end" }}>
           <TouchableOpacity onPress={() => propsClick()}>
             <View
               style={{
@@ -346,15 +410,15 @@ function SampleDeviceList(props) {
             {tempDevices &&
               tempDevices.map((entry, i) => (
                 <View key={i} style={styles.cardCon}>
-                  <TouchableOpacity onPress={() => setSelected(i)}>
+                  <TouchableOpacity onPress={() => selectUser(entry)}>
                     <View
                       style={{
                         paddingLeft: 10,
                         paddingVertical: 6,
                         flexDirection: "row",
                         borderRadius: 10,
-                        elevation: selected == i ? 2 : 0,
-                        backgroundColor: selected == i ? "white" : "#F1F1F1",
+                        elevation: selected == entry ? 2 : 0,
+                        backgroundColor: selected == entry ? "white" : "#F1F1F1",
                       }}
                     >
                       <Icon
@@ -380,18 +444,7 @@ function SampleDeviceList(props) {
         <View style={{ marginBottom: 30, justifyContent: "flex-end" }}>
           <TouchableOpacity
             onPress={() => {
-              const apiRet = createADevice(
-                props.user.login_credentials_id,
-                props.sessionData.idToken,
-                {
-                  title: choice.attributes.friendly_name,
-                  entity_id: choice.entity_id,
-                  type: getType(choice.entity_id),
-                }
-              );
-
-              // console.log(apiRet);
-              setIsVisibleDevices(false);
+              guestSideShare();
             }}
           >
             <View

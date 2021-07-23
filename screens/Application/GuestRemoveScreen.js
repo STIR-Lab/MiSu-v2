@@ -20,7 +20,7 @@ const GuestRemoveScreen = (props) => {
   const [deviceList, setDeviceList] = useState(props.route.params.user.devices);
 
     useEffect(() => {
-        console.log('==Guest Remove Screen== ', props);
+        // console.log('==Guest Remove Screen== ', props);
         // console.log('==Guest Remove Screen DeviceList= ', props.route.params.user.devices);
       });
 
