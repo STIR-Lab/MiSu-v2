@@ -1,17 +1,23 @@
-import { Auth } from 'aws-amplify';
-import React, {useEffect} from 'react';
-import { ToastAndroid, TouchableOpacity, View, Text, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { connect } from 'react-redux';
-import AppText from '../../components/app/AppText';
-import AccountCard from '../../components/cards/AccountCard';
-import ProfileCard from '../../components/cards/ProfileCard';
-import SettingsCard from '../../components/cards/SettingsCard';
-import YourHubCard from '../../components/cards/YourHubCard';
-import { getHubInfoAction } from '../../redux/Action/getHubInfoAction';
-import { registerHubAction } from '../../redux/Action/registerHubAction';
-import appStyle from '../../styles/AppStyle';
-
+import { Auth } from "aws-amplify";
+import React, { useEffect } from "react";
+import {
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+  Text,
+  ScrollView,
+} from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { connect } from "react-redux";
+import AppText from "../../components/app/AppText";
+import AccountCard from "../../components/cards/AccountCard";
+import ProfileCard from "../../components/cards/ProfileCard";
+import SettingsCard from "../../components/cards/SettingsCard";
+import YourHubCard from "../../components/cards/YourHubCard";
+import { getHubInfoAction } from "../../redux/Action/getHubInfoAction";
+import { registerHubAction } from "../../redux/Action/registerHubAction";
+import appStyle from "../../styles/AppStyle";
+import * as SecureStore from "expo-secure-store";
 
 function AccountScreen(props) {
   // static navigationOptions = ({ navigate, navigation }) => ({
@@ -29,23 +35,29 @@ function AccountScreen(props) {
   // 	headerRight: () => <View></View>
   // });
 
+  async function deleteStorage() {
+    await SecureStore.deleteItemAsync("username");
+    await SecureStore.deleteItemAsync("password");
+    return;
+  }
+
   // Signs the user out and sends them back to the login screen
   signOut = async () => {
     // props.screenProps.setLoadingTrue();
-    ToastAndroid.show('Signing out!', ToastAndroid.LONG);
+    ToastAndroid.show("Signing out!", ToastAndroid.LONG);
     Auth.signOut()
       .then(() => {
         // props.screenProps.setLoadingFalse();
       })
       .then(() => {
         // console.log("LOGOUT PROPS: ", props)
-        props.navigation.navigate('Login');
+        deleteStorage();
+        props.navigation.navigate("Login", { username: null, password: null });
       });
   };
 
-
   viewLogs = () => {
-    props.navigation.navigate('Log');
+    props.navigation.navigate("Log");
   };
 
   // UNSAFE_componentWillReceiveProps(props) {
@@ -68,6 +80,7 @@ function AccountScreen(props) {
         user={props.hubInfoData}
       />
       <YourHubCard
+        sharedData ={props.sharedAccountsData.sharedAccounts}
         register={props.register}
         idToken={props.sessionData.idToken}
         user={props.hubInfoData}
@@ -75,24 +88,39 @@ function AccountScreen(props) {
         hub_email={props.hubInfoData.hub_email}
         navigation={props.navigation}
       />
-      <SettingsCard 
+      <SettingsCard
         idToken={props.sessionData.idToken}
         user={props.hubInfoData}
         navigation={props.navigation}
         getHub={props.getHub}
       />
-      <View style={{ alignItems: "center", justifyContent: "center", marginTop: 25, paddingBottom: 0,  flex: .1}}>
-          <TouchableOpacity
-            style={[{ marginBottom: 15, flex:0, flexDirection: "row", width: 160, alignItems: "center", justifyContent: "center" }, appStyle.redButton]}
-            onPress={signOut}
-          >
-            <Icon
-              name="logout"
-              size={32}
-              style={{color: "white" }}/>
-            <AppText style={{ color: 'white' }}>Log out</AppText>
-          </TouchableOpacity>
-        </View>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: 25,
+          paddingBottom: 0,
+          flex: 0.1,
+        }}
+      >
+        <TouchableOpacity
+          style={[
+            {
+              marginBottom: 15,
+              flex: 0,
+              flexDirection: "row",
+              width: 160,
+              alignItems: "center",
+              justifyContent: "center",
+            },
+            appStyle.redButton,
+          ]}
+          onPress={signOut}
+        >
+          <Icon name="logout" size={32} style={{ color: "white" }} />
+          <AppText style={{ color: "white" }}>Log out</AppText>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
