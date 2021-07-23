@@ -20,6 +20,8 @@ import appStyle from "../../styles/AppStyle";
 import * as SecureStore from "expo-secure-store";
 
 function AccountScreen(props) {
+  console.log("--------------------");
+  console.log(props);
   // static navigationOptions = ({ navigate, navigation }) => ({
   // 	headerTitle: 'Account',
   // 	headerLeft: () => (
@@ -43,6 +45,7 @@ function AccountScreen(props) {
 
   // Signs the user out and sends them back to the login screen
   signOut = async () => {
+   
     // props.screenProps.setLoadingTrue();
     ToastAndroid.show("Signing out!", ToastAndroid.LONG);
     Auth.signOut()
