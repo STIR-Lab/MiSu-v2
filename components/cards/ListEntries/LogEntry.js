@@ -15,9 +15,9 @@ const formatImage = (log) => {
         }}
         size={45}
         color="#7DEA7B"
-        rounded
-        name="unlock"
-        type="antdesign"
+        
+        name="mail"
+        type="feather"
       />
       );
 
@@ -29,12 +29,13 @@ const formatImage = (log) => {
           marginTop: 10,
         }}
         size={45}
-        color="#7DEA7B"
+        color="#ea5f5f"
         rounded
-        name="unlock"
-        type="antdesign"
+        name="x"
+        type="feather"
       />
       );
+      
       else if (log.operation === "Ended sharing early")
       return (
         <Icon
@@ -43,9 +44,9 @@ const formatImage = (log) => {
           marginTop: 10,
         }}
         size={45}
-        color="#7DEA7B"
+        color="#ea5f5f"
         rounded
-        name="FiX"
+        name="x"
         type="feather"
       />
       );
@@ -62,19 +63,33 @@ const formatImage = (log) => {
         name="check"
         type="feather"
       />
-      );
-
       
-  }
+      );
+      }
+  else if(log.operation === "Decline")
+      {
+        return( <Icon
+          containerStyle={{
+            alignItems: "flex-start",
+            marginTop: 10,
+          }}
+          size={45}
+          color="#ea5f5f"
+          rounded
+          name="x"
+          type="feather"
+        />);
+      }
+
   else return <Icon containerStyle={{
     alignItems: "flex-start",
     marginTop: 10,
   }}
   size={45}
-  color="#7DEA7B"
+  color="#44ABFF"
   rounded
-  name="unlock"
-  type="antdesign"/>
+  name="calendar"
+  type="feather"/>
 }
 else return <Icon containerStyle={{
   alignItems: "flex-start",
@@ -130,7 +145,7 @@ const formatEntryText = (log) => {
         <Text>
           <Text
             onPress={() => {}}
-            style={{ color: "black" }}
+            style={{ fontWeight: "bold", color: "#2393FB" }}
           >
             You{" "}
           </Text>
@@ -169,6 +184,7 @@ const LogEntry = (props) => {
   return (
     <View style={LogStyle.Lcard}>
       {formatImage(log)}
+      {console.log(log.operation)}
       
 
       <Text style={LogStyle.textLog}>{formatEntryText(log)}</Text>
