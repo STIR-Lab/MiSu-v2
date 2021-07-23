@@ -5,7 +5,7 @@ export const createADevice = async (
   idToken,
   { title, entity_id, type }
 ) => {
-  const response = await fetch(
+  return await fetch(
     "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/createashareddevice",
     {
       method: "POST",
@@ -24,7 +24,7 @@ export const createADevice = async (
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       // console.log(account);
       // console.log(idToken)
       // console.log(entity_id)
@@ -64,7 +64,7 @@ export const propertyTest = async (account, idToken, sharedPropertyID) => {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       return data;
     })
     .catch((err) => console.log(err));
