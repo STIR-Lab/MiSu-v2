@@ -21,6 +21,7 @@ import authStyle from "../../styles/AuthStyle";
 import ConfirmCodePopup from "../../components/popup/ConfirmCodePopup";
 import ForgotPasswordPopup from "../../components/popup/ForgotPasswordPopup";
 import ForgotPasswordConfirmPopup from "../../components/popup/ForgotPasswordConfirmPopup";
+import * as SecureStore from "expo-secure-store";
 
 var width = Dimensions.get("window").width; //full width
 var height = Dimensions.get("window").height; //full height
@@ -52,6 +53,7 @@ function LoginScreen(props) {
         });
       }
     }
+    checkStorage();
   }, [props, isFocused]);
 
   handleLogin = async () => {
@@ -70,6 +72,7 @@ function LoginScreen(props) {
           .then(async (user) => {
             console.log("===== Login successful! =====");
 
+            saveLogin(username, password);
             setErrorMessage("");
             // setMessage('Login successful!');
             setIsLoading(false);
@@ -100,6 +103,22 @@ function LoginScreen(props) {
       setIsLoading(false);
     }
   };
+
+  async function saveLogin(saveUsername, savePassword) {
+    await SecureStore.setItemAsync("username", saveUsername);
+    await SecureStore.setItemAsync("password", savePassword);
+  }
+
+  async function checkStorage() {
+    let user = await SecureStore.getItemAsync("username");
+    let pass = await SecureStore.getItemAsync("password");
+    if (user != null && pass != null) {
+      setUsername(user);
+      setPassword(pass, () => {
+        handleLogin();
+      });
+    }
+  }
 
   // Verify sign up code
   confirmSignUp = async () => {

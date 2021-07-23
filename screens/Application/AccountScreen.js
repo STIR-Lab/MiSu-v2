@@ -17,6 +17,7 @@ import YourHubCard from "../../components/cards/YourHubCard";
 import { getHubInfoAction } from "../../redux/Action/getHubInfoAction";
 import { registerHubAction } from "../../redux/Action/registerHubAction";
 import appStyle from "../../styles/AppStyle";
+import * as SecureStore from "expo-secure-store";
 
 function AccountScreen(props) {
   // static navigationOptions = ({ navigate, navigation }) => ({
@@ -34,6 +35,12 @@ function AccountScreen(props) {
   // 	headerRight: () => <View></View>
   // });
 
+  async function deleteStorage() {
+    await SecureStore.deleteItemAsync("username");
+    await SecureStore.deleteItemAsync("password");
+    return;
+  }
+
   // Signs the user out and sends them back to the login screen
   signOut = async () => {
     // props.screenProps.setLoadingTrue();
@@ -44,6 +51,7 @@ function AccountScreen(props) {
       })
       .then(() => {
         // console.log("LOGOUT PROPS: ", props)
+        deleteStorage();
         props.navigation.navigate("Login", { username: null, password: null });
       });
   };
