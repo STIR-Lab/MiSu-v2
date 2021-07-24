@@ -7,6 +7,8 @@ import {deleteHub} from "../../services/creationService";
 import UserAvatar from 'react-native-user-avatar';
 import Modal from "react-native-modal";
 import { ScrollView } from 'react-native';
+import {deleteASharedAccount } from "../../services/deleteService";
+import {updateInvitation} from "../../services/invitationService"
 function YourHubCard(props) {
   const [registering, setRegistering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -14,6 +16,8 @@ function YourHubCard(props) {
   const [IsVisibleGuestsDisconnect, setIsVisibleGuestsDisconnect] = useState(false);
   const [hubEntryName, setHubEntryName] = useState("");
   const [selected, setSelected] = useState(null);
+  const [retVal, setRetVal] = useState(null);
+  
 
   useEffect(() => {
     if (props.hub_url == '') {
@@ -31,12 +35,13 @@ function YourHubCard(props) {
 
   const openModal = () => {
     // setSelected(false);
-    console.log(props);
+  
     setIsVisible(!isVisible);
   };
 
   const openRemoveGuestsModal = () => {
     // setSelected(false);
+    
     setIsVisibleGuests(!isVisible);
   };
 
@@ -124,7 +129,7 @@ function YourHubCard(props) {
             marginRight: 5,  
           }}
         >
-          Are you sure you want to disconnect from {hubEntryName}'s hub? 
+          Are you sure you want to disconnect from {hubEntryName.name}'s hub? 
          
         </Text>
 
@@ -134,7 +139,11 @@ function YourHubCard(props) {
           onPress={
             () => {
              
-              
+              {
+                
+                retVal = updateInvitation(hubEntryName.login_credentials_id,2,props.idToken)
+                console.log(retVal);
+              }
              
             }
             //Share(idToken, guestEmail, device, shareProperties, shareOptions)
@@ -181,15 +190,15 @@ function YourHubCard(props) {
              
                 
                 <View key={i} style={style.cardCon}>
-                  <TouchableOpacity onPress={() => setSelected(i)}>
+                  <TouchableOpacity onPress={() => {console.log(entry); setSelected(entry)} }>
                     <View
                       style={{
                         paddingLeft: 10,
                         paddingVertical: 6,
                         flexDirection: "row",
                         borderRadius: 10,
-                        elevation: selected == i ? 2 : 0,
-                        backgroundColor: selected == i ? "white" : "#F1F1F1",
+                        elevation: selected == entry ? 2 : 0,
+                        backgroundColor: selected == entry ? "white" : "#F1F1F1",
                       }}
                     >
                       <UserAvatar size={40} borderRadius={41} name={entry.name} />
@@ -210,9 +219,20 @@ function YourHubCard(props) {
         
         <TouchableOpacity
           onPress={
-            () => {
-              
+            () => 
+           {
+            retVal = deleteASharedAccount(selected.login_credentials_id, props.idToken)
+            if(retVal.statusCode === 200)
+            {
+              //Refresh app here
             }
+            else if (retVal.statusCode === 400)
+            {
+              //Print out something went wrong''
+            }
+           }
+          
+
             
           }
         >
@@ -324,7 +344,7 @@ function YourHubCard(props) {
 
            
             {props.sharedData.map((entry, i) => (
-              <View style={style.verticleCentralColumns}>
+              <View key={i} style={style.verticleCentralColumns}>
                 
       
                   <View style={style.horizonalRows}>
@@ -334,7 +354,8 @@ function YourHubCard(props) {
                   </View>
                   
                   <View style={style.redButton}>
-                  <TouchableOpacity onPress={() => openGuestDisconnectModal(entry.name)}>
+                  <TouchableOpacity onPress={() => {console.log(entry); openGuestDisconnectModal(entry)}
+                 }>
                     <View>
                         <Text style={style.guestRedButtonText}>Disconnect</Text>
                     </View>
