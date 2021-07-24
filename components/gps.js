@@ -35,7 +35,7 @@ const GPS = ({ token, hubLong, hubLat }) => {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      let { status } = await Location.requestBackgroundPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission Denied");
         return;
@@ -57,29 +57,35 @@ const GPS = ({ token, hubLong, hubLat }) => {
               { unit: "mile" }
             )
           );
-          console.log("Distance: " + theDistance + " miles");
+          //console.log("Distance: " + theDistance + " miles");
 
           //============================================================
           // Request
 
-          const state = await fetch(
-            "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/gps",
-            {
-              method: "POST",
-              headers: {
-                Authorization: "Bearer " + token,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                distance: theDistance,
-              }),
-            }
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              console.log(data);
-            })
-            .catch((err) => console.log(err));
+          const postDistance = async () => {
+            const state = await fetch(
+              "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/gps",
+              {
+                method: "POST",
+                headers: {
+                  Authorization: "Bearer " + token,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  distance: theDistance,
+                }),
+              }
+            )
+              .then((response) => response.json())
+              .then((data) => {
+                //console.log(data);
+              })
+              .catch((err) => console.log(err));
+          };
+
+          setInterval(() => {
+            postDistance();
+          }, 7000);
 
           //
           // END REQUEST
@@ -100,12 +106,7 @@ const GPS = ({ token, hubLong, hubLat }) => {
     })();
   });
 
-  return (
-    <View>
-      <Text>Latitude: {latitude}</Text>
-      <Text>Longitude: {longitude}</Text>
-    </View>
-  );
+  return null;
 };
 
 export default GPS;
