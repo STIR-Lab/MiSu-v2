@@ -7,6 +7,8 @@ export const updateInvitation = async (account, value ,idToken) => {
           headers: 
           {
               Authorization: 'Bearer ' + idToken,
+              "Content-type": "application/json",
+              Accept: "*/*"
           },
           body: JSON.stringify({
             account: account,

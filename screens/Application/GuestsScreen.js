@@ -36,6 +36,7 @@ function GuestsScreen(props) {
   const [loading, setLoading] = useState(false);
   const [guestEmail, setGuestEmail] = useState("");
   const [opacity, setOpacity] = useState(0);
+  const [errorMsg, setErrorMsg] = useState("");
 
   // openModal = () => {
   //   setIsVisible(!isVisible);
@@ -44,6 +45,7 @@ function GuestsScreen(props) {
   openModal2 = () => {
     setIsVisible2(!isVisible2);
   };
+
   // console.log(props.devicesData.devices);
 
   // =========================================================================
@@ -80,7 +82,7 @@ function GuestsScreen(props) {
     //getAccessLogs();
     // onRefresh();
     fetchData(idToken);
-  }, [sharedAccs, props.sharedAccountsData.sharedAccounts]);
+  }, [props.sharedAccountsData.sharedAccounts, sharedAccs]);
 
   async function fetchData(idToken) {
     // console.log('Fetching Data..');
@@ -88,24 +90,42 @@ function GuestsScreen(props) {
     // props.getDevices(idToken);
     // props.getSharedDevices(idToken);
     // props.getAccounts(idToken);
+    // console.log("PROPS", props)
     setSharedAccs(props.sharedAccountsData.sharedAccounts);
     // console.log('Data Fetched.');
 
     // console.log("==SHARED ACCS:", sharedAccs);
-    // console.log("== GUESTS SCREEN== " + JSON.stringify(sharedAccs));
+    // console.log("== GUESTS SCREEN== ", props);
   }
 
   async function addNewGuest() {
     await createSharedUser(props.sessionData.idToken, guestEmail)
-      .then((response) => {})
-      .then(
-        setTimeout(() => {
-          props.getAccounts(props.sessionData.idToken);
-        }, 1000)
-      )
-      .then(setIsVisible2(false))
-      .catch((err) => console.log(err));
+
+      .then(response => {
+        // console.log(response);
+        return response;})
+      .then(response => {
+        // console.log("Return from Add Guest")
+        // console.log(response)
+        if (response.statusCode === 200)
+        {
+          setTimeout(() => {
+            props.getAccounts(props.sessionData.idToken);
+            // setIsVisible2(false);
+            setErrorMsg("User added successfully.");
+          }, 1000);
+
+        }
+        else{
+          setErrorMsg("An error occured, try again.");
+        }}
+        )
+      .catch(err => console.log(err));
+
   }
+
+
+
   // let modal = (
   //   <Modal
   //     visible={isVisible}
@@ -146,7 +166,10 @@ function GuestsScreen(props) {
           placeholder={"Guest Email"}
           onChangeText={(text) => setGuestEmail(text)}
         />
-        <TouchableOpacity onPress={() => addNewGuest()}>
+        <Text style={styles.responseMsg}>{errorMsg}</Text>
+        <TouchableOpacity
+          onPress={() => addNewGuest()}
+        >
           <View style={styles.submitButton}>
             <Text
               style={{
@@ -178,21 +201,22 @@ function GuestsScreen(props) {
         </View>
         {/* <Text>{searchParam}</Text> */}
         <ScrollView style={styles.cardContainer}>
-          {sharedAccs &&
-            sharedAccs
-              .filter((guest) => guest.name.includes(searchParam))
-              .map((entry, i) => (
-                <DeviceInfoCard
-                  key={i}
-                  title={entry.name}
-                  user={entry}
-                  device={entry.devices}
-                  type={"GuestCard"}
-                  sharedAccs={sharedAccs}
-                  navigation={props.navigation}
-                  myDevices={props.devicesData.devices}
-                />
-              ))}
+
+          {Array.isArray(sharedAccs) &&
+            sharedAccs.filter(guest => guest.name.includes(searchParam)).map((entry, i) => (
+              <DeviceInfoCard
+                key={i}
+                title={entry.name}
+                user={entry}
+                device={entry.devices}
+                type={"GuestCard"}
+                sharedAccs={sharedAccs}
+                navigation={props.navigation}
+                myDevices={props.devicesData.devices}
+                idToken={props.sessionData.idToken}
+                delete={props.getAccounts}
+              />
+            ))}
         </ScrollView>
         {/* {modal} */}
         {modal2}
@@ -302,7 +326,7 @@ const styles = StyleSheet.create({
   },
 
   submitButton: {
-    marginTop: 35,
+    marginTop: 15,
     backgroundColor: "#289EFF",
     borderRadius: 10,
     width: 200,
@@ -310,6 +334,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  responseMsg: {
+    marginTop: 5
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GuestsScreen);

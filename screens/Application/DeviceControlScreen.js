@@ -9,6 +9,7 @@ import appStyle from "../../styles/AppStyle";
 function DeviceControlScreen(props) {
   const [deviceTitle, setDeviceTitle] = useState("Unknown");
   const [toggledOn, setToggle] = useState(false);
+  const [hubOffline, setHubOffline] = useState(false);
 
   useEffect(() => {
     // console.log(props);
@@ -32,9 +33,13 @@ function DeviceControlScreen(props) {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        console.log("DATA ON DEVICE CONTROL", data);
         if (data.message.attributes.friendly_name != null) {
           setDeviceTitle(data.message.attributes.friendly_name);
+        }
+        else
+        {
+
         }
 
         if (data.message.state == "unlocked" || data.message.state == "on") {
@@ -79,89 +84,93 @@ function DeviceControlScreen(props) {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.title}>
-        <Text style={{ fontSize: 23, fontWeight: "bold", color: "#353535" }}>
-          {deviceTitle}
-        </Text>
-      </View>
+      {!hubOffline &&
+      <View style={appStyle.container}>
+        <View style={styles.title}>
+          <Text style={{ fontSize: 23, fontWeight: "bold", color: "#353535" }}>
+            {deviceTitle}
+          </Text>
+        </View>
 
-      <View style={styles.card}>
-        <View
-          style={{
-            alignSelf: "center",
-            justifyContent: "center",
-            alignContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Image source={require("../../assets/DeviceIcons/Lock.png")} />
+        <View style={styles.card}>
+          <View
+            style={{
+              alignSelf: "center",
+              justifyContent: "center",
+              alignContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image source={require("../../assets/DeviceIcons/Lock.png")} />
 
-          {toggledOn ? (
-            <View style={styles.row}>
-              <Icon
-                name="circle"
-                type="feather"
-                color="red"
-                size={17}
-                style={{ marginRight: 5 }}
-              />
-              <Text style={{ color: "red", fontWeight: "bold" }}>Unlocked</Text>
-            </View>
-          ) : (
-            <View style={styles.row}>
-              <Icon
-                name="circle"
-                type="feather"
-                color="green"
-                size={17}
-                style={{ marginRight: 5 }}
-              />
-              <Text style={{ color: "green", fontWeight: "bold" }}>Locked</Text>
-            </View>
-          )}
+            {toggledOn ? (
+              <View style={styles.row}>
+                <Icon
+                  name="circle"
+                  type="feather"
+                  color="red"
+                  size={17}
+                  style={{ marginRight: 5 }}
+                />
+                <Text style={{ color: "red", fontWeight: "bold" }}>Unlocked</Text>
+              </View>
+            ) : (
+              <View style={styles.row}>
+                <Icon
+                  name="circle"
+                  type="feather"
+                  color="green"
+                  size={17}
+                  style={{ marginRight: 5 }}
+                />
+                <Text style={{ color: "green", fontWeight: "bold" }}>Locked</Text>
+              </View>
+            )}
+          </View>
+        </View>
+
+        <View style={styles.scheduleContainer}></View>
+
+        <View style={styles.col}>
+          <Text style={{ fontSize: 23, fontWeight: "bold", color: "#353535" }}>
+            Actions
+          </Text>
+
+          <View style={[styles.lineContainer, { marginTop: 10 }]} />
+          <View style={[styles.row, { justifyContent: "space-between" }]}>
+            <TouchableOpacity onPress={() => handleClick("lock")}>
+              <View
+                style={[
+                  styles.button,
+                  { backgroundColor: toggledOn == true ? "#5bd3ff" : "#f5f5f5" },
+                ]}
+              >
+                <Text
+                  style={{ fontWeight: "bold", color: "black", fontSize: 30 }}
+                >
+                  Lock
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => handleClick("unlock")}>
+              <View
+                style={[
+                  styles.button,
+                  { backgroundColor: toggledOn == true ? "#f5f5f5" : "#5bd3ff" },
+                ]}
+              >
+                <Text
+                  style={{ fontWeight: "bold", color: "black", fontSize: 30 }}
+                >
+                  Unlock
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-
-      <View style={styles.scheduleContainer}></View>
-
-      <View style={styles.col}>
-        <Text style={{ fontSize: 23, fontWeight: "bold", color: "#353535" }}>
-          Actions
-        </Text>
-
-        <View style={[styles.lineContainer, { marginTop: 10 }]} />
-        <View style={[styles.row, { justifyContent: "space-between" }]}>
-          <TouchableOpacity onPress={() => handleClick("lock")}>
-            <View
-              style={[
-                styles.button,
-                { backgroundColor: toggledOn == true ? "#5bd3ff" : "#f5f5f5" },
-              ]}
-            >
-              <Text
-                style={{ fontWeight: "bold", color: "black", fontSize: 30 }}
-              >
-                Lock
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => handleClick("unlock")}>
-            <View
-              style={[
-                styles.button,
-                { backgroundColor: toggledOn == true ? "#f5f5f5" : "#5bd3ff" },
-              ]}
-            >
-              <Text
-                style={{ fontWeight: "bold", color: "black", fontSize: 30 }}
-              >
-                Unlock
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
+      }
     </View>
   );
 }

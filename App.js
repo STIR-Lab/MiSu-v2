@@ -40,6 +40,7 @@ import DevicesScreen from "./screens/Application/DevicesScreen";
 import GuestsScreen from "./screens/Application/GuestsScreen";
 import YourHubsScreen from "./screens/Application/YourHubsScreen";
 import DeviceControlScreen from "./screens/Application/DeviceControlScreen";
+import GuestRemoveScreen from "./screens/Application/GuestRemoveScreen";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -97,6 +98,15 @@ function HomeStack() {
         component={DeviceScreen}
         options={{ headerShown: false }}
       /> */}
+      <HomeNav.Screen
+        name="GuestRemove"
+        component={GuestRemoveScreen}
+        options={{
+          headerLeft: () => null,
+          headerShown: true,
+          headerTitle: () => <Header title="Guest" guest={false} />,
+        }}
+      />
       <HomeNav.Screen
         name="Properties"
         component={DeviceProps}

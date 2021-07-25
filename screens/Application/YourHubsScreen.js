@@ -55,7 +55,6 @@ function YourHubsScreen(props) {
   // REQUIRES FURTHER INVESTIGATION
 
   useEffect(() => {
-    // console.log(props);
     const idToken = props.sessionData.idToken;
     fetchData(idToken);
   }, []);
@@ -63,6 +62,7 @@ function YourHubsScreen(props) {
   function getResults(results){
     setSharedAccs(results);
     // console.log(sharedAccs);
+    // console.log(props);
     return;
   };
 
