@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Switch,
   Button,
+  Alert,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -19,6 +20,11 @@ import appStyle from "../../styles/AppStyle";
 // importing set schedule card from ./cards
 import SetScheduleCard from "../../components/cards/SetScheduleCard";
 import { set } from "react-native-reanimated";
+
+// imorting gps functionality
+import GPS from "../../components/GPS";
+import * as Location from "expo-location";
+import haversine from "haversine";
 
 function DeviceProps(props) {
   const isFocused = useIsFocused();
@@ -41,8 +47,10 @@ function DeviceProps(props) {
   const [reoccuringType, setReoccuringType] = useState(0);
 
   useEffect(() => {
+
     // console.log("Entered deviceProps");
     // console.log("==DeviceProps==", props, "======");
+
     var accountProperties = props.route.params.accObject;
     console.log("==DeviceProps==", accountProperties, "======");
 
@@ -205,6 +213,10 @@ function DeviceProps(props) {
       });
   }
 
+  ////////////////////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////////////////////////////////////////////////////
+
   return (
     <View style={appStyle.container}>
       {
@@ -311,6 +323,14 @@ function DeviceProps(props) {
                     handleSwitch(x);
                   }}
                 />
+
+                {geofencing ? (
+                  <GPS
+                    token={props.route.params.idToken}
+                    hubLong={props.hubInfoData.hub_longitude}
+                    hubLat={props.hubInfoData.hub_latitude}
+                  />
+                ) : null}
               </View>
             </View>
           </ScrollView>
@@ -431,14 +451,26 @@ const propstyle = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const { devicesData, sessionData, sharedDevicesData, sharedAccountsData } =
-    state;
-  return { devicesData, sessionData, sharedDevicesData, sharedAccountsData };
+  const {
+    hubInfoData,
+    devicesData,
+    sessionData,
+    sharedDevicesData,
+    sharedAccountsData,
+  } = state;
+  return {
+    hubInfoData,
+    devicesData,
+    sessionData,
+    sharedDevicesData,
+    sharedAccountsData,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     dosomething: () => {},
+    getHub: (idToken) => dispatch(getHubInfoAction(idToken)),
   };
 };
 

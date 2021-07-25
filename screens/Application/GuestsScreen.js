@@ -18,7 +18,7 @@ import appStyle from "../../styles/AppStyle";
 import DeviceInfoCard from "../../components/cards/DeviceInfoCard";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/Feather";
-import { getSharedAccountsAction } from '../../redux/Action/getSharedAccountsAction';
+import { getSharedAccountsAction } from "../../redux/Action/getSharedAccountsAction";
 
 import { createSharedUser } from "../../services/creationService";
 //import { shareAction } from "../../../redux/Action/shareAction";
@@ -97,9 +97,10 @@ function GuestsScreen(props) {
     // console.log("==SHARED ACCS:", sharedAccs);
     // console.log("== GUESTS SCREEN== ", props);
   }
-  
-  async function addNewGuest(){
+
+  async function addNewGuest() {
     await createSharedUser(props.sessionData.idToken, guestEmail)
+
       .then(response => {
         // console.log(response);
         return response;})
@@ -120,6 +121,7 @@ function GuestsScreen(props) {
         }}
         )
       .catch(err => console.log(err));
+
   }
 
 
@@ -199,6 +201,7 @@ function GuestsScreen(props) {
         </View>
         {/* <Text>{searchParam}</Text> */}
         <ScrollView style={styles.cardContainer}>
+
           {Array.isArray(sharedAccs) &&
             sharedAccs.filter(guest => guest.name.includes(searchParam)).map((entry, i) => (
               <DeviceInfoCard
