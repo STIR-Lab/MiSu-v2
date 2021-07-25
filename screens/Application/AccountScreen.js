@@ -20,8 +20,8 @@ import appStyle from "../../styles/AppStyle";
 import * as SecureStore from "expo-secure-store";
 
 function AccountScreen(props) {
-  console.log("--------------------");
-  console.log(props);
+  // console.log("--------------------");
+  // console.log(props);
   // static navigationOptions = ({ navigate, navigation }) => ({
   // 	headerTitle: 'Account',
   // 	headerLeft: () => (

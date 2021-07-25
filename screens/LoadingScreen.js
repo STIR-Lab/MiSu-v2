@@ -37,7 +37,7 @@ export default function LoadingScreen(props) {
     await props.getDevices(idToken);
     await props.getSharedDevices(idToken);
     await props.getAccounts(idToken);
-    console.log("Data Fetched From Loading Screen.");
+    // console.log("Data Fetched From Loading Screen.");
   }
 
   // Shows a loading animation

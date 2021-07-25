@@ -64,12 +64,12 @@ function SampleDeviceList(props) {
       // console.log("GUESTS ON DEVICE SCREEN LIST", props.guests);
       const results = props.sharedAccountsData.sharedAccounts.filter(({ name: id1 }) => !props.guests.some(({ name: id2 }) => id2 === id1));
       setAddGuestList(results);
-      console.log("==SAMPLE DEVICE LIST PROPS:", props);
+      // console.log("==SAMPLE DEVICE LIST PROPS:", props);
       // console.log(results);
     } else if (props.screen == "Hubs") {
       setScreen("Hubs");
       setDeviceList(props.devices);
-      console.log("====== HUB SAMPLE DEVICE LIST", props);
+      // console.log("====== HUB SAMPLE DEVICE LIST", props);
     } else console.log("Invalid screen prop passed.");
   }, [props.guests]);
 
