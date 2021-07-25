@@ -11,8 +11,8 @@ const SetScheduleCard = (props) => {
   const [endDate, setEndDate] = useState("None");
   const [reoccuring, setReoccuring] = useState("No Reoccuring");
   const [reoccuringDays, setReoccuringDays] = useState("None");
-  const [tempTimeStart, setTimeStart] = useState("None");
-  const [tempTimeEnd, setTimeEnd] = useState("None");
+  const [timeStart, setTimeStart] = useState("None");
+  const [timeEnd, setTimeEnd] = useState("None");
 
   const [gpsLocation, setGpsStatus] = useState(false);
 
@@ -60,7 +60,7 @@ const SetScheduleCard = (props) => {
         setTimeEnd(props.deviceProperties.time_end);
       }
     }
-  }, []);
+  }, [props]);
 
   return (
     <View
@@ -76,7 +76,7 @@ const SetScheduleCard = (props) => {
         <View style={styles.contentRow}>
           <Icon name="schedule" size={25} style={styles.icons} />
           <Text style={styles.font}>
-            {reoccuringDays} / {tempTimeStart} - {tempTimeEnd}
+            {reoccuringDays} / {timeStart} - {timeEnd}
           </Text>
         </View>
         <View style={styles.contentRow}>

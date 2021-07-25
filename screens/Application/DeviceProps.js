@@ -46,12 +46,15 @@ function DeviceProps(props) {
     var accountProperties = props.route.params.accObject;
     console.log("==DeviceProps==", accountProperties, "======");
 
-    if (accountProperties.devices[0].login_credentials_id != null) {
-      setAccount(accountProperties.devices[0].login_credentials_id);
-    }
-
-    if (accountProperties.devices[0].shared_device_properties_id != null) {
-      setDeviceId(accountProperties.devices[0].shared_device_properties_id);
+    if (
+      accountProperties.devices[0].shared_device_properties_id != null &&
+      accountProperties.devices[0].login_credentials_id != null
+    ) {
+      // setDeviceId(accountProperties.devices[0].shared_device_properties_id);
+      getDeviceProperties(
+        accountProperties.devices[0].login_credentials_id,
+        accountProperties.devices[0].shared_device_properties_id
+      );
     }
 
     if (accountProperties.name != null) {
@@ -67,9 +70,6 @@ function DeviceProps(props) {
     ) {
       return;
     }
-    setTimeout(() => {
-      getDeviceProperties(account, deviceId);
-    }, 1000);
   }, [props, geofencing, isFocused]);
 
   async function getDeviceProperties(accountID, deviceID) {
