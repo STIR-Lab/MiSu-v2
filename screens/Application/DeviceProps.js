@@ -44,7 +44,7 @@ function DeviceProps(props) {
     // console.log("Entered deviceProps");
     // console.log("==DeviceProps==", props, "======");
     var accountProperties = props.route.params.accObject;
-    console.log("==DeviceProps==", accountProperties, "======");
+    // console.log("==DeviceProps==", accountProperties, "======");
 
     if (
       accountProperties.devices[0].shared_device_properties_id != null &&
@@ -73,7 +73,7 @@ function DeviceProps(props) {
   }, [props, geofencing, isFocused]);
 
   async function getDeviceProperties(accountID, deviceID) {
-    console.log("Fetching with:// " + accountID + " : " + deviceID);
+    // console.log("Fetching with:// " + accountID + " : " + deviceID);
     const response = await fetch(
       "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/getproperty",
       {
@@ -91,7 +91,7 @@ function DeviceProps(props) {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.properties != null) {
           setProperties(data.properties);
           setPropertiesObj(data.properties);

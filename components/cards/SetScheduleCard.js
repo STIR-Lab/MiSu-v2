@@ -9,7 +9,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 const SetScheduleCard = (props) => {
   const [startDate, setStartDate] = useState("None");
   const [endDate, setEndDate] = useState("None");
-  const [reoccuring, setReoccuring] = useState("No Reoccuring");
+  const [reoccuring, setReoccuring] = useState("Not Reoccuring");
   const [reoccuringDays, setReoccuringDays] = useState("None");
   const [timeStart, setTimeStart] = useState("None");
   const [timeEnd, setTimeEnd] = useState("None");

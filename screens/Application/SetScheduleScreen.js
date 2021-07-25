@@ -53,7 +53,7 @@ const SetScheduleScreen = (props) => {
     props.navigation.pop();
   }
 
-  console.log("SET SCHEDULE", props)
+  // console.log("SET SCHEDULE", props)
 
   function handleAccessType() {
     if (accessType === "Off") {
@@ -194,6 +194,7 @@ const SetScheduleScreen = (props) => {
           containerStyle={{
             width: 170,
             borderColor: "white",
+            elevation: 6
           }}
           selectedItemContainerStyle={{
             backgroundColor: "#5F9EE950",
