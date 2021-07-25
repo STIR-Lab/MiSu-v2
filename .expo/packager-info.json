@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "expoServerPort": null,
   "packagerPort": 19000,
@@ -8,3 +9,6 @@
   "webpackServerPort": null,
   "devToolsPort": 19002
 }
+=======
+
+>>>>>>> f2fc5d6b13352aabaa209c07d58cfea757fa9c30

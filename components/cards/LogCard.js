@@ -8,6 +8,7 @@ import LogEntry from "./ListEntries/LogEntry";
 import Modal from "react-native-modal";
 import Collapsible from "react-native-collapsible";
 import { Icon } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
 {
   /* 
 Props [access] {
@@ -24,7 +25,31 @@ function LogCard(props) {
   const [isGuestsVisible, setIsGuestsVisible] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
   const [collapsedGuests, setCollapsedGuests] = useState(true);
+  const [guestToMap, setGuestToMap] = useState(null);
+  const [filterSel, setFilterSel] = useState("None");
+  const [truePersonFil, setTruePersonFil] = useState("");
 
+  useEffect(() => {
+    if (props.type == 'Access') {
+      const key = 'primary_user';
+
+      const arrayUniqueByKey = [...new Map(props.logs.map(item =>
+        [item[key], item])).values()];
+
+      // console.log("NEW ARRAY", arrayUniqueByKey);
+      setGuestToMap(arrayUniqueByKey);
+    } else {
+      const key = 'secondary_user';
+
+      const arrayUniqueByKey = [...new Map(props.logs.map(item =>
+        [item[key], item])).values()];
+
+      // console.log("NEW ARRAY", arrayUniqueByKey);
+      setGuestToMap(arrayUniqueByKey);
+    }
+  }, [props.logs]);
+
+  // console.log("LOG CARD", props)
   const openModal = () => {
     // setSelected(false);
     
@@ -36,6 +61,7 @@ function LogCard(props) {
   };
 
   const alterGuests = () => {
+    // console.log("YOU PRESSED THE DROP DOWN", guestToMap);
     setCollapsedGuests(!collapsedGuests);
   };
 
@@ -55,54 +81,69 @@ function LogCard(props) {
           </Text>
         </View>
 
-        <View style={styles.textHeader}>
-          <Icon name="codesandbox" type="feather" color="black" />
-          <Text style={styles.textHeader}>Devices</Text>
-        </View>
+        { props.type==="Activity" && 
+        <View>
+          <View style={styles.textHeader}>
+            <Icon name="codesandbox" type="feather" color="black" />
+            <Text style={styles.textHeader}>Devices</Text>
+          </View>
 
-        <View style={styles.filterheader}>
-          <Text style={styles.middleText}>None</Text>
+          <View style={styles.filterheader}>
+            <Text style={styles.middleText}>None</Text>
 
-          <TouchableOpacity
-            style={styles.dropDownButtom}
-            onPress={alterDevices}
-          >
-            <Icon name="chevron-down" type="feather" color="white" />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={styles.dropDownButtom}
+              onPress={alterDevices}
+            >
+              <Icon name="chevron-down" type="feather" color="white" />
+            </TouchableOpacity>
+          </View>
+        
         
           
           {props.logs.map((entry, i) => 
           <Collapsible collapsed={collapsed} style={styles.expanded}  key={i}>
             <View style={styles.input}>
-              <Text> {entry.device_name} </Text>
+              <Text> {props.type=="Access" ? entry.device_name : "TODO"} </Text>
             </View>
           </Collapsible>
             )
              }
-          
+          </View>
+          }
+        
           
              
          
        
         <View style={styles.textHeader}>
           <Icon name="users" type="feather" color="black" />
-          <Text style={styles.textHeader}>Guests</Text>
+          {props.type === "Access" ? 
+          <Text style={styles.textHeader}>Home Owners</Text> 
+          : <Text style={styles.textHeader}>Guests</Text> }
         </View>
         <View style={styles.filterheader}>
-          <Text style={styles.middleText}>None</Text>
+          <Text style={styles.middleText}>{filterSel}</Text>
 
           <TouchableOpacity style={styles.dropDownButtom} onPress={alterGuests}>
             <Icon name="chevron-down" type="feather" color="white" />
           </TouchableOpacity>
         </View>
-        <Collapsible collapsed={collapsedGuests} style={styles.expanded}>
-          <View style={styles.input}>
-            <Text>{props.logs.secondary_user}</Text>
-          </View>
-        </Collapsible>
 
-        <TouchableOpacity>
+        <ScrollView>
+        {guestToMap != null && guestToMap.map((entry, i) =>
+        <TouchableOpacity key={i} onPress={() => props.type==="Access" ? setFilterSel(entry.primary_user) : setFilterSel(entry.secondary_user)}>
+          <Collapsible collapsed={collapsedGuests} style={styles.expanded}>
+            <View style={styles.input}>
+              <Text>{props.type==="Access" ? entry.primary_user : entry.secondary_user}</Text>
+            </View>
+          </Collapsible>
+        </TouchableOpacity>
+        )}
+        </ScrollView>
+
+
+        <TouchableOpacity onPress={()=>setTruePersonFil(filterSel)}>
           <View style={styles.submitButton}>
             <Text
               style={{
@@ -136,10 +177,13 @@ function LogCard(props) {
 
         {/* Need function to seperate by time */}
         {props.logs
-          ? props.logs.map((entry, index) => {
+          && props.type == "Access" ? props.logs.filter(guest => guest.primary_user.includes((truePersonFil))).map((entry, index) => {
+              return <LogEntry log={entry} key={index} />;
+            }) :
+            props.logs.filter(guest => guest.secondary_user.includes((truePersonFil))).map((entry, index) => {
               return <LogEntry log={entry} key={index} />;
             })
-          : null}
+         }
 
         {modal2}
       </View>
@@ -162,7 +206,8 @@ const styles = StyleSheet.create({
 
   middleText: {
     alignItems: "center",
-    marginLeft: 85,
+    alignSelf: "center",
+    marginLeft: 0,
     marginTop: 13,
   },
   buttonContainer: {
@@ -196,7 +241,7 @@ const styles = StyleSheet.create({
     elevation: 6,
     borderRadius: 10,
     width: 300,
-
+    maxHeight: 450,
     alignSelf: "center",
     alignItems: "center",
   },
@@ -238,7 +283,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     elevation: 5,
     backgroundColor: "#FFFFFF",
-    paddingLeft: 20,
+    paddingLeft: 0,
     height: 48,
     fontSize: 16,
     marginTop: 21,

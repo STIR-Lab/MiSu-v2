@@ -34,6 +34,7 @@ class LogScreen extends React.Component {
 	componentDidMount() {
 		this.getUsageLogs();
 		this.getAccessLogs();
+		// console.log("LOGS SCREEN:", this.state.props);
 	}
 
 	// Gets the logs for the devices the user has shared

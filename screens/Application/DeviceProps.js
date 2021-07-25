@@ -30,7 +30,12 @@ function DeviceProps(props) {
   const isFocused = useIsFocused();
   const [userName, setUserName] = useState("Placeholder");
   const [deviceName, setDeviceName] = useState("Placeholder");
+
+  const [account, setAccount] = useState("");
+  const [deviceId, setDeviceId] = useState("");
+
   // Properties
+  const [propertiesObj, setPropertiesObj] = useState({});
   const [geofencing, setGeofencing] = useState(false);
   const [accessType, setAccessType] = useState(false);
   const [allDayAccess, setAllDayAccess] = useState(false);
@@ -42,9 +47,23 @@ function DeviceProps(props) {
   const [reoccuringType, setReoccuringType] = useState(0);
 
   useEffect(() => {
-    console.log("Entered deviceProps", props);
-    // console.log("==DeviceProps==" + JSON.stringify(props) + "======");
+
+    // console.log("Entered deviceProps");
+    // console.log("==DeviceProps==", props, "======");
+
     var accountProperties = props.route.params.accObject;
+    console.log("==DeviceProps==", accountProperties, "======");
+
+    if (
+      accountProperties.devices[0].shared_device_properties_id != null &&
+      accountProperties.devices[0].login_credentials_id != null
+    ) {
+      // setDeviceId(accountProperties.devices[0].shared_device_properties_id);
+      getDeviceProperties(
+        accountProperties.devices[0].login_credentials_id,
+        accountProperties.devices[0].shared_device_properties_id
+      );
+    }
 
     if (accountProperties.name != null) {
       setUserName(accountProperties.name);
@@ -59,8 +78,36 @@ function DeviceProps(props) {
     ) {
       return;
     }
-    var deviceProperties = props.route.params.currDevice.properties[0];
+  }, [props, geofencing, isFocused]);
 
+  async function getDeviceProperties(accountID, deviceID) {
+    console.log("Fetching with:// " + accountID + " : " + deviceID);
+    const response = await fetch(
+      "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/getproperty",
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + props.route.params.idToken,
+          "Content-Type": "application/json",
+          Accept: "*/*",
+        },
+        body: JSON.stringify({
+          account: accountID,
+          device_id: deviceID,
+        }),
+      }
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        if (data.properties != null) {
+          setProperties(data.properties);
+          setPropertiesObj(data.properties);
+        }
+      });
+  }
+
+  function setProperties(deviceProperties) {
     // Geofencing
     // -> 0: disabled, 1: enabled
     if (deviceProperties.geofencing != null) {
@@ -127,7 +174,7 @@ function DeviceProps(props) {
     if (deviceProperties.reoccuringType != null) {
       setReoccuringType(deviceProperties.reoccuringType);
     }
-  }, [props, isFocused]);
+  }
 
   async function handleSwitch(x) {
     setGeofencing(x);
@@ -145,7 +192,7 @@ function DeviceProps(props) {
           device: props.route.params.currDevice.shared_device_properties_id,
           shared_property_id:
             props.route.params.currDevice.properties[0].shared_property_id,
-          geofencing: x,
+          geofencing: x == true ? "1" : "0",
           access_type: "0",
           all_day: props.route.params.currDevice.properties[0].time_all_day,
           time_start: props.route.params.currDevice.properties[0].time_start,
@@ -231,7 +278,7 @@ function DeviceProps(props) {
 
               <SetScheduleCard
                 accObject={props.route.params.accObject}
-                deviceProperties={props.route.params.currDevice.properties[0]}
+                deviceProperties={propertiesObj}
                 navigation={props.route.params.navigation}
                 idToken={props.route.params.idToken}
               />
@@ -287,6 +334,12 @@ function DeviceProps(props) {
               </View>
             </View>
           </ScrollView>
+          <TouchableOpacity
+            style={propstyle.redButton}
+            onPress={() => deleteGuest(props.route.params.user.login_credentials_id, props.route.params.idToken)}
+          >
+            <Text style={propstyle.redButtonText}>Revoke Access</Text>
+          </TouchableOpacity>
         </View>
       }
     </View>
@@ -370,6 +423,30 @@ const propstyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "stretch",
+  },
+  redButton: {
+    backgroundColor: '#ea5f5f',
+    borderRadius: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: "center",
+    height: 60,
+    width: 185,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 20,
+      height: 5,
+    },
+    shadowOpacity: 0.9,
+    shadowRadius: 2.62,
+    borderWidth: 1.4,
+    borderColor: '#cc9797',
+    elevation: 6,
+  },
+  redButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 18,
   },
 });
 
