@@ -29,20 +29,20 @@ function DevicesScreen(props) {
 
   useEffect(() => {
     fetchData();
-  });
+  }, []);
 
   function forceUpdate(){
     useForceUpdate();
   }
 
   async function fetchData(idToken) {
-    console.log("refreshing");
+    // console.log("refreshing");
     await getListofSharedAccountsDevicesScreen(props.sessionData.idToken)
       .then(response => {
-        console.log("Devices Screen", response);
+        // console.log("Devices Screen", response);
         if(response.statusCode == 200)
         {
-          console.log("changine");
+          // console.log("changine");
           setSharedAccs(response);
         }
       })

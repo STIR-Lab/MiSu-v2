@@ -41,7 +41,7 @@ function LoginScreen(props) {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    console.log("useEffect fired");
+    // console.log("useEffect fired");
     if (props.route.params != null) {
       if (
         props.route.params.username != null &&
