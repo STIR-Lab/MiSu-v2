@@ -6,13 +6,14 @@ import { getHubInfoAction } from "../../redux/Action/getHubInfoAction";
 import { registerHubAction } from "../../redux/Action/registerHubAction";
 import appStyle from "../../styles/AppStyle";
 
+
 function DeviceControlScreen(props) {
   const [deviceTitle, setDeviceTitle] = useState("Unknown");
   const [toggledOn, setToggle] = useState(false);
   const [hubOffline, setHubOffline] = useState(false);
 
   useEffect(() => {
-    // console.log(props);
+    // console.log("DEVICE CONTROL", props);
     fetchValues();
   }, []);
 
@@ -33,7 +34,7 @@ function DeviceControlScreen(props) {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log("DATA ON DEVICE CONTROL", data);
+        // console.log("DATA ON DEVICE CONTROL", data);
         if (data.message.attributes.friendly_name != null) {
           setDeviceTitle(data.message.attributes.friendly_name);
         }
@@ -129,7 +130,39 @@ function DeviceControlScreen(props) {
           </View>
         </View>
 
-        <View style={styles.scheduleContainer}></View>
+        <View style={styles.scheduleContainer}>
+          <View style={styles.scheduleRow}>
+            <Icon name="schedule" type="material" size={25} style={styles.icons} />
+            <View style={styles.scheduleDataCont}>
+              <Text>Mon, Tues, Wed, Thurs</Text>
+              {(props.route.params.device.properties[0].time_end != null && props.route.params.device.properties[0].time_start != null) ?
+              <Text>{props.route.params.device.properties[0].time_start.slice(0, -3)} - {props.route.params.device.properties[0].time_end.slice(0, -3)}</Text> :
+              <Text>All Day</Text>}
+            </View>
+          </View>
+          <View style={styles.scheduleRow}>
+            <Icon name="replay" type="material" size={25} style={styles.icons} />
+            <View style={styles.scheduleDataCont}>
+              {props.route.params.device.properties[0].reoccuring_type == 0 &&
+              <Text style={styles.scheduleText}>Not recurring</Text>}
+              {props.route.params.device.properties[0].reoccuring_type == 1 &&
+              <Text style={styles.scheduleText}>Recurring Weekly</Text>}
+              {props.route.params.device.properties[0].reoccuring_type == 2 &&
+              <Text style={styles.scheduleText}>Recurring Biweekly</Text>}
+            </View>
+          </View>
+          <View style={styles.scheduleRow}>
+            <Icon name="date-range" type="material" size={25} style={styles.icons} />
+            <View style={styles.scheduleDataCont}>            
+              {props.route.params.device.properties[0].date_start != null && props.route.params.device.properties[0].date_end != null &&
+              <Text style={styles.scheduleText}>{props.route.params.device.properties[0].date_start} - {props.route.params.device.properties[0].date_end}</Text>}
+              {props.route.params.device.properties[0].date_start == null && props.route.params.device.properties[0].date_end != null &&
+              <Text style={styles.scheduleText}>Access ends on: {props.route.params.device.properties[0].date_end}</Text>}
+              {props.route.params.device.properties[0].date_start != null && props.route.params.device.properties[0].date_end == null &&
+              <Text style={styles.scheduleText}>As of: {props.route.params.device.properties[0].date_start}</Text>}
+            </View>
+          </View>
+        </View>
 
         <View style={styles.col}>
           <Text style={{ fontSize: 23, fontWeight: "bold", color: "#353535" }}>
@@ -225,13 +258,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   scheduleContainer: {
-    height: 120,
+    height: 180,
     width: 330,
-    justifyContent: "center",
-    alignItems: "center",
+    
     alignSelf: "center",
     backgroundColor: "#FFFFFF",
-
     borderRadius: 15,
     shadowColor: "#000",
     shadowOffset: {
@@ -244,6 +275,29 @@ const styles = StyleSheet.create({
     borderBottomColor: "#a8a8a8",
     elevation: 4,
     marginBottom: 20,
+  },
+  scheduleRow: {
+    backgroundColor: "#FFFFFF",
+    justifyContent: 'space-between',
+    alignItems: "center",
+    flexDirection: "row",
+    width: "100%",
+    height: 60,
+    borderRadius:15
+  },
+  scheduleDataCont: {
+    height: 60,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "85%",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 15
+  },
+  scheduleText: {
+    fontSize: 18
+  },
+  icons: {
+    marginLeft: 10,
   },
   lineContainer: {
     backgroundColor: "#c3c3c3",
