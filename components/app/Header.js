@@ -1,4 +1,4 @@
-import React, { setState, useState } from "react";
+import React, { setState, useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import Modal from "react-native-modal";
@@ -12,13 +12,14 @@ import { shareAction } from "../../redux/Action/shareAction";
 
 const Header = (props) => {
   const [toggled, setToggled] = useState(false);
-  const [data, setData] = useState(["nada"]);
+  const [data, setData] = useState([]);
 
-  async function toggleBell() {
-    setToggled(!toggled);
+  useEffect(() => {
     console.log("===============HEADER STUFF=============", props);
+    fetchInvitations();
+  }, [props]);
 
-    //console.log(obj);
+  async function fetchInvitations() {
     const state = await fetch(
       "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/getshareddevices",
       {
@@ -38,6 +39,10 @@ const Header = (props) => {
       .catch((error) => {
         console.error("ERROR: ", error);
       });
+  }
+
+  function toggleBell() {
+    setToggled(!toggled);
   }
 
   let notificationsModal = (
@@ -65,7 +70,16 @@ const Header = (props) => {
         <Text style={styles.headerText}>{props.title}</Text>
       </View>
       <TouchableOpacity onPress={toggleBell} style={styles.bell}>
-        {props.guest ? <Icon name="bell" size={38} color="#1a1a1a" /> : null}
+        {props.guest ? (
+          <View>
+            <Icon name="bell" size={38} color="#1a1a1a" />
+            <Badge
+              status="error"
+              containerStyle={styles.badgeStyle}
+              value={data.length}
+            />
+          </View>
+        ) : null}
       </TouchableOpacity>
       {notificationsModal}
     </View>
@@ -81,6 +95,11 @@ const styles = StyleSheet.create({
 
     flexGrow: 1,
     height: "100%",
+  },
+  badgeStyle: {
+    position: "absolute",
+    top: -4,
+    right: -4,
   },
   header: {
     flex: 1,

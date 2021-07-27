@@ -17,7 +17,7 @@ const SetScheduleCard = (props) => {
   const [gpsLocation, setGpsStatus] = useState(false);
 
   useEffect(() => {
-    // console.log("setScheduleCard: ", props);
+    console.log("setScheduleCard: ", props);
     if (props.deviceProperties == null) {
       return;
     }
@@ -65,19 +65,27 @@ const SetScheduleCard = (props) => {
   return (
     <View
       style={{
-        height: 150,
+        height: 180,
         marginTop: 10,
         backgroundColor: "white",
         borderRadius: 10,
         flexDirection: "row",
+        justifyContent: "space-between",
       }}
     >
       <View style={styles.contentContainer}>
         <View style={styles.contentRow}>
           <Icon name="schedule" size={25} style={styles.icons} />
-          <Text style={styles.font}>
-            {reoccuringDays} / {timeStart} - {timeEnd}
-          </Text>
+          <View style={styles.scheduleDataCont}>
+            <Text style={styles.font}>
+              {reoccuringDays}
+            </Text>
+            {(timeStart != "None" && timeEnd != "None") ?
+            <Text style={styles.font}>
+              {timeStart.slice(0, -3)} - {timeEnd.slice(0, -3)}
+            </Text> :
+            <Text>All Day</Text>}
+          </View>
         </View>
         <View style={styles.contentRow}>
           <Icon name="replay" size={25} style={styles.icons} />
@@ -117,18 +125,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: "100%",
-    borderRadius: 12,
+    borderTopRightRadius: 12,
+    borderBottomRightRadius: 12,
     elevation: 4,
   },
   contentContainer: {
-    flexDirection: "column",
-    flexGrow: 1,
-    backgroundColor: "white",
-    borderRadius: 12,
+    justifyContent: "center"
   },
   contentRow: {
     flexDirection: "row",
-    marginTop: 20,
+    alignItems: "center",
+    height: 60
   },
   icons: {
     flexBasis: 50,
@@ -136,5 +143,8 @@ const styles = StyleSheet.create({
   },
   font: {
     fontSize: 16,
+  },
+  scheduleDataCont: {
+    flexDirection: "column",
   },
 });
