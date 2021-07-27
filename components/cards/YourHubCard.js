@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
-import { connect } from 'react-redux';
-import { Icon } from 'react-native-elements';
-import { CardStyleInterpolators } from 'react-navigation-stack';
-import {deleteHub} from "../../services/creationService";
-import UserAvatar from 'react-native-user-avatar';
+import React, { useState, useEffect } from "react";
+import { Image, StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import { connect } from "react-redux";
+import { Icon } from "react-native-elements";
+import { CardStyleInterpolators } from "react-navigation-stack";
+import { deleteHub } from "../../services/creationService";
+import UserAvatar from "react-native-user-avatar";
 import Modal from "react-native-modal";
-import { ScrollView } from 'react-native';
-import {deleteASharedAccount } from "../../services/deleteService";
-import {updateInvitation} from "../../services/invitationService"
+import { ScrollView } from "react-native";
+import { deleteASharedAccount } from "../../services/deleteService";
+import { updateInvitation } from "../../services/invitationService";
+
 function YourHubCard(props) {
   const [registering, setRegistering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [IsVisibleGuests, setIsVisibleGuests] = useState(false);
-  const [IsVisibleGuestsDisconnect, setIsVisibleGuestsDisconnect] = useState(false);
+  const [IsVisibleGuestsDisconnect, setIsVisibleGuestsDisconnect] =
+    useState(false);
   const [hubEntryName, setHubEntryName] = useState("");
   const [selected, setSelected] = useState(null);
   const [retVal, setRetVal] = useState(null);
-  
 
   useEffect(() => {
-    if (props.hub_url == '') {
+    if (props.hub_url == "") {
       setRegistering(false);
     } else {
       setRegistering(true);
@@ -28,20 +29,19 @@ function YourHubCard(props) {
   }, [props.hub_url]);
 
   registerHub = () => {
-    props.navigation.navigate('Hub');
+    props.navigation.navigate("Hub");
     // setRegistering(true);
   };
 
-
   const openModal = () => {
     // setSelected(false);
-  
+
     setIsVisible(!isVisible);
   };
 
   const openRemoveGuestsModal = () => {
     // setSelected(false);
-    
+
     setIsVisibleGuests(!isVisible);
   };
 
@@ -51,17 +51,14 @@ function YourHubCard(props) {
     setHubEntryName(name);
   };
 
-
-  let disconnectModal =
-  (
+  let disconnectModal = (
     <Modal
-    visible={isVisible}
-    transparent={true}
-    onBackdropPress={() => setIsVisible(false)}
+      visible={isVisible}
+      transparent={true}
+      onBackdropPress={() => setIsVisible(false)}
     >
-    <View style={style.disconnectModal}>
+      <View style={style.disconnectModal}>
         <View style={style.disconnectHeader}>
-         
           <Text style={{ marginLeft: 10, fontSize: 20 }}>Disconnect Hub</Text>
         </View>
         <Text
@@ -70,23 +67,18 @@ function YourHubCard(props) {
             textAlign: "center",
             justifyContent: "center",
             marginLeft: 5,
-            marginRight: 5,  
+            marginRight: 5,
           }}
         >
-          Are you sure you want to disconnect your hub? 
-         
+          Are you sure you want to disconnect your hub?
         </Text>
 
-        
-        
         <TouchableOpacity
           onPress={
             () => {
               deleteHub(props.idToken);
               setRegistering(false);
               setIsVisible(false);
-              
-             
             }
             //Share(idToken, guestEmail, device, shareProperties, shareOptions)
           }
@@ -108,16 +100,14 @@ function YourHubCard(props) {
     </Modal>
   );
 
-  let guestDisconnectModal =
-  (
+  let guestDisconnectModal = (
     <Modal
-    visible={IsVisibleGuestsDisconnect}
-    transparent={true}
-    onBackdropPress={() => setIsVisibleGuestsDisconnect(false)}
+      visible={IsVisibleGuestsDisconnect}
+      transparent={true}
+      onBackdropPress={() => setIsVisibleGuestsDisconnect(false)}
     >
-    <View style={style.disconnectModal}>
+      <View style={style.disconnectModal}>
         <View style={style.disconnectHeader}>
-         
           <Text style={{ marginLeft: 10, fontSize: 20 }}>Disconnect Guest</Text>
         </View>
         <Text
@@ -126,25 +116,23 @@ function YourHubCard(props) {
             textAlign: "center",
             justifyContent: "center",
             marginLeft: 5,
-            marginRight: 5,  
+            marginRight: 5,
           }}
         >
-          Are you sure you want to disconnect from {hubEntryName.name}'s hub? 
-         
+          Are you sure you want to disconnect from {hubEntryName.name}'s hub?
         </Text>
 
-        
-        
         <TouchableOpacity
           onPress={
             () => {
-             
               {
-                
-                retVal = updateInvitation(hubEntryName.login_credentials_id,2,props.idToken)
+                retVal = updateInvitation(
+                  hubEntryName.login_credentials_id,
+                  2,
+                  props.idToken
+                );
                 console.log(retVal);
               }
-             
             }
             //Share(idToken, guestEmail, device, shareProperties, shareOptions)
           }
@@ -166,75 +154,60 @@ function YourHubCard(props) {
     </Modal>
   );
 
-
-  let removeGuestsModal =
-  (
+  let removeGuestsModal = (
     <Modal
-    visible={IsVisibleGuests}
-    transparent={true}
-    onBackdropPress={() => setIsVisibleGuests(false)}
+      visible={IsVisibleGuests}
+      transparent={true}
+      onBackdropPress={() => setIsVisibleGuests(false)}
     >
-    <View style={style.removeGuestsModal}>
+      <View style={style.removeGuestsModal}>
         <View style={style.disconnectHeader}>
-         
           <Text style={{ marginLeft: 10, fontSize: 20 }}>Remove Guests</Text>
         </View>
-       
-        <View style={style.item}>
 
-     
-    </View>
-    <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
-       <ScrollView>
-       {props.sharedData.map((entry, i) => (
-             
-                
-                <View key={i} style={style.cardCon}>
-                  <TouchableOpacity onPress={() => {console.log(entry); setSelected(entry)} }>
-                    <View
-                      style={{
-                        paddingLeft: 10,
-                        paddingVertical: 6,
-                        flexDirection: "row",
-                        borderRadius: 10,
-                        elevation: selected == entry ? 2 : 0,
-                        backgroundColor: selected == entry ? "white" : "#F1F1F1",
-                      }}
-                    >
-                      <UserAvatar size={40} borderRadius={41} name={entry.name} />
-                      <Text style={style.cardText}>
-                        {entry.name}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                  <View style={style.seperator}></View>
-                </View>
-             
-        
-
-             
+        <View style={style.item}></View>
+        <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
+          <ScrollView>
+            {props.sharedData.map((entry, i) => (
+              <View key={i} style={style.cardCon}>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log(entry);
+                    setSelected(entry);
+                  }}
+                >
+                  <View
+                    style={{
+                      paddingLeft: 10,
+                      paddingVertical: 6,
+                      flexDirection: "row",
+                      borderRadius: 10,
+                      elevation: selected == entry ? 2 : 0,
+                      backgroundColor: selected == entry ? "white" : "#F1F1F1",
+                    }}
+                  >
+                    <UserAvatar size={40} borderRadius={41} name={entry.name} />
+                    <Text style={style.cardText}>{entry.name}</Text>
+                  </View>
+                </TouchableOpacity>
+                <View style={style.seperator}></View>
+              </View>
             ))}
-       </ScrollView>
-       </View>
-        
+          </ScrollView>
+        </View>
+
         <TouchableOpacity
-          onPress={
-            () => 
-           {
-            retVal = deleteASharedAccount(selected.login_credentials_id, props.idToken)
-            if(retVal.statusCode === 200)
-            {
+          onPress={() => {
+            retVal = deleteASharedAccount(
+              selected.login_credentials_id,
+              props.idToken
+            );
+            if (retVal.statusCode === 200) {
               //Refresh app here
-            }
-            else if (retVal.statusCode === 400)
-            {
+            } else if (retVal.statusCode === 400) {
               //Print out something went wrong''
             }
-           }
-          
-
-            
-          }
+          }}
         >
           <View style={style.submitButton}>
             <Text
@@ -257,43 +230,36 @@ function YourHubCard(props) {
     <View style={style.container}>
       <View style={style.headerLine}>
         <Text style={style.header}>Your Hub</Text>
-        
+
         {registering == true && (
           <View style={style.editBox}>
             <Image
               style={style.gear}
-              source={require('../../assets/icons/Setting.png')}
+              source={require("../../assets/icons/Setting.png")}
             />
             <Text>Edit</Text>
           </View>
         )}
       </View>
-      
-      {registering == true && props.user.user_type == 1 &&(
-        
 
-          <View style={style.userHubInfo}>
-            <View style={style.verticleColumns}>
-              <View style={style.hubDisplay}>
-                <Image
-                   style={style.raspPi}
-                source={require('../../assets/icons/raspberry.png')}
+      {registering == true && props.user.user_type == 1 && (
+        <View style={style.userHubInfo}>
+          <View style={style.verticleColumns}>
+            <View style={style.hubDisplay}>
+              <Image
+                style={style.raspPi}
+                source={require("../../assets/icons/raspberry.png")}
               />
               <View>
                 <Text style={style.hardwareType}>Raspberry Pi</Text>
                 <Text style={style.softwareType}>Home Assistant</Text>
               </View>
-
             </View>
             <View style={style.redButtonDisconnect}>
               <TouchableOpacity onPress={() => openModal()}>
-
-              
-                
-              <View>
-                <Text style={style.redButtonText}>Disconnect</Text>
-     
-              </View>
+                <View>
+                  <Text style={style.redButtonText}>Disconnect</Text>
+                </View>
               </TouchableOpacity>
             </View>
           </View>
@@ -302,87 +268,60 @@ function YourHubCard(props) {
               <Text style={style.status}>Connected</Text>
               <Text style={style.numGuests}>0 Guests</Text>
             </View>
-            
+
             <View style={style.redButton}>
               <TouchableOpacity onPress={() => openRemoveGuestsModal()}>
-                
                 <View>
                   <Text style={style.redButtonText}>Remove Guests</Text>
                 </View>
-                </TouchableOpacity>
+              </TouchableOpacity>
             </View>
-          
           </View>
-        
-          </View>
-       
-
-        
-      
+        </View>
       )}
 
-      {registering == false && props.user.user_type == 1 &&(
-        
-
-       
+      {registering == false && props.user.user_type == 1 && (
         <View style={style.noHub}>
-        <Text style={{ fontSize: 17 }}>No Hub Connected</Text>
-        <TouchableOpacity
-          style={style.connectButton}
-          onPress={() => registerHub()}
-        >
-          <Text style={{ color: '#15A3DF' }}>Connect Hub</Text>
-        </TouchableOpacity>
-      </View>
-
-      
-    
-    )}
-    <ScrollView>
-      {registering == false && props.user.user_type == 0 &&(
-            <View >
-
-           
+          <Text style={{ fontSize: 17 }}>No Hub Connected</Text>
+          <TouchableOpacity
+            style={style.connectButton}
+            onPress={() => registerHub()}
+          >
+            <Text style={{ color: "#15A3DF" }}>Connect Hub</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      <ScrollView>
+        {registering == false && props.user.user_type == 0 && (
+          <View>
             {props.sharedData.map((entry, i) => (
               <View key={i} style={style.verticleCentralColumns}>
-                
-      
-                  <View style={style.horizonalRows}>
-
+                <View style={style.horizonalRows}>
                   <View>
-                  <Text style={style.guestHubText}>{entry.name}'s hub</Text>
+                    <Text style={style.guestHubText}>{entry.name}'s hub</Text>
                   </View>
-                  
+
                   <View style={style.redButton}>
-                  <TouchableOpacity onPress={() => {console.log(entry); openGuestDisconnectModal(entry)}
-                 }>
-                    <View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        console.log(entry);
+                        openGuestDisconnectModal(entry);
+                      }}
+                    >
+                      <View>
                         <Text style={style.guestRedButtonText}>Disconnect</Text>
-                    </View>
+                      </View>
                     </TouchableOpacity>
                   </View>
-
-                  
-                  </View>
-              
-               
-    
-
+                </View>
               </View>
             ))}
-
-      
-
-
-        
- 
-         </View>
-      )}
+          </View>
+        )}
       </ScrollView>
       {disconnectModal}
       {removeGuestsModal}
       {guestDisconnectModal}
-      
     </View>
   );
 }
@@ -390,29 +329,27 @@ function YourHubCard(props) {
 const style = StyleSheet.create({
   container: {
     flex: 0.25,
-    flexDirection: 'column',
-    borderBottomColor: '#828282',
-    borderBottomWidth: .9,
+    flexDirection: "column",
+    borderBottomColor: "#828282",
+    borderBottomWidth: 0.9,
     marginBottom: 10,
-    width: '100%',
+    width: "100%",
   },
   connectButton: {
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 0,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     elevation: 10,
     margin: 10,
-    height: '38%',
-    width: '45%',
+    height: "38%",
+    width: "45%",
     borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-
+    alignItems: "center",
+    justifyContent: "center",
   },
-  guestHubText:
-  {
+  guestHubText: {
     marginRight: 40,
-    fontSize: 16, 
+    fontSize: 16,
   },
   buttons: {
     flexDirection: "row",
@@ -425,21 +362,20 @@ const style = StyleSheet.create({
     elevation: 4,
     marginRight: 13,
   },
-  guestRedButtonText:
-  {
-    color: 'white',
-    fontWeight: 'bold',
+  guestRedButtonText: {
+    color: "white",
+    fontWeight: "bold",
     fontSize: 12,
   },
   redButtonDisconnect: {
-    backgroundColor: '#ea5f5f',
+    backgroundColor: "#ea5f5f",
     marginTop: 10,
     borderRadius: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
-    
+    alignItems: "center",
+    justifyContent: "center",
+
     height: 40,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 20,
       height: 5,
@@ -447,16 +383,16 @@ const style = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2.62,
     borderWidth: 1.4,
-    borderColor: '#cc9797',
+    borderColor: "#cc9797",
     paddingHorizontal: 20,
     elevation: 6,
-    marginLeft: 23, 
+    marginLeft: 23,
   },
 
   horizonalRows: {
-    flexDirection: 'row',
+    flexDirection: "row",
     justifyContent: "center",
-    alignItems: 'center',
+    alignItems: "center",
   },
 
   seperator: {
@@ -465,21 +401,20 @@ const style = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: "#888888",
   },
-  
+
   verticleCentralColumns: {
     justifyContent: "center",
-    alignItems: 'center',
-    flexDirection: 'column',
-    
+    alignItems: "center",
+    flexDirection: "column",
   },
   redButton: {
-    backgroundColor: '#ea5f5f',
+    backgroundColor: "#ea5f5f",
     marginTop: 10,
     borderRadius: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     height: 40,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 20,
       height: 5,
@@ -487,7 +422,7 @@ const style = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2.62,
     borderWidth: 1.4,
-    borderColor: '#cc9797',
+    borderColor: "#cc9797",
     paddingHorizontal: 20,
     elevation: 6,
   },
@@ -513,54 +448,50 @@ const style = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
   },
-  verticleColumns:{
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    marginLeft: 10, 
+  verticleColumns: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    marginLeft: 10,
   },
-  verticleMiddleColumns:{
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    marginLeft: 30, 
+  verticleMiddleColumns: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    marginLeft: 30,
   },
   newColumn: {
-  width: '100%', 
-  marginTop: 10,
-     
+    width: "100%",
+    marginTop: 10,
   },
   userHubInfo: {
-    flexDirection: 'row',
-    height: '60%',
-    alignItems: 'center',
-    justifyContent: 'center',
-
+    flexDirection: "row",
+    height: "60%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   hubDisplay: {
-    backgroundColor: '#61B8FF',
+    backgroundColor: "#61B8FF",
     borderRadius: 15,
-    height: '60%',
-    width: '107%',
-    
-   
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    height: "60%",
+    width: "107%",
+
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   hubStats: {
-    justifyContent: 'center',
-    
-    height: '60%',
-    marginLeft: 30, 
- 
+    justifyContent: "center",
+
+    height: "60%",
+    marginLeft: 30,
   },
   editBox: {
-    position: 'absolute',
-    flexDirection: 'row',
-    alignItems: 'center',
+    position: "absolute",
+    flexDirection: "row",
+    alignItems: "center",
     right: 15,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     width: 40,
     height: 25,
   },
@@ -570,33 +501,33 @@ const style = StyleSheet.create({
     marginRight: 5,
   },
   header: {
-    color: 'gray',
+    color: "gray",
     fontSize: 22,
     paddingLeft: 12,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   headerLine: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
   hardwareType: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
     fontSize: 16,
   },
 
   redButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
     fontSize: 12,
   },
   softwareType: {
-    color: 'white',
+    color: "white",
     fontSize: 13,
   },
   status: {
-    color: '#2DC62A',
+    color: "#2DC62A",
     marginBottom: 5,
   },
   cardText: {
@@ -605,9 +536,9 @@ const style = StyleSheet.create({
     marginLeft: 20,
   },
   noHub: {
-    height: '60%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: "60%",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   disconnectModal: {
@@ -615,7 +546,7 @@ const style = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
     borderRadius: 20,
-    margin: 5, 
+    margin: 5,
     width: 300,
     alignSelf: "center",
     alignItems: "center",
@@ -626,7 +557,7 @@ const style = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
     borderRadius: 20,
-    margin: 5, 
+    margin: 5,
     width: 300,
     alignSelf: "center",
     alignItems: "center",
@@ -647,7 +578,7 @@ const style = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 25, 
+    marginBottom: 25,
   },
 });
 

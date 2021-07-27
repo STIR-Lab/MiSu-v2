@@ -30,19 +30,21 @@ function LogCard(props) {
   const [truePersonFil, setTruePersonFil] = useState("");
 
   useEffect(() => {
-    if (props.type == 'Access') {
-      const key = 'primary_user';
+    if (props.type == "Access") {
+      const key = "primary_user";
 
-      const arrayUniqueByKey = [...new Map(props.logs.map(item =>
-        [item[key], item])).values()];
+      const arrayUniqueByKey = [
+        ...new Map(props.logs.map((item) => [item[key], item])).values(),
+      ];
 
       // console.log("NEW ARRAY", arrayUniqueByKey);
       setGuestToMap(arrayUniqueByKey);
     } else {
-      const key = 'secondary_user';
+      const key = "secondary_user";
 
-      const arrayUniqueByKey = [...new Map(props.logs.map(item =>
-        [item[key], item])).values()];
+      const arrayUniqueByKey = [
+        ...new Map(props.logs.map((item) => [item[key], item])).values(),
+      ];
 
       // console.log("NEW ARRAY", arrayUniqueByKey);
       setGuestToMap(arrayUniqueByKey);
@@ -52,7 +54,7 @@ function LogCard(props) {
   // console.log("LOG CARD", props)
   const openModal = () => {
     // setSelected(false);
-    
+
     setIsVisible(!isVisible);
   };
 
@@ -81,46 +83,48 @@ function LogCard(props) {
           </Text>
         </View>
 
-        { props.type==="Activity" && 
-        <View>
-          <View style={styles.textHeader}>
-            <Icon name="codesandbox" type="feather" color="black" />
-            <Text style={styles.textHeader}>Devices</Text>
-          </View>
-
-          <View style={styles.filterheader}>
-            <Text style={styles.middleText}>None</Text>
-
-            <TouchableOpacity
-              style={styles.dropDownButtom}
-              onPress={alterDevices}
-            >
-              <Icon name="chevron-down" type="feather" color="white" />
-            </TouchableOpacity>
-          </View>
-        
-        
-          
-          {props.logs.map((entry, i) => 
-          <Collapsible collapsed={collapsed} style={styles.expanded}  key={i}>
-            <View style={styles.input}>
-              <Text> {props.type=="Access" ? entry.device_name : "TODO"} </Text>
+        {props.type === "Activity" && (
+          <View>
+            <View style={styles.textHeader}>
+              <Icon name="codesandbox" type="feather" color="black" />
+              <Text style={styles.textHeader}>Devices</Text>
             </View>
-          </Collapsible>
-            )
-             }
+
+            <View style={styles.filterheader}>
+              <Text style={styles.middleText}>None</Text>
+
+              <TouchableOpacity
+                style={styles.dropDownButtom}
+                onPress={alterDevices}
+              >
+                <Icon name="chevron-down" type="feather" color="white" />
+              </TouchableOpacity>
+            </View>
+
+            {props.logs.map((entry, i) => (
+              <Collapsible
+                collapsed={collapsed}
+                style={styles.expanded}
+                key={i}
+              >
+                <View style={styles.input}>
+                  <Text>
+                    {" "}
+                    {props.type == "Access" ? entry.device_name : "TODO"}{" "}
+                  </Text>
+                </View>
+              </Collapsible>
+            ))}
           </View>
-          }
-        
-          
-             
-         
-       
+        )}
+
         <View style={styles.textHeader}>
           <Icon name="users" type="feather" color="black" />
-          {props.type === "Access" ? 
-          <Text style={styles.textHeader}>Home Owners</Text> 
-          : <Text style={styles.textHeader}>Guests</Text> }
+          {props.type === "Access" ? (
+            <Text style={styles.textHeader}>Home Owners</Text>
+          ) : (
+            <Text style={styles.textHeader}>Guests</Text>
+          )}
         </View>
         <View style={styles.filterheader}>
           <Text style={styles.middleText}>{filterSel}</Text>
@@ -131,19 +135,33 @@ function LogCard(props) {
         </View>
 
         <ScrollView>
-        {guestToMap != null && guestToMap.map((entry, i) =>
-        <TouchableOpacity key={i} onPress={() => props.type==="Access" ? setFilterSel(entry.primary_user) : setFilterSel(entry.secondary_user)}>
-          <Collapsible collapsed={collapsedGuests} style={styles.expanded}>
-            <View style={styles.input}>
-              <Text>{props.type==="Access" ? entry.primary_user : entry.secondary_user}</Text>
-            </View>
-          </Collapsible>
-        </TouchableOpacity>
-        )}
+          {guestToMap != null &&
+            guestToMap.map((entry, i) => (
+              <TouchableOpacity
+                key={i}
+                onPress={() =>
+                  props.type === "Access"
+                    ? setFilterSel(entry.primary_user)
+                    : setFilterSel(entry.secondary_user)
+                }
+              >
+                <Collapsible
+                  collapsed={collapsedGuests}
+                  style={styles.expanded}
+                >
+                  <View style={styles.input}>
+                    <Text>
+                      {props.type === "Access"
+                        ? entry.primary_user
+                        : entry.secondary_user}
+                    </Text>
+                  </View>
+                </Collapsible>
+              </TouchableOpacity>
+            ))}
         </ScrollView>
 
-
-        <TouchableOpacity onPress={()=>setTruePersonFil(filterSel)}>
+        <TouchableOpacity onPress={() => setTruePersonFil(filterSel)}>
           <View style={styles.submitButton}>
             <Text
               style={{
@@ -173,17 +191,18 @@ function LogCard(props) {
       </View>
 
       <View>
-        
-
         {/* Need function to seperate by time */}
-        {props.logs
-          && props.type == "Access" ? props.logs.filter(guest => guest.primary_user.includes((truePersonFil))).map((entry, index) => {
-              return <LogEntry log={entry} key={index} />;
-            }) :
-            props.logs.filter(guest => guest.secondary_user.includes((truePersonFil))).map((entry, index) => {
-              return <LogEntry log={entry} key={index} />;
-            })
-         }
+        {props.logs && props.type == "Access"
+          ? props.logs
+              .filter((guest) => guest.primary_user.includes(truePersonFil))
+              .map((entry, index) => {
+                return <LogEntry log={entry} key={index} />;
+              })
+          : props.logs
+              .filter((guest) => guest.secondary_user.includes(truePersonFil))
+              .map((entry, index) => {
+                return <LogEntry log={entry} key={index} />;
+              })}
 
         {modal2}
       </View>
@@ -213,7 +232,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: "flex-end",
     alignItems: "flex-end",
-    marginBottom: 10, 
+    marginBottom: 10,
   },
   container: {
     flex: 1,

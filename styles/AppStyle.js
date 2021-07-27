@@ -265,6 +265,9 @@ const appStyle = StyleSheet.create({
     marginHorizontal: 0,
     paddingRight: 10,
   },
+  spinner: {
+    marginTop: 200,
+  },
 
   regularButton: {
     backgroundColor: "#fafafa",

@@ -9,66 +9,19 @@ const formatImage = (log) => {
     if (log.operation === "Create")
       return (
         <Icon
-        containerStyle={{
-          alignItems: "flex-start",
-          marginTop: 10,
-        }}
-        size={45}
-        color="#7DEA7B"
-        
-        name="mail"
-        type="feather"
-      />
+          containerStyle={{
+            alignItems: "flex-start",
+            marginTop: 10,
+          }}
+          size={45}
+          color="#7DEA7B"
+          name="mail"
+          type="feather"
+        />
       );
-
-      else if (log.operation === "Delete")
+    else if (log.operation === "Delete")
       return (
         <Icon
-        containerStyle={{
-          alignItems: "flex-start",
-          marginTop: 10,
-        }}
-        size={45}
-        color="#ea5f5f"
-        rounded
-        name="x"
-        type="feather"
-      />
-      );
-      
-      else if (log.operation === "Ended sharing early")
-      return (
-        <Icon
-        containerStyle={{
-          alignItems: "flex-start",
-          marginTop: 10,
-        }}
-        size={45}
-        color="#ea5f5f"
-        rounded
-        name="x"
-        type="feather"
-      />
-      );
-    else if (log.operation === "Accept") {
-      return (
-        <Icon
-        containerStyle={{
-          alignItems: "flex-start",
-          marginTop: 10,
-        }}
-        size={45}
-        color="#7DEA7B"
-        rounded
-        name="check"
-        type="feather"
-      />
-      
-      );
-      }
-  else if(log.operation === "Decline")
-      {
-        return( <Icon
           containerStyle={{
             alignItems: "flex-start",
             marginTop: 10,
@@ -78,29 +31,79 @@ const formatImage = (log) => {
           rounded
           name="x"
           type="feather"
-        />);
-      }
-
-  else return <Icon containerStyle={{
-    alignItems: "flex-start",
-    marginTop: 10,
-  }}
-  size={45}
-  color="#44ABFF"
-  rounded
-  name="calendar"
-  type="feather"/>
-}
-else return <Icon containerStyle={{
-  alignItems: "flex-start",
-  marginTop: 10,
-}}
-size={45}
-color="#7DEA7B"
-rounded
-name="unlock"
-type="antdesign"/>
-}
+        />
+      );
+    else if (log.operation === "Ended sharing early")
+      return (
+        <Icon
+          containerStyle={{
+            alignItems: "flex-start",
+            marginTop: 10,
+          }}
+          size={45}
+          color="#ea5f5f"
+          rounded
+          name="x"
+          type="feather"
+        />
+      );
+    else if (log.operation === "Accept") {
+      return (
+        <Icon
+          containerStyle={{
+            alignItems: "flex-start",
+            marginTop: 10,
+          }}
+          size={45}
+          color="#7DEA7B"
+          rounded
+          name="check"
+          type="feather"
+        />
+      );
+    } else if (log.operation === "Decline") {
+      return (
+        <Icon
+          containerStyle={{
+            alignItems: "flex-start",
+            marginTop: 10,
+          }}
+          size={45}
+          color="#ea5f5f"
+          rounded
+          name="x"
+          type="feather"
+        />
+      );
+    } else
+      return (
+        <Icon
+          containerStyle={{
+            alignItems: "flex-start",
+            marginTop: 10,
+          }}
+          size={45}
+          color="#44ABFF"
+          rounded
+          name="calendar"
+          type="feather"
+        />
+      );
+  } else
+    return (
+      <Icon
+        containerStyle={{
+          alignItems: "flex-start",
+          marginTop: 10,
+        }}
+        size={45}
+        color="#7DEA7B"
+        rounded
+        name="unlock"
+        type="antdesign"
+      />
+    );
+};
 
 const formatEntryText = (log) => {
   if (log.operation !== undefined) {
@@ -152,9 +155,7 @@ const formatEntryText = (log) => {
           accepted {log.primary_user}'s invitation
         </Text>
       );
-     
-    }
-    else if (log.operation === "Decline") {
+    } else if (log.operation === "Decline") {
       return (
         <Text>
           <Text
@@ -173,7 +174,7 @@ const formatEntryText = (log) => {
       <Text onPress={() => {}} style={{ fontWeight: "bold", color: "#2393FB" }}>
         {log.secondary_user}{" "}
       </Text>
-      performed the {log.device_action} action on the {log.device_name} 
+      performed the {log.device_action} action on the {log.device_name}
       {log.value == true ? "On" : log.value == false ? "Off" : log.value}
     </Text>
   );
@@ -184,8 +185,7 @@ const LogEntry = (props) => {
   return (
     <View style={LogStyle.Lcard}>
       {formatImage(log)}
-      {console.log(log.operation)}
-      
+      {/* {console.log(log.operation)} */}
 
       <Text style={LogStyle.textLog}>{formatEntryText(log)}</Text>
 
