@@ -27,7 +27,7 @@ const SetScheduleScreen = (props) => {
   const [accessType, setAccessType] = useState("Off");
   const [accessDigit, setAccessDigit] = useState("0");
   const [allDay, setAllDay] = useState(false);
-
+  
   // Start Time
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [startTime, setStartTime] = useState(null);
@@ -36,6 +36,14 @@ const SetScheduleScreen = (props) => {
   // Start Date
   const [startDate, setStartDate] = useState(null);
   // Week Days
+  const [sunday, setSunday] = useState(false);
+  const [monday, setMonday] = useState(false);
+  const [tuesday, setTuesday] = useState(false);
+  const [wednesday, setWednesday] = useState(false);
+  const [thursday, setThursday] = useState(false);
+  const [friday, setFriday] = useState(false);
+  const [saturday, setSaturday] = useState(false);
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState([]);
   const [items, setItems] = useState([
@@ -50,10 +58,24 @@ const SetScheduleScreen = (props) => {
   ]);
 
   function handleSave() {
-    editProperties();
+    const weekDays = buildWeekdayArray();
+    // console.log("WEEKDAY ARRAY: ", weekDays)
+    editProperties(weekDays);
     props.navigation.pop();
   }
 
+  function buildWeekdayArray() {
+    const retArr = [0,0,0,0,0,0,0];
+    if (sunday) retArr[0] = 1;
+    if (monday) retArr[1] = 1;
+    if (tuesday) retArr[2] = 1;
+    if (wednesday) retArr[3] = 1;
+    if (thursday) retArr[4] = 1;
+    if (friday) retArr[5] = 1;
+    if (saturday) retArr[6] = 1;
+
+    return retArr;
+  }
   // console.log("SET SCHEDULE", props)
 
   function handleAccessType() {
@@ -74,7 +96,7 @@ const SetScheduleScreen = (props) => {
     }
   }
 
-  async function editProperties() {
+  async function editProperties(weekDays) {
     const response = await fetch(
       "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/property",
       {
@@ -93,15 +115,21 @@ const SetScheduleScreen = (props) => {
           geofencing: props.route.params.deviceProperties.geofencing,
           access_type: accessDigit,
           all_day: allDay ? "1" : "0",
+          days_reoccuring: weekDays,
           time_start: startTime,
           time_end: endTime,
           date_start: startDate,
           date_end: endDate,
-          reoccuring: null,
+          // reoccuring: null,
           reoccuring_type: "0",
         }),
       }
-    );
+    ).then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      return data;
+    })
+    .catch((err) => console.log(err));
   }
 
   useEffect(() => {
@@ -131,7 +159,7 @@ const SetScheduleScreen = (props) => {
     if (deviceProperties.time_all_day != null) {
       if (deviceProperties.time_all_day != "") {
         if (deviceProperties.time_all_day == "1") {
-          console.log("Setting allday true");
+          // console.log("Setting all day true");
           setAllDay(true);
         }
       }
@@ -178,37 +206,28 @@ const SetScheduleScreen = (props) => {
 
   const WeekDays = () => {
     return (
-      <View style={styles.time}>
-        <Text style={styles.timeText}>Week Days</Text>
-        <DropDownPicker
-          zIndex={10000}
-          placeholder="Select Days"
-          style={styles.picker}
-          multiple={true}
-          min={0}
-          max={7}
-          items={items}
-          setOpen={setOpen}
-          setValue={setValue}
-          setItems={setItems}
-          open={open}
-          value={value}
-          modalContentContainerStyle={{ zIndex: 100000 }}
-          dropDownContainerStyle={{
-            zIndex: 100000,
-            borderWidth: 0,
-          }}
-          containerStyle={{
-            width: 170,
-            borderColor: "white",
-
-            zIndex: 100000,
-          }}
-          selectedItemContainerStyle={{
-            backgroundColor: "#5F9EE950",
-            zIndex: 100000,
-          }}
-        />
+      <View style={styles.weekContainer}>
+        <TouchableOpacity style={[styles.day, {backgroundColor: sunday ? "#008CFF" : "#FFFFFF"}]} onPress={() => setSunday(!sunday)}>
+          <Text style={[styles.weekDay, {color: sunday ? "#FFFFFF" : "#008CFF" }]}>S</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.day, {backgroundColor: monday ? "#008CFF" : "#FFFFFF"}]} onPress={() => setMonday(!monday)}>
+          <Text style={[styles.weekDay, {color: monday ? "#FFFFFF" : "#008CFF" }]}>M</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.day, {backgroundColor: tuesday ? "#008CFF" : "#FFFFFF"}]} onPress={() => setTuesday(!tuesday)}>
+          <Text style={[styles.weekDay, {color: tuesday ? "#FFFFFF" : "#008CFF" }]}>T</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.day, {backgroundColor: wednesday ? "#008CFF" : "#FFFFFF"}]} onPress={() => setWednesday(!wednesday)}>
+          <Text style={[styles.weekDay, {color: wednesday ? "#FFFFFF" : "#008CFF" }]}>W</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.day, {backgroundColor: thursday ? "#008CFF" : "#FFFFFF"}]} onPress={() => setThursday(!thursday)}>
+          <Text style={[styles.weekDay, {color: thursday ? "#FFFFFF" : "#008CFF" }]}>T</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.day, {backgroundColor: friday ? "#008CFF" : "#FFFFFF"}]} onPress={() => setFriday(!friday)}>
+          <Text style={[styles.weekDay, {color: friday ? "#FFFFFF" : "#008CFF" }]}>F</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.day, {backgroundColor: saturday ? "#008CFF" : "#FFFFFF"}]} onPress={() => setSaturday(!saturday)}>
+          <Text style={[styles.weekDay, {color: saturday ? "#FFFFFF" : "#008CFF" }]}>S</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -252,7 +271,7 @@ const SetScheduleScreen = (props) => {
           hour12: true,
         })
       );
-      console.log(xtype.type(startTime));
+      // console.log(xtype.type(startTime));
       hideTimePicker();
     };
 
@@ -485,13 +504,13 @@ const styles = StyleSheet.create({
   setTime: {
     flex: 0.78,
     flexDirection: "column",
-    width: "95%",
+    width: "100%",
   },
   time: {
     flexDirection: "row",
     paddingTop: 13,
     padding: 12,
-    paddingRight: 20,
+    paddingRight: 35,
     justifyContent: "space-between",
     alignItems: "center",
 
@@ -639,7 +658,28 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "white",
   },
-
+  weekContainer: {
+    width: "95%",
+    height: "15%",
+    alignSelf: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 15
+  },
+  day: {
+    height: "70%",
+    width: "11%",
+    borderColor: "#008CFF",
+    borderRadius: 8,
+    borderWidth: 2,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  weekDay: {
+    fontSize: 28,
+    fontWeight: "bold",
+  },
   saveContainer: {
     display: "flex",
     alignItems: "center",
@@ -649,3 +689,43 @@ const styles = StyleSheet.create({
 });
 
 export default SetScheduleScreen;
+
+
+
+
+// const WeekDays = () => {
+//   return (
+//     <View style={styles.time}>
+//       <Text style={styles.timeText}>Week Days</Text>
+//       <DropDownPicker
+//         zIndex={10000}
+//         placeholder="Select Days"
+//         style={styles.picker}
+//         multiple={true}
+//         min={0}
+//         max={7}
+//         items={items}
+//         setOpen={setOpen}
+//         setValue={setValue}
+//         setItems={setItems}
+//         open={open}
+//         value={value}
+//         modalContentContainerStyle={{ zIndex: 100000 }}
+//         dropDownContainerStyle={{
+//           zIndex: 100000,
+//           borderWidth: 0,
+//         }}
+//         containerStyle={{
+//           width: 170,
+//           borderColor: "white",
+
+//           zIndex: 100000,
+//         }}
+//         selectedItemContainerStyle={{
+//           backgroundColor: "#5F9EE950",
+//           zIndex: 100000,
+//         }}
+//       />
+//     </View>
+//   );
+// };

@@ -15,7 +15,7 @@ const Header = (props) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    console.log("===============HEADER STUFF=============", props);
+    // console.log("===============HEADER STUFF=============", props);
     fetchInvitations();
   }, [props]);
 
