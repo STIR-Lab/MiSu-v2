@@ -12,8 +12,31 @@ function DeviceControlScreen(props) {
   const [toggledOn, setToggle] = useState(false);
   const [hubOffline, setHubOffline] = useState(false);
 
+  const [reoccuringDays, setReoccuringDays] = useState("");
+
   useEffect(() => {
-    // console.log("DEVICE CONTROL", props);
+    console.log("DEVICE CONTROL", props.route.params.device);
+    if (props.route.params.device.properties[0].access_type == "2")
+    {
+      console.log("==============")
+      let daysOfWeek = "";
+      if (props.route.params.device.properties[0].days_reoccuring[0])
+        daysOfWeek+= "Sun, "
+      if (props.route.params.device.properties[0].days_reoccuring[1])
+        daysOfWeek+= "Mon, "
+      if (props.route.params.device.properties[0].days_reoccuring[2])
+        daysOfWeek+= "Tues, "
+      if (props.route.params.device.properties[0].days_reoccuring[3])
+        daysOfWeek+= "Wed, "
+      if (props.route.params.device.properties[0].days_reoccuring[4])
+        daysOfWeek+= "Thurs, "
+      if (props.route.params.device.properties[0].days_reoccuring[5])
+        daysOfWeek+= "Fri, "
+      if (props.route.params.device.properties[0].days_reoccuring[6])
+        daysOfWeek+= "Sat, "
+      daysOfWeek = daysOfWeek.slice(0, -2);
+      setReoccuringDays(daysOfWeek);
+    }
     fetchValues();
   }, []);
 
@@ -40,7 +63,7 @@ function DeviceControlScreen(props) {
         }
         else
         {
-
+          setHubOffline(true);
         }
 
         if (data.message.state == "unlocked" || data.message.state == "on") {
@@ -85,7 +108,6 @@ function DeviceControlScreen(props) {
         </TouchableOpacity>
       </View>
 
-      {!hubOffline &&
       <View style={appStyle.container}>
         <View style={styles.title}>
           <Text style={{ fontSize: 23, fontWeight: "bold", color: "#353535" }}>
@@ -130,14 +152,16 @@ function DeviceControlScreen(props) {
           </View>
         </View>
 
+        {!hubOffline ?
         <View style={styles.scheduleContainer}>
           <View style={styles.scheduleRow}>
             <Icon name="schedule" type="material" size={25} style={styles.icons} />
             <View style={styles.scheduleDataCont}>
-              <Text>Mon, Tues, Wed, Thurs</Text>
+              { props.route.params.device.properties[0].reoccuring_type == 1 && <Text style={styles.scheduleText}>{reoccuringDays}</Text>}
               {(props.route.params.device.properties[0].time_end != null && props.route.params.device.properties[0].time_start != null) ?
-              <Text>{props.route.params.device.properties[0].time_start.slice(0, -3)} - {props.route.params.device.properties[0].time_end.slice(0, -3)}</Text> :
-              <Text>All Day</Text>}
+              <Text style={styles.scheduleText}>{props.route.params.device.properties[0].time_start.slice(0, -3)} - {props.route.params.device.properties[0].time_end.slice(0, -3)}</Text> :
+              props.route.params.device.properties[0].access_type == 0 ?
+              <Text style={styles.scheduleText}>Never</Text> : <Text style={styles.scheduleText}>All Day</Text>}
             </View>
           </View>
           <View style={styles.scheduleRow}>
@@ -147,8 +171,6 @@ function DeviceControlScreen(props) {
               <Text style={styles.scheduleText}>Not recurring</Text>}
               {props.route.params.device.properties[0].reoccuring_type == 1 &&
               <Text style={styles.scheduleText}>Recurring Weekly</Text>}
-              {props.route.params.device.properties[0].reoccuring_type == 2 &&
-              <Text style={styles.scheduleText}>Recurring Biweekly</Text>}
             </View>
           </View>
           <View style={styles.scheduleRow}>
@@ -156,13 +178,18 @@ function DeviceControlScreen(props) {
             <View style={styles.scheduleDataCont}>            
               {props.route.params.device.properties[0].date_start != null && props.route.params.device.properties[0].date_end != null &&
               <Text style={styles.scheduleText}>{props.route.params.device.properties[0].date_start} - {props.route.params.device.properties[0].date_end}</Text>}
-              {props.route.params.device.properties[0].date_start == null && props.route.params.device.properties[0].date_end != null &&
-              <Text style={styles.scheduleText}>Access ends on: {props.route.params.device.properties[0].date_end}</Text>}
-              {props.route.params.device.properties[0].date_start != null && props.route.params.device.properties[0].date_end == null &&
-              <Text style={styles.scheduleText}>As of: {props.route.params.device.properties[0].date_start}</Text>}
+              {props.route.params.device.properties[0].access_type == 0 &&
+              <Text style={styles.scheduleText}>Never</Text>}
+              {props.route.params.device.properties[0].access_type == 1 &&
+              <Text style={styles.scheduleText}>Always</Text>}
             </View>
           </View>
+        </View> 
+        :
+        <View style={styles.scheduleContainer}>
+          <Text style={styles.offlineText}>Device Offline</Text>
         </View>
+        } 
 
         <View style={styles.col}>
           <Text style={{ fontSize: 23, fontWeight: "bold", color: "#353535" }}>
@@ -203,7 +230,6 @@ function DeviceControlScreen(props) {
           </View>
         </View>
       </View>
-      }
     </View>
   );
 }
@@ -295,6 +321,11 @@ const styles = StyleSheet.create({
   },
   scheduleText: {
     fontSize: 18
+  },
+  offlineText: {
+    fontSize: 28,
+    alignSelf: "center",
+    paddingTop: 60
   },
   icons: {
     marginLeft: 10,

@@ -49,7 +49,7 @@ function DeviceProps(props) {
   useEffect(() => {
 
     // console.log("Entered deviceProps");
-    // console.log("==DeviceProps==", props, "======");
+    // console.log("==DeviceProps==", props.route.params.currDevice, "======");
 
     var accountProperties = props.route.params.accObject;
     // console.log("==DeviceProps==", accountProperties, "======");
