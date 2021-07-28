@@ -166,7 +166,7 @@ function DeviceProps(props) {
     // Days Reoccuring
     // -> array[0-6] = array[sunday, monday, tuesday, ...]
     if (deviceProperties.days_reoccuring != null) {
-      console.log(deviceProperties.days_reoccuring);
+      // console.log(deviceProperties.days_reoccuring);
     }
 
     // Reoccuring Type
