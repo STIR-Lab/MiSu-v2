@@ -17,7 +17,7 @@ const Header = (props) => {
   useEffect(() => {
     console.log("===============HEADER STUFF=============", props);
     fetchInvitations();
-  }, [props]);
+  }, [props, toggled]);
 
   async function fetchInvitations() {
     const state = await fetch(
@@ -54,7 +54,11 @@ const Header = (props) => {
       backdropOpacity={10}
       style={styles.modal}
     >
-      <NotificationsList data={data} bearer={props.sessionData.idToken} />
+      <NotificationsList
+        data={data}
+        bearer={props.sessionData.idToken}
+        toggle={toggleBell}
+      />
     </Modal>
   );
   // console.log("Mis Props: ", props.sessionData);

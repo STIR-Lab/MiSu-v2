@@ -12,25 +12,16 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import UserAvatar from "react-native-user-avatar";
 import { Avatar, Badge, withBadge } from "react-native-elements";
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    sharer_name: "Sam Smith",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    sharer_name: "Alex Ruiz",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    sharer_name: "Timmy Jones",
-  },
-];
-
 const NotificationsList = (props) => {
+  const [userData, setUserData] = useState([]);
   //const [data, setData] = useState(["nada"]);
   //console.log("NotList: " + JSON.stringify(props));
   //const [response, setResponse] = useState("");
+
+  useEffect(() => {
+    setUserData(props.data);
+    console.log("==Noti List Props==" + JSON.stringify(props));
+  }, [props]);
 
   async function handleResponse(answer, id, bearer) {
     const state = await fetch(
@@ -50,6 +41,7 @@ const NotificationsList = (props) => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        props.toggle();
       })
       .catch((err) => console.log(err));
   }
@@ -80,7 +72,7 @@ const NotificationsList = (props) => {
       </View>
     </View>
   );
-  const renderItems = props.data.map((user) => {
+  const renderItems = userData.map((user, index) => {
     return (
       <Item
         sharer_name={user.sharer_name}
