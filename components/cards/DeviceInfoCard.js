@@ -27,10 +27,10 @@ function DeviceInfoCard(props) {
         user: props.user,
         idToken: props.idToken,
         sharedAccs: props.sharedAccs,
-        delete: props.delete
+        delete: props.delete,
       });
     } else {
-        alter();
+      alter();
     }
   }
 
@@ -90,6 +90,7 @@ function DeviceInfoCard(props) {
         deviceType={props.deviceType}
         sharedAccs={props.sharedAccs}
         navigation={props.navigation}
+        fetch={props.fetch}
       />
     );
   else if (props.type == "GuestCard")
@@ -127,7 +128,7 @@ function DeviceInfoCard(props) {
   const panel = (
     <View style={styles.container}>
       <TouchableOpacity style={styles.header} onPress={() => handleClick()}>
-        {props.type == 'GuestCard' ? (
+        {props.type == "GuestCard" ? (
           <View style={styles.devIcon}>
             <UserAvatar size={45} borderRadius={30} name={props.title} />
           </View>
