@@ -8,6 +8,7 @@ import {
   Text,
   ScrollView,
 } from "react-native";
+import { useIsFocused, useFocusEffect } from "@react-navigation/native";
 import { connect } from "react-redux";
 import SearchBar from "../../components/SearchBar";
 import { getHubInfoAction } from "../../redux/Action/getHubInfoAction";
@@ -23,8 +24,8 @@ import { getSharedDevicesAction } from "../../redux/Action/getSharedDevicesActio
 // const AWS = require('aws-sdk');
 // AWS.config.update({ region: 'us-east-1' });
 
-
 function YourHubsScreen(props) {
+  const isFocused = useIsFocused();
   const [searchParam, setSearchParam] = useState("");
   const [sharedAccs, setSharedAccs] = useState(null);
   const [refresh, setFresh] = useState(1);
@@ -55,37 +56,55 @@ function YourHubsScreen(props) {
   // REQUIRES FURTHER INVESTIGATION
 
   useEffect(() => {
+    console.log("Your hub screen useEffect");
     const idToken = props.sessionData.idToken;
     fetchData(idToken);
-  }, []);
+  }, [props, isFocused]);
 
-  function getResults(results){
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     const idToken = props.sessionData.idToken;
+  //     fetchData(idToken);
+  //   }, [props, isFocused])
+  // );
+
+  function getResults(results) {
     setSharedAccs(results);
-    // console.log(sharedAccs);
+    console.log(sharedAccs);
     // console.log(props);
     return;
-  };
+  }
 
   async function fetchData(idToken) {
-    await props.getList(idToken)
-    .then((res) => getResults(res))
-    .catch(err => console.log(err));
-  };
+    await props
+      .getList(idToken)
+      .then((res) => getResults(res))
+      .catch((err) => console.log(err));
+  }
 
-
-  collapsibleList = !sharedAccs || !sharedAccs.message ? <Text>Loading...</Text> : 
-  sharedAccs.message.length == 0 ? <Text>Request Access to someone's smart home to gain access to their devices!</Text> :  
-  (
-    sharedAccs.message.filter(hub => hub.sharer_name.includes(searchParam)).map((m) => (
-      <DeviceInfoCard
-        key={m.login_credentials_id} 
-        title={m.sharer_name}
-        devices={m.devices}
-        type={"HubCard"}
-        sharedAccs={m}
-        navigation={props.navigation} />
-    ))
-  )
+  collapsibleList =
+    !sharedAccs || !sharedAccs.message ? (
+      <Text>Loading...</Text>
+    ) : sharedAccs.message.length == 0 ? (
+      <Text>
+        Request Access to someone's smart home to gain access to their devices!
+      </Text>
+    ) : (
+      sharedAccs.message
+        .filter(
+          (hub) => hub.sharer_name.includes(searchParam) && hub.accepted == 1
+        )
+        .map((m) => (
+          <DeviceInfoCard
+            key={m.login_credentials_id}
+            title={m.sharer_name}
+            devices={m.devices}
+            type={"HubCard"}
+            sharedAccs={m}
+            navigation={props.navigation}
+          />
+        ))
+    );
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -94,9 +113,7 @@ function YourHubsScreen(props) {
           <SearchBar setSearchParam={setSearchParam} screen={"Devices"} />
         </View>
         {/* <Text>{searchParam}</Text> */}
-        <ScrollView style={styles.cardContainer}>
-          {collapsibleList}
-        </ScrollView>
+        <ScrollView style={styles.cardContainer}>{collapsibleList}</ScrollView>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -114,21 +131,20 @@ const styles = StyleSheet.create({
     margin: 15,
     justifyContent: "flex-start",
     alignItems: "center",
-  }
+  },
 });
 
-
 const mapStateToProps = (state) => {
-	const { hubInfoData, sessionData, sharedAccountsData, registerData } = state;
-	return { hubInfoData, sessionData, sharedAccountsData, registerData };
+  const { hubInfoData, sessionData, sharedAccountsData, registerData } = state;
+  return { hubInfoData, sessionData, sharedAccountsData, registerData };
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		register: (data, idToken) => dispatch(registerHubAction(data, idToken)),
-		getHub: (idToken) => dispatch(getHubInfoAction(idToken)),
-    getList: (idToken) => dispatch(getSharedDevicesAction(idToken))
-	};
+  return {
+    register: (data, idToken) => dispatch(registerHubAction(data, idToken)),
+    getHub: (idToken) => dispatch(getHubInfoAction(idToken)),
+    getList: (idToken) => dispatch(getSharedDevicesAction(idToken)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(YourHubsScreen);

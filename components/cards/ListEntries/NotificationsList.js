@@ -8,7 +8,8 @@ import {
   FlatList,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-
+import { connect } from "react-redux";
+import { shareAction } from "../../../redux/Action/shareAction";
 import UserAvatar from "react-native-user-avatar";
 import { Avatar, Badge, withBadge } from "react-native-elements";
 
@@ -41,6 +42,7 @@ const NotificationsList = (props) => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        props.Share("ds", "sd", "d", "sds", "s", "f", true);
         props.toggle();
       })
       .catch((err) => console.log(err));
@@ -90,7 +92,53 @@ const NotificationsList = (props) => {
   );
 };
 
-export default NotificationsList;
+const mapStateToProps = (state) => {
+  const {
+    devicesData,
+    sharedAccountsData,
+    sessionData,
+    shareState,
+    AccessState,
+  } = state;
+  return {
+    devicesData,
+    sharedAccountsData,
+    sessionData,
+    shareState,
+    AccessState,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    ModifyAccess: (title, value) => {
+      dispatch(ModifyAccessStateAction(title, value));
+    },
+    Share: (
+      idToken,
+      email,
+      device,
+      accounts,
+      properties,
+      options,
+      usedOnlyForRefreshing
+    ) => {
+      dispatch(
+        shareAction(
+          idToken,
+          email,
+          device,
+          accounts,
+          properties,
+          options,
+          usedOnlyForRefreshing
+        )
+      );
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationsList);
 
 const styles = StyleSheet.create({
   container: {
