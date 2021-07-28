@@ -112,7 +112,7 @@ export const checkUserExists = async (idToken, email) => {
 };
 
 export const createHub = async (
-  { hub_url, hub_email, hub_password },
+  { hub_url, hub_token},
   idToken
 ) => {
   // console.log('Bearer ' + idToken)
@@ -131,8 +131,7 @@ export const createHub = async (
       },
       body: JSON.stringify({
         hub_url: hub_url,
-        hub_email: hub_email,
-        hub_password: hub_password,
+        hub_token: hub_token
       }),
     }
   )

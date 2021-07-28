@@ -21,6 +21,7 @@ import Icon from "react-native-vector-icons/Feather";
 import { getSharedAccountsAction } from "../../redux/Action/getSharedAccountsAction";
 
 import { createSharedUser } from "../../services/creationService";
+import { showToast } from "../../utils/toast";
 //import { shareAction } from "../../../redux/Action/shareAction";
 
 // AWS Config
@@ -100,31 +101,25 @@ function GuestsScreen(props) {
 
   async function addNewGuest() {
     await createSharedUser(props.sessionData.idToken, guestEmail)
-
-      .then(response => {
+      .then((response) => {
         // console.log(response);
-        return response;})
-      .then(response => {
+        return response;
+      })
+      .then((response) => {
         // console.log("Return from Add Guest")
         // console.log(response)
-        if (response.statusCode === 200)
-        {
+        if (response.statusCode === 200) {
           setTimeout(() => {
             props.getAccounts(props.sessionData.idToken);
-            // setIsVisible2(false);
-            setErrorMsg("User added successfully.");
+            showToast("User added successfully!");
+            setIsVisible2(false);
           }, 1000);
-
-        }
-        else{
+        } else {
           setErrorMsg("An error occured, try again.");
-        }}
-        )
-      .catch(err => console.log(err));
-
+        }
+      })
+      .catch((err) => console.log(err));
   }
-
-
 
   // let modal = (
   //   <Modal
@@ -167,9 +162,7 @@ function GuestsScreen(props) {
           onChangeText={(text) => setGuestEmail(text)}
         />
         <Text style={styles.responseMsg}>{errorMsg}</Text>
-        <TouchableOpacity
-          onPress={() => addNewGuest()}
-        >
+        <TouchableOpacity onPress={() => addNewGuest()}>
           <View style={styles.submitButton}>
             <Text
               style={{
@@ -201,22 +194,23 @@ function GuestsScreen(props) {
         </View>
         {/* <Text>{searchParam}</Text> */}
         <ScrollView style={styles.cardContainer}>
-
           {Array.isArray(sharedAccs) &&
-            sharedAccs.filter(guest => guest.name.includes(searchParam)).map((entry, i) => (
-              <DeviceInfoCard
-                key={i}
-                title={entry.name}
-                user={entry}
-                device={entry.devices}
-                type={"GuestCard"}
-                sharedAccs={sharedAccs}
-                navigation={props.navigation}
-                myDevices={props.devicesData.devices}
-                idToken={props.sessionData.idToken}
-                delete={props.getAccounts}
-              />
-            ))}
+            sharedAccs
+              .filter((guest) => guest.name.includes(searchParam))
+              .map((entry, i) => (
+                <DeviceInfoCard
+                  key={i}
+                  title={entry.name}
+                  user={entry}
+                  device={entry.devices}
+                  type={"GuestCard"}
+                  sharedAccs={sharedAccs}
+                  navigation={props.navigation}
+                  myDevices={props.devicesData.devices}
+                  idToken={props.sessionData.idToken}
+                  delete={props.getAccounts}
+                />
+              ))}
         </ScrollView>
         {/* {modal} */}
         {modal2}
@@ -335,8 +329,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   responseMsg: {
-    marginTop: 5
-  }
+    marginTop: 5,
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GuestsScreen);

@@ -16,19 +16,19 @@ const registerHubFailed = (payload) => ({
 });
 
 export const registerHubAction = (
-  { hub_url, hub_email, hub_password },
+  { hub_url, hub_token},
   idToken
 ) => {
   return async (dispatch) => {
-    // console.log('ACTION==========');
-    // console.log(hub_url, hub_email, hub_password, idToken);
+     console.log('ACTION==========');
+     console.log(hub_url, hub_token);
     try {
+      
       dispatch(registerHubStart({ loading: true, success: null, error: null }));
       hub_url = hub_url;
       const hubDat = {
         hub_url,
-        hub_email,
-        hub_password,
+        hub_token,
       };
       const data = await createHub(hubDat, idToken).catch(err => console.log(err));
       dispatch(
