@@ -24,9 +24,13 @@ import Header from "../../components/app/Header.js";
 const SetScheduleScreen = (props) => {
   const [name, setName] = useState("User");
   const [endDate, setEndDate] = useState(null);
-  const [accessType, setAccessType] = useState("Off");
-  const [accessDigit, setAccessDigit] = useState("0");
+  const [accessType, setAccessType] = useState("Schedule");
+  const [accessDigit, setAccessDigit] = useState("2");
+  const [currentAccessLevel, setCurrentAccessLevel] = useState("Please configure a schedule for your guest.");
   const [allDay, setAllDay] = useState(false);
+  const [weekly, setWeekly] = useState(false);
+
+  const [error, setError] = useState("");
   
   // Start Time
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
@@ -59,39 +63,66 @@ const SetScheduleScreen = (props) => {
 
   function handleSave() {
     const weekDays = buildWeekdayArray();
-    // console.log("WEEKDAY ARRAY: ", weekDays)
-    editProperties(weekDays);
-    props.navigation.pop();
+    if (weekly && JSON.stringify(weekDays) == JSON.stringify([0,0,0,0,0,0,0]))
+    {
+      setError("Please select at least one day of the week.")
+    }
+    else if (!allDay && accessDigit == "2" && (startTime == null || endTime == null))
+    {
+      setError("Please select a start time and end time.")
+    }
+    else if (accessDigit == "2" && (startDate == null || endDate == null))
+    {
+      setError("Please select a start date and end date.")
+    }
+    else 
+    {
+      editProperties(weekDays);
+      setError("");
+      props.navigation.pop();
+    }
   }
 
   function buildWeekdayArray() {
     const retArr = [0,0,0,0,0,0,0];
-    if (sunday) retArr[0] = 1;
-    if (monday) retArr[1] = 1;
-    if (tuesday) retArr[2] = 1;
-    if (wednesday) retArr[3] = 1;
-    if (thursday) retArr[4] = 1;
-    if (friday) retArr[5] = 1;
-    if (saturday) retArr[6] = 1;
+    if (weekly)
+    {
+      if (sunday) retArr[0] = 1;
+      if (monday) retArr[1] = 1;
+      if (tuesday) retArr[2] = 1;
+      if (wednesday) retArr[3] = 1;
+      if (thursday) retArr[4] = 1;
+      if (friday) retArr[5] = 1;
+      if (saturday) retArr[6] = 1;
+    }
 
     return retArr;
   }
   // console.log("SET SCHEDULE", props)
 
   function handleAccessType() {
-    if (accessType === "Off") {
-      setAccessType("On");
-      setAccessDigit("10");
+    if (accessType === "Never") {
+      setAccessType("Always");
+      setAccessDigit("1");
+      setCurrentAccessLevel("Guest will have unrestricted access to this device")
       return;
     }
-    if (accessType === "On") {
+    if (accessType === "Always") {
       setAccessType("Schedule");
       setAccessDigit("2");
+      setCurrentAccessLevel("Please configure a schedule for your guest.");
       return;
     }
     if (accessType === "Schedule") {
-      setAccessType("Off");
+      setAccessType("Never");
       setAccessDigit("0");
+      setCurrentAccessLevel("Guest will not have access to this device.");
+      setStartDate(null);
+      setEndDate(null);
+      setStartTime(null);
+      setEndTime(null);
+      setAllDay(false);
+      setWeekly(false);
       return;
     }
   }
@@ -121,7 +152,7 @@ const SetScheduleScreen = (props) => {
           date_start: startDate,
           date_end: endDate,
           // reoccuring: null,
-          reoccuring_type: "0",
+          reoccuring_type: weekly  ? "1" : "0",
         }),
       }
     ).then((response) => response.json())
@@ -156,6 +187,16 @@ const SetScheduleScreen = (props) => {
         setEndDate(deviceProperties.date_end);
       }
     }
+    if (deviceProperties.time_start != null) {
+      if (deviceProperties.time_start != "") {
+        setStartTime(deviceProperties.time_start);
+      }
+    }
+    if (deviceProperties.time_end != null) {
+      if (deviceProperties.time_end != "") {
+        setEndTime(deviceProperties.time_end);
+      }
+    }
     if (deviceProperties.time_all_day != null) {
       if (deviceProperties.time_all_day != "") {
         if (deviceProperties.time_all_day == "1") {
@@ -167,12 +208,12 @@ const SetScheduleScreen = (props) => {
     if (deviceProperties.access_type != null) {
       if (deviceProperties.access_type != "") {
         if (deviceProperties.access_type == "1") {
-          setAccessType("On");
+          setAccessType("Always");
           setAccessDigit("1");
         }
-        if (deviceProperties.access_type == "2") {
-          setAccessType("Schedule");
-          setAccessDigit("2");
+        if (deviceProperties.access_type == "0") {
+          setAccessType("Never");
+          setAccessDigit("0");
         }
       }
     }
@@ -194,10 +235,10 @@ const SetScheduleScreen = (props) => {
     return (
       <TouchableOpacity onPress={() => handleAccessType()}>
         <View style={styles.propertyChip}>
-          <Image
+          {/* <Image
             style={styles.propertyBadge}
             source={require("../../assets/icons/user.png")}
-          />
+          /> */}
           <Text style={styles.propertyText}> {accessType}</Text>
         </View>
       </TouchableOpacity>
@@ -232,6 +273,25 @@ const SetScheduleScreen = (props) => {
     );
   };
 
+  // Recurring swtich component
+  const Recurring = (props) => {
+    return (
+      <View style={styles.time}>
+        <Text style={styles.timeText}>Weekly?</Text>
+        <Switch
+          thumbColor={weekly ? "#7DEA7B" : "white"}
+          trackColor={{ false: "#767577", true: "#caedca" }}
+          value={weekly}
+          onValueChange={(val) => {
+            setWeekly(val);
+          }}
+          style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }}
+          disabled={accessType != "Schedule"}
+        />
+      </View>
+    );
+  };
+
   // AllDay swtich component
   const AllDay = (props) => {
     return (
@@ -242,9 +302,15 @@ const SetScheduleScreen = (props) => {
           trackColor={{ false: "#767577", true: "#caedca" }}
           value={allDay}
           onValueChange={(val) => {
+            if (val == true)
+            {
+              setStartTime(null);
+              setEndTime(null);
+            }
             setAllDay(val);
           }}
           style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }}
+          disabled={accessType != "Schedule"}
         />
       </View>
     );
@@ -281,7 +347,8 @@ const SetScheduleScreen = (props) => {
         <TouchableOpacity
           onPress={showTimePicker}
           title="Start Time"
-          style={styles.timeBtn}
+          style={allDay || accessType != "Schedule" ? styles.timeBtnGray : styles.timeBtn}
+          disabled={allDay || accessType != "Schedule"}
         >
           <Text style={styles.timeBtnText}>
             {startTime == null ? "Set Time!" : startTime}
@@ -331,7 +398,8 @@ const SetScheduleScreen = (props) => {
         <TouchableOpacity
           onPress={showTimePicker}
           title="Start Time"
-          style={styles.timeBtn}
+          style={allDay || accessType != "Schedule" ? styles.timeBtnGray : styles.timeBtn}
+          disabled={allDay || accessType != "Schedule"}
         >
           <Text style={styles.timeBtnText}>
             {endTime == null ? "Set Time!" : endTime}
@@ -369,7 +437,7 @@ const SetScheduleScreen = (props) => {
     return (
       <View style={styles.time}>
         <Text style={styles.timeText}>Start Date</Text>
-        <TouchableOpacity style={styles.dateBtn} onPress={showDatePicker}>
+        <TouchableOpacity style={accessType != "Schedule" ? styles.dateBtnGray : styles.dateBtn} onPress={showDatePicker} disabled={accessType != "Schedule"}>
           <Text style={styles.dateBtnText}>
             {startDate == null ? "Set Start" : startDate}
           </Text>
@@ -408,7 +476,7 @@ const SetScheduleScreen = (props) => {
       <View style={styles.time}>
         <Text style={styles.timeText}>End Date</Text>
 
-        <TouchableOpacity style={styles.dateBtn} onPress={showDatePicker}>
+        <TouchableOpacity style={accessType != "Schedule" ? styles.dateBtnGray : styles.dateBtn} onPress={showDatePicker} disabled={accessType != "Schedule"}>
           <Text style={styles.dateBtnText}>
             {endDate == null ? "Set End" : endDate}
           </Text>
@@ -434,15 +502,17 @@ const SetScheduleScreen = (props) => {
         <NameBadge name={name} />
         <PropertyBadge />
       </View>
+      <Text style={styles.accessText}>{currentAccessLevel}</Text>
       <View style={styles.setTime}>
-        <WeekDays />
+        <Recurring />
+        {weekly && <WeekDays />}
         <AllDay val={allDay} zIndex={-1000} />
         <StartTime />
         <StartDate />
         <EndTime />
         <EndDate />
       </View>
-
+      <Text style={styles.errorText}>{error}</Text>
       <View style={styles.saveContainer}>
         <TouchableOpacity style={styles.saveBtn} onPress={() => handleSave()}>
           <Text style={styles.saveText}>Save</Text>
@@ -609,12 +679,34 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     zIndex: -10000,
   },
+  timeBtnGray: {
+    backgroundColor: "gray",
+    width: 110,
+    height: 45,
+    elevation: 10,
+    borderRadius: 8,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: -10000,
+  },
   timeBtnText: {
     fontSize: 22,
     zIndex: -10000,
   },
   dateBtn: {
     backgroundColor: "white",
+    width: 160,
+    height: 45,
+    elevation: 10,
+    borderRadius: 8,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  dateBtnGray: {
+    backgroundColor: "gray",
     width: 160,
     height: 45,
     elevation: 10,
@@ -674,7 +766,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 2,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    elevation: 6,
   },
   weekDay: {
     fontSize: 28,
@@ -684,8 +777,19 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 20,
+    marginBottom: 0,
   },
+  errorText: {
+    alignSelf: "center",
+    color: "red",
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+  accessText: {
+    alignSelf: "center",
+    color: "black",
+    paddingBottom: 10
+  }
 });
 
 export default SetScheduleScreen;

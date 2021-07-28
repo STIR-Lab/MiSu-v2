@@ -29,7 +29,7 @@ function GuestElement(props) {
   };
 
   useEffect(() => {
-    // console.log(props);
+    // console.log("Guest Element:", props.currGuest);
   });
 
   return (
@@ -45,7 +45,7 @@ function GuestElement(props) {
               shared_device_properties_id: props.currGuest.shared_device_properties_id,
               name: props.title,
               type: props.deviceType,
-              //  properties array goes here
+              properties: props.properties
               },
             navigation: props.navigation,
             idToken: props.idToken

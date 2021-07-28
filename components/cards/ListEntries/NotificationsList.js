@@ -20,7 +20,7 @@ const NotificationsList = (props) => {
 
   useEffect(() => {
     setUserData(props.data);
-    console.log("==Noti List Props==" + JSON.stringify(props));
+    // console.log("==Noti List Props==" + JSON.stringify(props));
   }, [props]);
 
   async function handleResponse(answer, id, bearer) {

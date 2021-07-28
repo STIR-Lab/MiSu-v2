@@ -27,7 +27,7 @@ function DeviceElement(props) {
       });
     }
   }
-  //console.log(props)
+  // console.log("Device ELement",  props.user)
   return (
     <View>
       <TouchableOpacity onPress={handleClick}>
