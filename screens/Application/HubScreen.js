@@ -26,6 +26,7 @@ function HubScreen(props) {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [error, setError] = useState('');
+  const [token, setToken] = useState(null);
 
   // ========================================================
   // To access status codes:
@@ -40,10 +41,8 @@ function HubScreen(props) {
     if (
       url == '' ||
       url == null ||
-      email == '' ||
-      email == null ||
-      password == '' ||
-      password == null
+      token == '' ||
+      token == null 
     ) {
       setError('Some fields have not been completed.');
       return;
@@ -52,8 +51,8 @@ function HubScreen(props) {
         {
             await props.register({
                 hub_url: url, 
-                hub_email: email,
-                hub_password: password},
+                hub_token: token,
+                },
                 props.sessionData.idToken)
             .then((res) => {
             // console.log("====HUB SCREEN res", res);
@@ -63,7 +62,7 @@ function HubScreen(props) {
             else if (res.statusCode === 405)
               setError('Invalid Hub URL. Is your Hub turned on?');
             else if (res.statusCode === 401)
-              setError('Invalid Email and Password Combination.');
+              setError('Invalid Token. Please check again');
             else if (res.statusCode === 400 || res.statusCode === 502)
               setError('Server Error Occured, try again later.');
             else setError("Unidentified Error")})
@@ -87,20 +86,12 @@ function HubScreen(props) {
             <TextInput
               style={style.input}
               autoCapitalize="none"
-              onChangeText={(e) => setEmail(e)}
-              value={email}
-              placeholder="Hub Email"
+              onChangeText={(e) => setToken(e)}
+              value={token}
+              placeholder="Hub Token"
               placeholderTextColor="#808080"
             ></TextInput>
-            <TextInput
-              style={style.input}
-              autoCapitalize="none"
-              secureTextEntry
-              onChangeText={(e) => setPassword(e)}
-              value={password}
-              placeholder="Hub Password"
-              placeholderTextColor="#808080"
-            ></TextInput>
+           
             <Text style={style.error}>{error}</Text>
           </View>
           <TouchableOpacity style={style.button} onPress={() => handleClick()}>
