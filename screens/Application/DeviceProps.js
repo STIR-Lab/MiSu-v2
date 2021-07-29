@@ -16,6 +16,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import DeviceCard from "../../components/cards/DeviceCard";
 import appStyle from "../../styles/AppStyle";
+import UserAvatar from 'react-native-user-avatar';
 
 // importing set schedule card from ./cards
 import SetScheduleCard from "../../components/cards/SetScheduleCard";
@@ -220,7 +221,7 @@ function DeviceProps(props) {
             <View style={propstyle.rowContainer}>
               <View style={propstyle.card}>
                 <View style={propstyle.row}>
-                  <Image source={require("../../assets/people.png")} />
+                <UserAvatar size={40} borderRadius={41} name={props.route.params.accObject.name} />
                   <Text
                     style={{
                       paddingLeft: 10,

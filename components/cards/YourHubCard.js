@@ -266,7 +266,6 @@ function YourHubCard(props) {
           <View style={style.verticleMiddleColumns}>
             <View style={style.hubStats}>
               <Text style={style.status}>Connected</Text>
-              <Text style={style.numGuests}>0 Guests</Text>
             </View>
 
             <View style={style.redButton}>
