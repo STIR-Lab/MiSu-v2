@@ -37,7 +37,9 @@ function DeviceControlScreen(props) {
       daysOfWeek = daysOfWeek.slice(0, -2);
       setReoccuringDays(daysOfWeek);
     }
-    fetchValues();
+    if (props.route.params.device.type == "lock")
+      fetchValues();
+    else setDeviceTitle(props.route.params.device.name)
   }, []);
 
   async function fetchValues() {
@@ -72,9 +74,10 @@ function DeviceControlScreen(props) {
       });
   }
 
-  async function handleClick(value) {
+  // tpyeyType is 0 for lock 1 for Script
+  async function handleClick(value, typeyType) {
     // Handles the action for when button is currently toggled
-    if ((value == "unlock" && toggledOn) || (value == "lock" && !toggledOn)) {
+    if (typeyType == 0 && (value == "unlock" && toggledOn) || (value == "lock" && !toggledOn)) {
       return;
     }
 
@@ -97,8 +100,10 @@ function DeviceControlScreen(props) {
       console.log("USE DEVICE RETURN:", data);
       return data;
     })
-    .catch((err) => console.log(err));;
-    setToggle(!toggledOn);
+    .catch((err) => console.log(err));
+
+    if (typeyType == 0)
+      setToggle(!toggledOn);
   }
 
   return (
@@ -121,6 +126,7 @@ function DeviceControlScreen(props) {
         </View>
 
         <View style={styles.card}>
+          {props.route.params.device.type == "lock" ? 
           <View
             style={{
               alignSelf: "center",
@@ -155,6 +161,24 @@ function DeviceControlScreen(props) {
               </View>
             )}
           </View>
+          :
+          <View
+            style={{
+              alignSelf: "center",
+              justifyContent: "center",
+              alignContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Icon
+              name="home-assistant"
+              type="material-community"
+              color="#5bd3ff"
+              size={120}
+              style={{ marginRight: 5 }}
+            />
+          </View>
+          }
         </View>
 
         {!hubOffline ?
@@ -198,12 +222,13 @@ function DeviceControlScreen(props) {
 
         <View style={styles.col}>
           <Text style={{ fontSize: 23, fontWeight: "bold", color: "#353535" }}>
-            Actions
+            Action(s)
           </Text>
 
           <View style={[styles.lineContainer, { marginTop: 10 }]} />
+          { props.route.params.device.type == "lock" ? 
           <View style={[styles.row, { justifyContent: "space-between" }]}>
-            <TouchableOpacity onPress={() => handleClick("lock")}>
+            <TouchableOpacity onPress={() => handleClick("lock", 0)}>
               <View
                 style={[
                   styles.button,
@@ -218,7 +243,7 @@ function DeviceControlScreen(props) {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => handleClick("unlock")}>
+            <TouchableOpacity onPress={() => handleClick("unlock", 0)}>
               <View
                 style={[
                   styles.button,
@@ -233,6 +258,21 @@ function DeviceControlScreen(props) {
               </View>
             </TouchableOpacity>
           </View>
+          :
+          <TouchableOpacity onPress={() => handleClick(null, 1)}>
+              <View
+                style={[
+                  styles.scriptButton,
+                ]}
+              >
+                <Text
+                  style={{ fontWeight: "bold", color: "black", fontSize: 30 }}
+                >
+                  Run Script
+                </Text>
+              </View>
+            </TouchableOpacity>
+          }
         </View>
       </View>
     </View>
@@ -247,6 +287,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 6,
     width: 160,
+    height: 70,
+  },
+  scriptButton: {
+    borderWidth: 2,
+    marginTop: 10,
+    borderColor: "#60B8FF",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    backgroundColor: "#87b5ff",
+    borderRadius: 6,
+    width: 190,
     height: 70,
   },
   appbar: {

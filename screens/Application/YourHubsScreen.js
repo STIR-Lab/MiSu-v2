@@ -71,7 +71,7 @@ function YourHubsScreen(props) {
   function getResults(results) {
     setSharedAccs(results);
     // console.log(sharedAccs);
-    // console.log(props);
+    // console.log("YOUR HUBS SCREEN GET RESULTS:", props);
     return;
   }
 
