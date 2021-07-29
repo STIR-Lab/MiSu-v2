@@ -111,10 +111,7 @@ export const checkUserExists = async (idToken, email) => {
   return response.json();
 };
 
-export const createHub = async (
-  { hub_url, hub_token},
-  idToken
-) => {
+export const createHub = async ({ hub_url, hub_token }, idToken) => {
   // console.log('Bearer ' + idToken)
   // console.log(JSON.stringify({
   //   hub_url: hub_url,
@@ -131,7 +128,7 @@ export const createHub = async (
       },
       body: JSON.stringify({
         hub_url: hub_url,
-        hub_token: hub_token
+        hub_token: hub_token,
       }),
     }
   )
@@ -160,6 +157,28 @@ export const changeRole = async (user_type, idToken) => {
       },
       body: JSON.stringify({
         user_type: user_type,
+      }),
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      // console.log(data);
+      return data;
+    })
+    .catch((err) => console.log(err));
+};
+
+export const changeRadius = async (idToken, radius) => {
+  return await fetch(
+    "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/gps",
+    {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + idToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        geofencing_range: radius,
       }),
     }
   )
