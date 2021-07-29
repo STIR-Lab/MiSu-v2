@@ -35,19 +35,19 @@ function DeviceInfoCard(props) {
   }
 
   // Ugly check to determine icon off of deviceName
-  const checkIcon = (deviceName) => {
+  const checkIcon = (deviceType) => {
     // Needed for before data is loaded
     //  -> deviceName should **never** be null once deployed
-    if (deviceName == null) return "aperture";
-    var dName = deviceName.toString().toLowerCase();
+    if (deviceType == null) return "aperture";
+    var dName = deviceType.toString().toLowerCase();
     if (dName.includes("bulb")) {
       return "zap";
     }
     if (dName.includes("lock")) {
       return "lock";
     }
-    if (dName.includes("speaker") || dName.includes("google")) {
-      return "speaker";
+    if (dName.includes("script")) {
+      return "file-text";
     }
     return "aperture";
   };
@@ -59,7 +59,7 @@ function DeviceInfoCard(props) {
           props.device.map((entry, i) => (
             <View style={styles.iconContainer} key={i}>
               <Icon
-                name={checkIcon(entry.name)}
+                name={checkIcon(entry.type)}
                 type="feather"
                 style={{
                   padding: 3,

@@ -110,7 +110,14 @@ function SampleDeviceList(props) {
 
     // TODO: DEVICES ARRAY INDEX NEEDS TO BE DYNAMIC
     // console.log("FOUND PROPERTIES:", objectFound.devices[0].properties);
-    const ret = objectFound.devices[0].properties;
+    
+    let ret = null;
+
+    if (objectFound != undefined)
+    {
+      ret = objectFound.devices[0].properties;
+    }
+
     return ret;
   }
 
@@ -133,7 +140,7 @@ function SampleDeviceList(props) {
     }
     else
     {
-      shareDevice(props.user.login_credentials_id, selected.attributes.friendly_name, selected.entity_id, getType(selected.entity_id));
+      shareDevice(props.user.login_credentials_id, selected.attributes.friendly_name, selected.entity_id, selected.type);
     }
   };
 

@@ -34,6 +34,8 @@ function DeviceElement(props) {
         <View style={styles.iconHolder}>
           {props.type == "lock" ? (
             <Icon name="lock" type="simple-line-icon" size={45} />
+          ) : props.type == "script" ? (
+            <Icon name="script-text-outline" type="material-community" size={45} />
           ) : (
             <View />
           )}
