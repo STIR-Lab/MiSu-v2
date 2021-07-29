@@ -51,8 +51,9 @@ function DeviceProps(props) {
 
   useEffect(() => {
     // console.log("Entered deviceProps");
-    // console.log("==DeviceProps==", props.route.params.currDevice.properties[0], "======");
+    // console.log("==DeviceProps==", props.route.params, "======");
     var accountProperties = props.route.params.currDevice;
+    setIsLoading(true);
 
     if (
       accountProperties.shared_device_properties_id != null &&

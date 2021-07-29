@@ -80,9 +80,10 @@ const SetScheduleScreen = (props) => {
     } else if (accessDigit == 2 && (startDate == null || endDate == null)) {
       setError("Please select a start date and end date.");
     } else {
-      editProperties(weekDays);
       setError("");
-      props.navigation.pop();
+      editProperties(weekDays).then(() => {
+        props.navigation.pop();
+      });
     }
   }
 
