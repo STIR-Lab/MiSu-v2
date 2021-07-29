@@ -41,13 +41,13 @@ const SetScheduleCard = (props) => {
     }
 
     if (props.deviceProperties.reoccuring_type != null) {
-      if (props.deviceProperties.reoccuring_type == "0") {
+      if (props.deviceProperties.reoccuring_type == 0) {
         setReoccuring("Not Reoccuring");
       }
-      if (props.deviceProperties.reoccuring_type == "1") {
+      if (props.deviceProperties.reoccuring_type == 1) {
         setReoccuring("Weekly");
       }
-      if (props.deviceProperties.reoccuring_type == "2") {
+      if (props.deviceProperties.reoccuring_type == 2) {
         setReoccuring("Bi-Weekly");
       }
     }

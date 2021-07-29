@@ -9,10 +9,6 @@ function ProfileCard(props) {
         <View style={style.container}>
             <View style={style.headerLine}>
                 <Text style={style.header}>Account</Text>
-                <View style={style.editBox}>
-                    <Image style={style.gear} source={require('../../assets/icons/Setting.png')}/>
-                    <Text>Edit</Text>
-                </View>
             </View>
             <View style={style.rowInformation}>
                <View style={style.profileIcon}>

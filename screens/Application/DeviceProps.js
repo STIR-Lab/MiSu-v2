@@ -49,27 +49,27 @@ function DeviceProps(props) {
   useEffect(() => {
 
     // console.log("Entered deviceProps");
-    // console.log("==DeviceProps==", props.route.params.currDevice, "======");
+    // console.log("==DeviceProps==", props.route.params.currDevice.properties[0], "======");
 
-    var accountProperties = props.route.params.accObject;
+    var accountProperties = props.route.params.currDevice;
     // console.log("==DeviceProps==", accountProperties, "======");
 
     if (
-      accountProperties.devices[0].shared_device_properties_id != null &&
-      accountProperties.devices[0].login_credentials_id != null
+      accountProperties.shared_device_properties_id != null &&
+      accountProperties.login_credentials_id != null
     ) {
       // setDeviceId(accountProperties.devices[0].shared_device_properties_id);
       getDeviceProperties(
-        accountProperties.devices[0].login_credentials_id,
-        accountProperties.devices[0].shared_device_properties_id
+        accountProperties.login_credentials_id,
+        accountProperties.shared_device_properties_id
       );
     }
 
     if (accountProperties.name != null) {
-      setUserName(accountProperties.name);
+      setDeviceName(accountProperties.name);
     }
-    if (props.route.params.deviceName != null) {
-      setDeviceName(props.route.params.deviceName);
+    if (props.route.params.accObject.name != null) {
+      setUserName(props.route.params.accObject.name);
     }
 
     if (
@@ -111,7 +111,7 @@ function DeviceProps(props) {
     // Geofencing
     // -> 0: disabled, 1: enabled
     if (deviceProperties.geofencing != null) {
-      if (deviceProperties.geofencing == "1") {
+      if (deviceProperties.geofencing == 1) {
         setGeofencing(true);
       }
     }
@@ -120,20 +120,20 @@ function DeviceProps(props) {
     // -> 0: nothing, 1: all-in, 2: Time-range
     if (deviceProperties.access_type != null) {
       // No Access
-      if (deviceProperties.accessType == "0") {
+      if (deviceProperties.accessType == 0) {
       }
       // All-In
-      if (deviceProperties.accessType == "1") {
+      if (deviceProperties.accessType == 1) {
       }
       // Time-Range
-      if (deviceProperties.accessType == "2") {
+      if (deviceProperties.accessType == 2) {
       }
     }
 
     // Time-all-day
     // -> 0: No, 1: Yes
     if (deviceProperties.time_all_day != null) {
-      if (deviceProperties.time_all_day == "1") {
+      if (deviceProperties.time_all_day == 1) {
         setAllDayAccess(true);
       }
     }
@@ -188,25 +188,25 @@ function DeviceProps(props) {
           Accept: "*/*",
         },
         body: JSON.stringify({
-          account: props.route.params.accObject.login_credentials_id,
+          account: props.route.params.currDevice.login_credentials_id,
           device: props.route.params.currDevice.shared_device_properties_id,
           shared_property_id:
             props.route.params.currDevice.properties[0].shared_property_id,
-          geofencing: x == true ? "1" : "0",
-          access_type: "0",
+          geofencing: x == true ? 1 : 0,
+          access_type: props.route.params.currDevice.properties[0].access_type,
+          days_reoccuring: props.route.params.currDevice.properties[0].days_reoccuring,
           all_day: props.route.params.currDevice.properties[0].time_all_day,
           time_start: props.route.params.currDevice.properties[0].time_start,
           time_end: props.route.params.currDevice.properties[0].time_end,
           date_start: props.route.params.currDevice.properties[0].date_start,
           date_end: props.route.params.currDevice.properties[0].date_end,
-          reoccuring: null,
-          reoccuring_type: "0",
+          reoccuring_type: props.route.params.currDevice.properties[0].reoccuring_type,
         }),
       }
     )
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
+        console.log("GEOFENCING RETURN", data);
         if (data.statusCode != 200) {
           setGeofencing(!x);
         }

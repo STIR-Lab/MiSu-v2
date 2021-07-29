@@ -25,7 +25,7 @@ const SetScheduleScreen = (props) => {
   const [name, setName] = useState("User");
   const [endDate, setEndDate] = useState(null);
   const [accessType, setAccessType] = useState("Schedule");
-  const [accessDigit, setAccessDigit] = useState("2");
+  const [accessDigit, setAccessDigit] = useState(2);
   const [currentAccessLevel, setCurrentAccessLevel] = useState("Please configure a schedule for your guest.");
   const [allDay, setAllDay] = useState(false);
   const [weekly, setWeekly] = useState(false);
@@ -67,11 +67,11 @@ const SetScheduleScreen = (props) => {
     {
       setError("Please select at least one day of the week.")
     }
-    else if (!allDay && accessDigit == "2" && (startTime == null || endTime == null))
+    else if (!allDay && accessDigit == 2 && (startTime == null || endTime == null))
     {
       setError("Please select a start time and end time.")
     }
-    else if (accessDigit == "2" && (startDate == null || endDate == null))
+    else if (accessDigit == 2 && (startDate == null || endDate == null))
     {
       setError("Please select a start date and end date.")
     }
@@ -103,19 +103,19 @@ const SetScheduleScreen = (props) => {
   function handleAccessType() {
     if (accessType === "Never") {
       setAccessType("Always");
-      setAccessDigit("1");
+      setAccessDigit(1);
       setCurrentAccessLevel("Guest will have unrestricted access to this device")
       return;
     }
     if (accessType === "Always") {
       setAccessType("Schedule");
-      setAccessDigit("2");
+      setAccessDigit(2);
       setCurrentAccessLevel("Please configure a schedule for your guest.");
       return;
     }
     if (accessType === "Schedule") {
       setAccessType("Never");
-      setAccessDigit("0");
+      setAccessDigit(0);
       setCurrentAccessLevel("Guest will not have access to this device.");
       setStartDate(null);
       setEndDate(null);
@@ -145,14 +145,14 @@ const SetScheduleScreen = (props) => {
             props.route.params.deviceProperties.shared_property_id,
           geofencing: props.route.params.deviceProperties.geofencing,
           access_type: accessDigit,
-          all_day: allDay ? "1" : "0",
+          all_day: allDay ? 1 : 0,
           days_reoccuring: weekDays,
           time_start: startTime,
           time_end: endTime,
           date_start: startDate,
           date_end: endDate,
           // reoccuring: null,
-          reoccuring_type: weekly  ? "1" : "0",
+          reoccuring_type: weekly  ? 1 : 0,
         }),
       }
     ).then((response) => response.json())
@@ -199,7 +199,7 @@ const SetScheduleScreen = (props) => {
     }
     if (deviceProperties.time_all_day != null) {
       if (deviceProperties.time_all_day != "") {
-        if (deviceProperties.time_all_day == "1") {
+        if (deviceProperties.time_all_day == 1) {
           // console.log("Setting all day true");
           setAllDay(true);
         }
@@ -207,13 +207,13 @@ const SetScheduleScreen = (props) => {
     }
     if (deviceProperties.access_type != null) {
       if (deviceProperties.access_type != "") {
-        if (deviceProperties.access_type == "1") {
+        if (deviceProperties.access_type == 1) {
           setAccessType("Always");
-          setAccessDigit("1");
+          setAccessDigit(1);
         }
-        if (deviceProperties.access_type == "0") {
+        if (deviceProperties.access_type == 0) {
           setAccessType("Never");
-          setAccessDigit("0");
+          setAccessDigit(0);
         }
       }
     }

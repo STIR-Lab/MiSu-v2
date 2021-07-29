@@ -85,6 +85,7 @@ function GuestsScreen(props) {
     fetchData(idToken);
   }, [props.sharedAccountsData.sharedAccounts, sharedAccs]);
 
+  // console.log("GuestsScreen:", props.sessionData.idToken);
   async function fetchData(idToken) {
     // console.log('Fetching Data..');
     // props.getHub(idToken);
