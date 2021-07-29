@@ -1,22 +1,32 @@
-import React, { useState } from "react";
-import { Image, StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import React, { useState, useCallback } from "react";
+import {
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+  Slider,
+} from "react-native";
 import { Icon } from "react-native-elements";
 import Modal from "react-native-modal";
-import { changeRole } from "../../services/creationService";
+import { changeRole, changeRadius } from "../../services/creationService";
 
 function SettingsCard(props) {
+  const [isDistanceVisible, setIsDistanceVisible] = useState(false);
   const [isRoleVisible, setIsRoleVisible] = useState(false);
   const [accessLevel, setAccess] = useState(props.user.user_type);
   const [initialRole, setInitialRole] = useState(props.user.user_type);
+  const [sliderValue, setSliderValue] = useState(1);
+  // =========================================================================
+
   // console.log(props)
   async function handleClick() {
     if (initialRole != accessLevel) {
-      await changeRole(accessLevel, props.idToken)
-      .then(
+      await changeRole(accessLevel, props.idToken).then(
         setTimeout(() => {
-          props.getHub(props.idToken)
+          props.getHub(props.idToken);
         }, 1500)
-      )
+      );
 
       setIsRoleVisible(false);
       // console.log("HANDLE CLICK :", props);
@@ -26,6 +36,54 @@ function SettingsCard(props) {
     }
   }
 
+  async function handleRadius() {
+    var radius = sliderValue;
+
+    if (radius == 0) {
+      radius = 1;
+    }
+
+    await changeRadius(props.idToken, radius).then((e) => console.log(e));
+
+    setIsDistanceVisible(false);
+  }
+
+  let radiusModal = (
+    <Modal
+      isVisible={isDistanceVisible}
+      transparent={true}
+      onBackdropPress={() => setIsDistanceVisible(false)}
+      backdropColor={"#00000090"}
+      hasBackdrop={true}
+      backdropOpacity={10}
+    >
+      <View style={styles.modal}>
+        <Text>Set Geofencing Radius</Text>
+
+        <View>
+          <Slider
+            value={0}
+            style={styles.slider}
+            step={5}
+            minimumValue={0}
+            maximumValue={20}
+            onValueChange={(e) => setSliderValue(e)}
+          ></Slider>
+        </View>
+
+        <View>
+          <Text>{sliderValue == 0 ? 1 : sliderValue}</Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.confirmButton}
+          onPress={() => handleRadius()}
+        >
+          <Text style={{ color: "#FEFEFE", fontSize: 25 }}>Confirm</Text>
+        </TouchableOpacity>
+      </View>
+    </Modal>
+  );
 
   let roleModal = (
     <Modal
@@ -114,7 +172,10 @@ function SettingsCard(props) {
           />
         </View>
       </TouchableOpacity>
-      <View style={styles.setting}>
+      <TouchableOpacity
+        onPress={() => setIsDistanceVisible(true)}
+        style={styles.setting}
+      >
         <Text style={styles.settingFont}>Modify Geofencing Radius</Text>
 
         <View style={styles.icon}>
@@ -125,7 +186,7 @@ function SettingsCard(props) {
             style={{}}
           />
         </View>
-      </View>
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.setting}
         onPress={() => setIsRoleVisible(true)}
@@ -141,6 +202,7 @@ function SettingsCard(props) {
         </View>
       </TouchableOpacity>
       {roleModal}
+      {radiusModal}
     </View>
   );
 }
@@ -218,6 +280,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 1,
     elevation: 10,
+    height: 40,
+  },
+  slider: {
+    width: 200,
   },
 });
 
