@@ -56,7 +56,7 @@ function YourHubsScreen(props) {
   // REQUIRES FURTHER INVESTIGATION
 
   useEffect(() => {
-    console.log("Your hub screen useEffect");
+    // console.log("Your hub screen useEffect");
     const idToken = props.sessionData.idToken;
     fetchData(idToken);
   }, [props, isFocused]);
@@ -70,7 +70,7 @@ function YourHubsScreen(props) {
 
   function getResults(results) {
     setSharedAccs(results);
-    console.log(sharedAccs);
+    // console.log(sharedAccs);
     // console.log(props);
     return;
   }

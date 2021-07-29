@@ -231,7 +231,7 @@ function YourHubCard(props) {
       <View style={style.headerLine}>
         <Text style={style.header}>Your Hub</Text>
 
-        {registering == true && (
+        {false && (
           <View style={style.editBox}>
             <Image
               style={style.gear}
@@ -294,7 +294,7 @@ function YourHubCard(props) {
       <ScrollView>
         {registering == false && props.user.user_type == 0 && (
           <View>
-            {props.sharedData.map((entry, i) => (
+            {props.sharedData && props.sharedData.map((entry, i) => (
               <View key={i} style={style.verticleCentralColumns}>
                 <View style={style.horizonalRows}>
                   <View>

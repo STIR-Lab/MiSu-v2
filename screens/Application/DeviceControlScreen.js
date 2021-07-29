@@ -16,7 +16,7 @@ function DeviceControlScreen(props) {
 
   useEffect(() => {
     console.log("DEVICE CONTROL", props.route.params.device);
-    if (props.route.params.device.properties[0].access_type == "2")
+    if (props.route.params.device.properties[0].access_type == 2)
     {
       console.log("==============")
       let daysOfWeek = "";
@@ -57,8 +57,8 @@ function DeviceControlScreen(props) {
     )
       .then((response) => response.json())
       .then((data) => {
-        // console.log("DATA ON DEVICE CONTROL", data);
-        if (data.message.attributes.friendly_name != null) {
+        console.log("DATA ON DEVICE CONTROL", data);
+        if (data.message.attributes.friendly_name != null && data.message.attributes.friendly_name != undefined) {
           setDeviceTitle(data.message.attributes.friendly_name);
         }
         else
@@ -92,7 +92,12 @@ function DeviceControlScreen(props) {
           action: value,
         }),
       }
-    );
+    ).then((response) => response.json())
+    .then((data) => {
+      console.log("USE DEVICE RETURN:", data);
+      return data;
+    })
+    .catch((err) => console.log(err));;
     setToggle(!toggledOn);
   }
 
