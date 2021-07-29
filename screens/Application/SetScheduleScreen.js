@@ -351,7 +351,7 @@ const SetScheduleScreen = (props) => {
           disabled={allDay || accessType != "Schedule"}
         >
           <Text style={styles.timeBtnText}>
-            {startTime == null ? "Set Time!" : startTime}
+            {startTime == null ? "Set Time" : startTime}
           </Text>
         </TouchableOpacity>
         <DateTimePickerModal
@@ -402,7 +402,7 @@ const SetScheduleScreen = (props) => {
           disabled={allDay || accessType != "Schedule"}
         >
           <Text style={styles.timeBtnText}>
-            {endTime == null ? "Set Time!" : endTime}
+            {endTime == null ? "Set Time" : endTime}
           </Text>
         </TouchableOpacity>
 
