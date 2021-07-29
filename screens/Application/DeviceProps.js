@@ -25,34 +25,34 @@ import { set } from "react-native-reanimated";
 import GPS from "../../components/gps";
 import * as Location from "expo-location";
 import haversine from "haversine";
+import { ActivityIndicator } from "react-native";
 
 function DeviceProps(props) {
   const isFocused = useIsFocused();
   const [userName, setUserName] = useState("Placeholder");
   const [deviceName, setDeviceName] = useState("Placeholder");
+  const [isLoading, setIsLoading] = useState(true);
 
   const [account, setAccount] = useState("");
   const [deviceId, setDeviceId] = useState("");
 
   // Properties
   const [propertiesObj, setPropertiesObj] = useState({});
-  const [geofencing, setGeofencing] = useState(false);
+
   const [accessType, setAccessType] = useState(false);
-  const [allDayAccess, setAllDayAccess] = useState(false);
-  const [timeStart, setTimeStart] = useState(null);
-  const [timeEnd, setTimeEnd] = useState(null);
   const [dateStart, setDateStart] = useState(null);
   const [dateEnd, setDateEnd] = useState(null);
-  const [reoccuringDays, setReoccuringDays] = useState(null);
+  const [reoccuringDays, setReoccuringDays] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [geofencing, setGeofencing] = useState(0);
   const [reoccuringType, setReoccuringType] = useState(0);
+  const [allDayAccess, setAllDayAccess] = useState(0);
+  const [timeStart, setTimeStart] = useState(null);
+  const [timeEnd, setTimeEnd] = useState(null);
 
   useEffect(() => {
-
     // console.log("Entered deviceProps");
     // console.log("==DeviceProps==", props.route.params.currDevice.properties[0], "======");
-
     var accountProperties = props.route.params.currDevice;
-    // console.log("==DeviceProps==", accountProperties, "======");
 
     if (
       accountProperties.shared_device_properties_id != null &&
@@ -99,7 +99,8 @@ function DeviceProps(props) {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        // console.log(data);
+        console.log(data);
+        setIsLoading(false);
         if (data.properties != null) {
           setProperties(data.properties);
           setPropertiesObj(data.properties);
@@ -111,46 +112,29 @@ function DeviceProps(props) {
     // Geofencing
     // -> 0: disabled, 1: enabled
     if (deviceProperties.geofencing != null) {
-      if (deviceProperties.geofencing == 1) {
-        setGeofencing(true);
-      }
+      setGeofencing(deviceProperties.geofencing);
     }
 
     // Access-Type
     // -> 0: nothing, 1: all-in, 2: Time-range
     if (deviceProperties.access_type != null) {
-      // No Access
-      if (deviceProperties.accessType == 0) {
-      }
-      // All-In
-      if (deviceProperties.accessType == 1) {
-      }
-      // Time-Range
-      if (deviceProperties.accessType == 2) {
-      }
+      setAccessType(deviceProperties.access_type);
     }
 
     // Time-all-day
     // -> 0: No, 1: Yes
     if (deviceProperties.time_all_day != null) {
-      if (deviceProperties.time_all_day == 1) {
-        setAllDayAccess(true);
-      }
+      setAllDayAccess(deviceProperties.time_all_day);
     }
 
     // Time Start
     if (deviceProperties.time_start != null) {
-      // Only set time start/end if allDayAccess not enabled
-      if (!allDayAccess) {
-        setTimeStart(deviceProperties.time_start);
-      }
+      setTimeStart(deviceProperties.time_start);
     }
 
     // Time End
     if (deviceProperties.time_end != null) {
-      if (!allDayAccess) {
-        setTimeEnd(deviceProperties.time_end);
-      }
+      setTimeEnd(deviceProperties.time_end);
     }
 
     // Date Start
@@ -166,7 +150,7 @@ function DeviceProps(props) {
     // Days Reoccuring
     // -> array[0-6] = array[sunday, monday, tuesday, ...]
     if (deviceProperties.days_reoccuring != null) {
-      // console.log(deviceProperties.days_reoccuring);
+      setReoccuringDays(deviceProperties.days_reoccuring);
     }
 
     // Reoccuring Type
@@ -193,14 +177,14 @@ function DeviceProps(props) {
           shared_property_id:
             props.route.params.currDevice.properties[0].shared_property_id,
           geofencing: x == true ? 1 : 0,
-          access_type: props.route.params.currDevice.properties[0].access_type,
-          days_reoccuring: props.route.params.currDevice.properties[0].days_reoccuring,
-          all_day: props.route.params.currDevice.properties[0].time_all_day,
-          time_start: props.route.params.currDevice.properties[0].time_start,
-          time_end: props.route.params.currDevice.properties[0].time_end,
-          date_start: props.route.params.currDevice.properties[0].date_start,
-          date_end: props.route.params.currDevice.properties[0].date_end,
-          reoccuring_type: props.route.params.currDevice.properties[0].reoccuring_type,
+          access_type: accessType,
+          days_reoccuring: reoccuringDays,
+          all_day: allDayAccess,
+          time_start: timeStart,
+          time_end: timeEnd,
+          date_start: dateStart,
+          date_end: dateEnd,
+          reoccuring_type: reoccuringType,
         }),
       }
     )
@@ -276,12 +260,20 @@ function DeviceProps(props) {
                 Set Schedule
               </Text>
 
-              <SetScheduleCard
-                accObject={props.route.params.accObject}
-                deviceProperties={propertiesObj}
-                navigation={props.route.params.navigation}
-                idToken={props.route.params.idToken}
-              />
+              {!isLoading ? (
+                <SetScheduleCard
+                  accObject={props.route.params.accObject}
+                  deviceProperties={propertiesObj}
+                  navigation={props.route.params.navigation}
+                  idToken={props.route.params.idToken}
+                />
+              ) : (
+                <ActivityIndicator
+                  style={{ marginTop: 50 }}
+                  size="large"
+                  color="#5BD3FF"
+                />
+              )}
 
               <Text style={{ marginTop: 20, fontSize: 26, fontWeight: "bold" }}>
                 Available Actions
@@ -317,7 +309,7 @@ function DeviceProps(props) {
                     transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }],
                   }}
                   trackColor={{ true: "#2DC62A", false: "#FF5D53" }}
-                  value={geofencing}
+                  value={geofencing == 0 ? false : true}
                   // Kolbe api call to set gps location and set deviceProps gps_location
                   onValueChange={(x) => {
                     handleSwitch(x);
@@ -336,7 +328,12 @@ function DeviceProps(props) {
           </ScrollView>
           <TouchableOpacity
             style={propstyle.redButton}
-            onPress={() => deleteGuest(props.route.params.user.login_credentials_id, props.route.params.idToken)}
+            onPress={() =>
+              deleteGuest(
+                props.route.params.user.login_credentials_id,
+                props.route.params.idToken
+              )
+            }
           >
             <Text style={propstyle.redButtonText}>Revoke Access</Text>
           </TouchableOpacity>
@@ -425,14 +422,14 @@ const propstyle = StyleSheet.create({
     alignSelf: "stretch",
   },
   redButton: {
-    backgroundColor: '#ea5f5f',
+    backgroundColor: "#ea5f5f",
     borderRadius: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     alignSelf: "center",
     height: 60,
     width: 185,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 20,
       height: 5,
@@ -440,12 +437,12 @@ const propstyle = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2.62,
     borderWidth: 1.4,
-    borderColor: '#cc9797',
+    borderColor: "#cc9797",
     elevation: 6,
   },
   redButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
     fontSize: 18,
   },
 });
