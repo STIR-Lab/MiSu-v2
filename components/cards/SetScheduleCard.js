@@ -13,7 +13,7 @@ const SetScheduleCard = (props) => {
   const [reoccuringDays, setReoccuringDays] = useState("");
   const [timeStart, setTimeStart] = useState("None");
   const [timeEnd, setTimeEnd] = useState("None");
-  const [accessType, setAccessType]= useState(0);
+  const [accessType, setAccessType] = useState(0);
 
   const [gpsLocation, setGpsStatus] = useState(false);
 
@@ -35,9 +35,7 @@ const SetScheduleCard = (props) => {
     }
 
     if (props.deviceProperties.access_type != null) {
-      if (props.deviceProperties.access_type != "") {
-        setAccessType(props.deviceProperties.access_type);
-      }
+      setAccessType(props.deviceProperties.access_type);
     }
 
     if (props.deviceProperties.reoccuring_type != null) {
@@ -55,20 +53,13 @@ const SetScheduleCard = (props) => {
     if (props.deviceProperties.days_reoccuring != null) {
       // console.log(props.deviceProperties.access_type);
       let daysOfWeek = "";
-      if (props.deviceProperties.days_reoccuring[0])
-        daysOfWeek+= "Sun, "
-      if (props.deviceProperties.days_reoccuring[1])
-        daysOfWeek+= "Mon, "
-      if (props.deviceProperties.days_reoccuring[2])
-        daysOfWeek+= "Tues, "
-      if (props.deviceProperties.days_reoccuring[3])
-        daysOfWeek+= "Wed, "
-        if (props.deviceProperties.days_reoccuring[4])
-        daysOfWeek+= "Thurs, "
-      if (props.deviceProperties.days_reoccuring[5])
-        daysOfWeek+= "Fri, "
-      if (props.deviceProperties.days_reoccuring[6])
-        daysOfWeek+= "Sat, "
+      if (props.deviceProperties.days_reoccuring[0]) daysOfWeek += "Sun, ";
+      if (props.deviceProperties.days_reoccuring[1]) daysOfWeek += "Mon, ";
+      if (props.deviceProperties.days_reoccuring[2]) daysOfWeek += "Tues, ";
+      if (props.deviceProperties.days_reoccuring[3]) daysOfWeek += "Wed, ";
+      if (props.deviceProperties.days_reoccuring[4]) daysOfWeek += "Thurs, ";
+      if (props.deviceProperties.days_reoccuring[5]) daysOfWeek += "Fri, ";
+      if (props.deviceProperties.days_reoccuring[6]) daysOfWeek += "Sat, ";
       daysOfWeek = daysOfWeek.slice(0, -2);
       setReoccuringDays(daysOfWeek);
     }
@@ -100,14 +91,18 @@ const SetScheduleCard = (props) => {
         <View style={styles.contentRow}>
           <Icon name="schedule" size={25} style={styles.icons} />
           <View style={styles.scheduleDataCont}>
-            {reoccuringDays != "" && <Text style={styles.font}>
-              {reoccuringDays}
-            </Text>}
-            {(timeStart != "None" && timeEnd != "None") ?
-            <Text style={styles.font}>
-              {timeStart.slice(0, -3)} - {timeEnd.slice(0, -3)}
-            </Text> : accessType == 0 ?
-            <Text style={styles.font}>Never</Text> : <Text style={styles.font}>All Day</Text>}
+            {reoccuringDays != "" && (
+              <Text style={styles.font}>{reoccuringDays}</Text>
+            )}
+            {timeStart != "None" && timeEnd != "None" ? (
+              <Text style={styles.font}>
+                {timeStart.slice(0, -3)} - {timeEnd.slice(0, -3)}
+              </Text>
+            ) : accessType == 0 ? (
+              <Text style={styles.font}>Never</Text>
+            ) : (
+              <Text style={styles.font}>All Day</Text>
+            )}
           </View>
         </View>
         <View style={styles.contentRow}>
@@ -116,13 +111,15 @@ const SetScheduleCard = (props) => {
         </View>
         <View style={styles.contentRow}>
           <Icon name="date-range" size={25} style={styles.icons} />
-          {accessType == 0 ? 
-          <Text style={styles.font}>Never</Text> :
-            accessType == 1 ? 
-          <Text style={styles.font}>Always</Text> : 
-          <Text style={styles.font}>
-            {startDate} - {endDate}
-          </Text>}
+          {accessType == 0 ? (
+            <Text style={styles.font}>Never</Text>
+          ) : accessType == 1 ? (
+            <Text style={styles.font}>Always</Text>
+          ) : (
+            <Text style={styles.font}>
+              {startDate} - {endDate}
+            </Text>
+          )}
         </View>
       </View>
       <View style={{ flexGrow: 0, flexBasis: 85 }}>
@@ -157,12 +154,12 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   contentContainer: {
-    justifyContent: "center"
+    justifyContent: "center",
   },
   contentRow: {
     flexDirection: "row",
     alignItems: "center",
-    height: 60
+    height: 60,
   },
   icons: {
     flexBasis: 50,

@@ -99,7 +99,7 @@ function DeviceProps(props) {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        // console.log(data);
+        console.log(data);
         setIsLoading(false);
         if (data.properties != null) {
           setProperties(data.properties);
