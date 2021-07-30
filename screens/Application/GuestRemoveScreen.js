@@ -9,86 +9,94 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import { Icon } from 'react-native-elements';
-import appStyle from '../../styles/AppStyle';
-import {deleteASharedAccount} from '../../services/deleteService';
-import LastActionCard from '../../components/cards/LastActionCard';
+import { connect } from "react-redux";
+import { Icon } from "react-native-elements";
+import appStyle from "../../styles/AppStyle";
+import { deleteASharedAccount } from "../../services/deleteService";
+import { stopSharingAction } from "../../redux/Action/stopSharing";
+import LastActionCard from "../../components/cards/LastActionCard";
 //Import Header Component
 import Header from "../../components/app/Header.js";
 
 const GuestRemoveScreen = (props) => {
   const [deviceList, setDeviceList] = useState(props.route.params.user.devices);
 
-    useEffect(() => {
-        // console.log('==Guest Remove Screen== ', props);
-        // console.log('==Guest Remove Screen DeviceList= ', props.route.params.user.devices);
-      });
+  useEffect(() => {
+    // console.log('==Guest Remove Screen== ', props);
+    // console.log('==Guest Remove Screen DeviceList= ', props.route.params.user.devices);
+  });
 
-    async function deleteGuest(id, idToken) {
-     await deleteASharedAccount(id, idToken)
-     .then(response => {})
-      .then(setTimeout(() => {
-        props.route.params.delete(idToken)
-      }, 1000))
-      .then(props.navigation.pop())
-      .catch(err => console.log(err));
-    }
-    return (
-        <View style={appStyle.container}>
-          <View style={styles.rowInformation}>
-            <View style={styles.infoLine}>  
-              <Text style={styles.name}>{props.route.params.user.name}</Text>         
-            </View>
-          </View>
-          <View style={{width:"100%", maxHeight: 500}}>
-            <ScrollView>
-            {
-              deviceList.map((entry, i) =>
-              <View style={styles.deviceDisplay} key={i}>
-                <View style={styles.devIcon2}>
-                  <Icon name="lock" type="feather" size={45} />
-                </View>
-                <Text>{entry.name}</Text>
-              </View>
-              )
-            }
-            </ScrollView>
-          </View>
-          {/* <LastActionCard screen={'GuestCard'} /> */}
-          <TouchableOpacity
-            style={styles.redButton}
-            onPress={() => deleteGuest(props.route.params.user.login_credentials_id, props.route.params.idToken)}
-          >
-            <Text style={styles.redButtonText}>Revoke Access</Text>
-          </TouchableOpacity>
+  // async function deleteGuest(id, idToken) {
+  //   await deleteASharedAccount(id, idToken)
+  //     .then((response) => {})
+  //     .then(
+  //       setTimeout(() => {
+  //         props.route.params.delete(idToken);
+  //       }, 1000)
+  //     )
+  //     .then(props.navigation.pop())
+  //     .catch((err) => console.log(err));
+  // }
+  return (
+    <View style={appStyle.container}>
+      <View style={styles.rowInformation}>
+        <View style={styles.infoLine}>
+          <Text style={styles.name}>{props.route.params.user.name}</Text>
         </View>
-      );
-  };
+      </View>
+      <View style={{ width: "100%", maxHeight: 500 }}>
+        <ScrollView>
+          {deviceList.map((entry, i) => (
+            <View style={styles.deviceDisplay} key={i}>
+              <View style={styles.devIcon2}>
+                <Icon name="lock" type="feather" size={45} />
+              </View>
+              <Text>{entry.name}</Text>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+      {/* <LastActionCard screen={'GuestCard'} /> */}
+      <TouchableOpacity
+        style={styles.redButton}
+        onPress={async () => {
+          props.stopSharing(
+            props.route.params.user.login_credentials_id,
+            props.route.params.idToken
+          );
+          props.navigation.pop();
+        }}
+      >
+        <Text style={styles.redButtonText}>Revoke Access</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   name: {
-      fontSize: 26,
-      fontWeight: 'bold',
-      marginLeft: 8,
-    },
-  rowInformation:{
-      flexDirection: "row",
-      height: 60,
-      width: "100%",
-      marginBottom: 5,
-      justifyContent: "center",
-      alignItems: "center"
+    fontSize: 26,
+    fontWeight: "bold",
+    marginLeft: 8,
+  },
+  rowInformation: {
+    flexDirection: "row",
+    height: 60,
+    width: "100%",
+    marginBottom: 5,
+    justifyContent: "center",
+    alignItems: "center",
   },
   infoLine: {
-    flexDirection: "column", 
+    flexDirection: "column",
   },
   deviceDisplay: {
     borderBottomWidth: 1,
-    borderBottomColor:"gray",
+    borderBottomColor: "gray",
     height: 80,
     width: "100%",
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   devIcon2: {
     height: 46,
@@ -97,14 +105,14 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   redButton: {
-    backgroundColor: '#ea5f5f',
+    backgroundColor: "#ea5f5f",
     marginTop: 15,
     borderRadius: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     height: 60,
     width: "50%",
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 20,
       height: 5,
@@ -112,14 +120,39 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2.62,
     borderWidth: 1.4,
-    borderColor: '#cc9797',
+    borderColor: "#cc9797",
     elevation: 6,
   },
   redButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
     fontSize: 18,
   },
 });
 
-export default GuestRemoveScreen;
+const mapStateToProps = (state) => {
+  const {
+    devicesData,
+    hubInfoData,
+    sessionData,
+    sharedAccountsData,
+    StopShareState,
+  } = state;
+  return {
+    devicesData,
+    hubInfoData,
+    sessionData,
+    sharedAccountsData,
+    StopShareState,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    stopSharing: (login_id, idToken) => {
+      dispatch(stopSharingAction(login_id, idToken));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GuestRemoveScreen);
