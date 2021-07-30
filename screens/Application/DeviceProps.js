@@ -16,14 +16,14 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import DeviceCard from "../../components/cards/DeviceCard";
 import appStyle from "../../styles/AppStyle";
-import UserAvatar from 'react-native-user-avatar';
+import UserAvatar from "react-native-user-avatar";
 
 // importing set schedule card from ./cards
 import SetScheduleCard from "../../components/cards/SetScheduleCard";
 import { set } from "react-native-reanimated";
 
 // imorting gps functionality
-import GPS from "../../components/GPS.js";
+import GPS from "../../components/gps.js";
 import * as Location from "expo-location";
 import haversine from "haversine";
 import { ActivityIndicator } from "react-native";
@@ -221,7 +221,11 @@ function DeviceProps(props) {
             <View style={propstyle.rowContainer}>
               <View style={propstyle.card}>
                 <View style={propstyle.row}>
-                <UserAvatar size={40} borderRadius={41} name={props.route.params.accObject.name} />
+                  <UserAvatar
+                    size={40}
+                    borderRadius={41}
+                    name={props.route.params.accObject.name}
+                  />
                   <Text
                     style={{
                       paddingLeft: 10,
