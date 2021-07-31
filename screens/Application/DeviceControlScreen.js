@@ -11,7 +11,7 @@ function DeviceControlScreen(props) {
   const [deviceTitle, setDeviceTitle] = useState("Unknown");
   const [toggledOn, setToggle] = useState(false);
   const [hubOffline, setHubOffline] = useState(false);
-  const [errorMsg, setErrorMsg] =useState("gfesukjkbsbjkgsedjn");
+  const [errorMsg, setErrorMsg] =useState("");
 
   const [reoccuringDays, setReoccuringDays] = useState("");
 
@@ -99,8 +99,14 @@ function DeviceControlScreen(props) {
     ).then((response) => response.json())
     .then((data) => {
       console.log("USE DEVICE RETURN:", data);
-      if (typeyType == 0)
-        setToggle(!toggledOn);
+      if (data.statusCode == 407 || data.statusCode == 408)
+        setErrorMsg(data.message)
+      else if (data.statusCode == 200)
+      {
+        setErrorMsg("");
+        if (typeyType == 0)
+          setToggle(!toggledOn)
+      }
       return data;
     })
     .catch((err) => console.log("ERROR", err));

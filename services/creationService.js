@@ -50,15 +50,15 @@ export const propertyTest = async (account, idToken, sharedPropertyID) => {
       body: JSON.stringify({
         account: account,
         device: sharedPropertyID,
-        geofencing: "0",
-        access_type: "0",
-        all_day: "0",
+        geofencing: 0,
+        access_type: 0,
+        all_day: 0,
         time_start: null,
         time_end: null,
         date_start: null,
         date_end: null,
         reoccuring: null,
-        reoccuring_type: "0",
+        reoccuring_type: 0,
       }),
     }
   )
