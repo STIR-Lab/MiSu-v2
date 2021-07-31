@@ -47,7 +47,7 @@ function SearchBar(props) {
         autoCapitalize="none"
         onChangeText={(searchParam) => props.setSearchParam(searchParam)}
         placeholder={
-          "Search " + (props.screen == "Guests" ? "Guests" : "Devices") + "..."
+          "Search " + (props.screen == "Guests" ? "Guests" : (props.screen == "Devices" ? "Devices" : "Hubs")) + "..."
         }
         placeholderTextColor="#808080"
       ></TextInput>

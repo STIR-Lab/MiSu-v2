@@ -33,9 +33,9 @@ function DeviceElement(props) {
       <TouchableOpacity onPress={handleClick}>
         <View style={styles.iconHolder}>
           {props.type == "lock" ? (
-            <Icon name="lock" type="simple-line-icon" size={45} />
+            <Icon name="lock" type="simple-line-icon" size={45} color="#60B8FF"/>
           ) : props.type == "script" ? (
-            <Icon name="script-text-outline" type="material-community" size={45} />
+            <Icon name="script-text-outline" type="material-community" size={45} color="#60B8FF"/>
           ) : (
             <View />
           )}

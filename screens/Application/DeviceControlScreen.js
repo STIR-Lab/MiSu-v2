@@ -11,14 +11,15 @@ function DeviceControlScreen(props) {
   const [deviceTitle, setDeviceTitle] = useState("Unknown");
   const [toggledOn, setToggle] = useState(false);
   const [hubOffline, setHubOffline] = useState(false);
+  const [errorMsg, setErrorMsg] =useState("gfesukjkbsbjkgsedjn");
 
   const [reoccuringDays, setReoccuringDays] = useState("");
 
   useEffect(() => {
-    console.log("DEVICE CONTROL", props.route.params.device);
+    // console.log("DEVICE CONTROL", props.route.params.device);
     if (props.route.params.device.properties[0].access_type == 2)
     {
-      console.log("==============")
+      // console.log("==============")
       let daysOfWeek = "";
       if (props.route.params.device.properties[0].days_reoccuring[0])
         daysOfWeek+= "Sun, "
@@ -59,11 +60,11 @@ function DeviceControlScreen(props) {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log("DATA ON DEVICE CONTROL", data);
+        // console.log("DATA ON DEVICE CONTROL", data);
         if (data.message.attributes.friendly_name != null && data.message.attributes.friendly_name != undefined) {
           setDeviceTitle(data.message.attributes.friendly_name);
         }
-        else
+        if (data.message.statusCode == 401)
         {
           setHubOffline(true);
         }
@@ -98,12 +99,12 @@ function DeviceControlScreen(props) {
     ).then((response) => response.json())
     .then((data) => {
       console.log("USE DEVICE RETURN:", data);
+      if (typeyType == 0)
+        setToggle(!toggledOn);
       return data;
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log("ERROR", err));
 
-    if (typeyType == 0)
-      setToggle(!toggledOn);
   }
 
   return (
@@ -274,6 +275,7 @@ function DeviceControlScreen(props) {
             </TouchableOpacity>
           }
         </View>
+        <Text style={styles.error}>{errorMsg}</Text>
       </View>
     </View>
   );
@@ -394,6 +396,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "stretch",
   },
+  error: {
+    alignSelf: "center",
+    color: "red",
+    paddingTop: 10,
+    paddingBottom: 10,
+  }
 });
 
 export default DeviceControlScreen;

@@ -110,7 +110,7 @@ function YourHubsScreen(props) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={appStyle.container}>
         <View style={styles.header}>
-          <SearchBar setSearchParam={setSearchParam} screen={"Devices"} />
+          <SearchBar setSearchParam={setSearchParam} screen={""} />
         </View>
         {/* <Text>{searchParam}</Text> */}
         <ScrollView style={styles.cardContainer}>{collapsibleList}</ScrollView>
