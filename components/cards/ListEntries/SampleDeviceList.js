@@ -54,7 +54,7 @@ function SampleDeviceList(props) {
       setScreen("Guests");
       setDeviceList(props.devices);
       // console.log("DEVICELICT", deviceList);
-      console.log("TEMP DEVICES", tempDevices);
+      // console.log("TEMP DEVICES", tempDevices);
       setChoice(props.myDevices[0]);
       if (props.user.guest_email != null) {
         setGuestEmail(props.user.guest_email);
@@ -112,13 +112,13 @@ function SampleDeviceList(props) {
     // console.log("FOUND OBJECT:", objectFound)
 
     // console.log("FOUND PROPERTIES:", objectFound.devices[0].properties);
-    var elementPos2 = objectFound.devices.map(function(x) {return x.entity_id; }).indexOf(props.entityId);
-    var objectFound2 = objectFound.devices[elementPos2];
+    var elementPos2 = (objectFound != undefined && objectFound.devices != undefined) ? objectFound.devices.map(function(x) {return x.entity_id; }).indexOf(props.entityId) : null;
+    var objectFound2 = (objectFound != undefined && objectFound.devices != undefined) ? objectFound.devices[elementPos2] : null;
     // console.log("FOUND OBJECT2:", objectFound2)
     
     let ret = null;
 
-    if (objectFound2 != undefined)
+    if (objectFound2 != undefined && objectFound2 != null)
     {
       ret = objectFound2.properties;
     }
