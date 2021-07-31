@@ -60,7 +60,7 @@ function LoginScreen(props) {
     setErrorMessage("");
     // setUsername(username.split(" ").join(""));
     // console.log(username, "A");
-    let str = username.split(" ").join("");
+    let str = username.split(" ").join("").toLowerCase();
     // console.log(str);
     if (str === "") setErrorMessage("Missing email address");
     else if (password === "") setErrorMessage("Missing password");
@@ -127,7 +127,7 @@ function LoginScreen(props) {
 
     // setUsername(username.split(" ").join(""));
     //console.log(username, "A");
-    let str = username.split(" ").join("");
+    let str = username.split(" ").join("").toLowerCase;
 
     // console.log("Inside confirmSignUp")
     // Form validation
@@ -164,7 +164,7 @@ function LoginScreen(props) {
 
     // setUsername(username.split(" ").join(""));
     //console.log(username, "A");
-    let str = username.split(" ").join("");
+    let str = username.split(" ").join("").toLowerCase();
     // Form validation
     if (str == "") {
       setMessage("Please enter the email address of your account");

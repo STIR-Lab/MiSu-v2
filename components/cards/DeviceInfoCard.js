@@ -18,7 +18,7 @@ function DeviceInfoCard(props) {
   const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
-    // console.log("==DEVICE INFO CARD== " + JSON.stringify(props));
+    // console.log("==DEVICE INFO CARD== ", props.user);
   });
 
   function handleClick() {
@@ -137,7 +137,14 @@ function DeviceInfoCard(props) {
             <Icon name="home" type="feather" size={45} />
           </View>
         ) : (
-          <View style={styles.devIcon} />
+          props.deviceType == "lock" ?
+          <View style={styles.devIcon} >
+            <Icon name="lock" type="simple-line-icon" size={45} color="#60B8FF"/>
+          </View>
+          :
+          <View style={styles.devIcon} >
+            <Icon name="script-text-outline" type="material-community" size={45} color="#60B8FF"/>
+          </View>
         )}
 
         <View>
@@ -145,7 +152,8 @@ function DeviceInfoCard(props) {
         </View>
 
         {/* Device Icons */}
-        {deviceIcons()}
+        {(props.type == "GuestCard" && props.user.accepted != 0) && deviceIcons()}
+        {props.type == "GuestCard" && props.user.accepted == 0 && <Text style={styles.pending}>Pending</Text>}
 
         <TouchableOpacity style={styles.dropDownButtom} onPress={alter}>
           {collapsed ? (
@@ -251,6 +259,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     borderRadius: 6,
   },
+  pending: {
+    marginLeft: 40,
+    color: "red",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 5,
+    borderColor: "red"
+  }
 });
 
 export default DeviceInfoCard;

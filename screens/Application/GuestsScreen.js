@@ -101,7 +101,8 @@ function GuestsScreen(props) {
   }
 
   async function addNewGuest() {
-    await createSharedUser(props.sessionData.idToken, guestEmail)
+    let str = guestEmail.split(" ").join("").toLowerCase();
+    await createSharedUser(props.sessionData.idToken, str)
       .then((response) => {
         // console.log(response);
         return response;

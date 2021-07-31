@@ -198,13 +198,13 @@ function YourHubCard(props) {
 
         <TouchableOpacity
           onPress={() => {
-            retVal = deleteASharedAccount(
+            let rettyVal = deleteASharedAccount(
               selected.login_credentials_id,
               props.idToken
             );
-            if (retVal.statusCode === 200) {
+            if (rettyVal.statusCode === 200) {
               //Refresh app here
-            } else if (retVal.statusCode === 400) {
+            } else if (rettyVal.statusCode === 400) {
               //Print out something went wrong''
             }
           }}

@@ -17,6 +17,7 @@ import { Icon } from "react-native-elements";
 import Modal from "react-native-modal";
 import DeviceElement from "../../DeviceElement";
 import GuestElement from "../../GuestElement";
+import UserAvatar from 'react-native-user-avatar';
 
 import {
   createADevice,
@@ -52,6 +53,8 @@ function SampleDeviceList(props) {
     if (props.screen == "Guests") {
       setScreen("Guests");
       setDeviceList(props.devices);
+      // console.log("DEVICELICT", deviceList);
+      console.log("TEMP DEVICES", tempDevices);
       setChoice(props.myDevices[0]);
       if (props.user.guest_email != null) {
         setGuestEmail(props.user.guest_email);
@@ -103,19 +106,21 @@ function SampleDeviceList(props) {
   // grabs device properties for that homeowner guest pair
   function grabProperties(id) {
     // console.log(id);
-    // console.log("==SAMPLE DEVICE LIST PROPS:", props.sharedAccountsData.sharedAccounts);
+    // console.log("==SAMPLE DEVICE LIST PROPS:", props.entityId);
     var elementPos = props.sharedAccountsData.sharedAccounts.map(function(x) {return x.login_credentials_id; }).indexOf(id);
     var objectFound = props.sharedAccountsData.sharedAccounts[elementPos];
     // console.log("FOUND OBJECT:", objectFound)
 
-    // TODO: DEVICES ARRAY INDEX NEEDS TO BE DYNAMIC
     // console.log("FOUND PROPERTIES:", objectFound.devices[0].properties);
+    var elementPos2 = objectFound.devices.map(function(x) {return x.entity_id; }).indexOf(props.entityId);
+    var objectFound2 = objectFound.devices[elementPos2];
+    // console.log("FOUND OBJECT2:", objectFound2)
     
     let ret = null;
 
-    if (objectFound != undefined)
+    if (objectFound2 != undefined)
     {
-      ret = objectFound.devices[0].properties;
+      ret = objectFound2.properties;
     }
 
     return ret;
@@ -179,6 +184,7 @@ function SampleDeviceList(props) {
     setIsVisibleDevices(false);
   };
 
+
   function addButton() {
     return (
       <View style={styles.iconAndName}>
@@ -223,7 +229,7 @@ function SampleDeviceList(props) {
                     backgroundColor: selected == entry ? "white" : "#F1F1F1",
                   }}
                 >
-                  <Image source={require("../../../assets/people.png")} />
+                  <UserAvatar size={40} borderRadius={41} name={entry.name} />
                   <Text style={styles.cardText}>{entry.name}</Text>
                 </View>
               </TouchableOpacity>
@@ -233,7 +239,7 @@ function SampleDeviceList(props) {
         </ScrollView>
         </View>
 
-        <View style={styles.cardCon}>
+        {/* <View style={styles.cardCon}>
           <TouchableOpacity onPress={() => handleClick()}>
             <View style={styles.iconCon}>
               <Icon
@@ -250,7 +256,7 @@ function SampleDeviceList(props) {
               </Text>
             </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <View style={{ marginBottom: 30, justifyContent: "flex-end" }}>
           <TouchableOpacity onPress={() => propsClick()}>
             <View
@@ -362,7 +368,7 @@ function SampleDeviceList(props) {
         <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
           <ScrollView>
             {tempDevices &&
-              tempDevices.map((entry, i) => (
+              tempDevices.filter(({entity_id : id1}) => !deviceList.some(({entity_id: id2}) => id2 === id1)).map((entry, i) => (
                 <View key={i} style={styles.cardCon}>
                   <TouchableOpacity onPress={() => selectUser(entry)}>
                     <View
@@ -375,6 +381,7 @@ function SampleDeviceList(props) {
                         backgroundColor: selected == entry ? "white" : "#F1F1F1",
                       }}
                     >
+                      {entry.type == "lock" ? 
                       <Icon
                         name="lock"
                         type="feather"
@@ -384,7 +391,17 @@ function SampleDeviceList(props) {
                           borderWidth: 2,
                           borderRadius: 4,
                         }}
-                      />
+                      /> :
+                      <Icon
+                        name="file-text"
+                        type="feather"
+                        containerStyle={{
+                          padding: 4,
+                          borderColor: "#60b8ff",
+                          borderWidth: 2,
+                          borderRadius: 4,
+                        }}
+                      />}
                       <Text style={styles.cardText}>
                         {entry.attributes.friendly_name}
                       </Text>
