@@ -11,8 +11,10 @@ import {
   Button,
   Alert,
 } from "react-native";
+import Modal from "react-native-modal";
 import { useIsFocused } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/MaterialIcons";
+// import Icon from "react-native-vector-icons/MaterialIcons";
+import { Icon } from "react-native-elements";
 import { connect } from "react-redux";
 import DeviceCard from "../../components/cards/DeviceCard";
 import appStyle from "../../styles/AppStyle";
@@ -27,6 +29,7 @@ import GPS from "../../components/gps.js";
 import * as Location from "expo-location";
 import haversine from "haversine";
 import { ActivityIndicator } from "react-native";
+import { stopSharingAction } from "../../redux/Action/stopSharing";
 
 function DeviceProps(props) {
   const isFocused = useIsFocused();
@@ -49,10 +52,11 @@ function DeviceProps(props) {
   const [allDayAccess, setAllDayAccess] = useState(0);
   const [timeStart, setTimeStart] = useState(null);
   const [timeEnd, setTimeEnd] = useState(null);
+  const [removeModal, toggleRemoveModal] = useState(false);
 
   useEffect(() => {
     // console.log("Entered deviceProps");
-    // console.log("==DeviceProps==", props.route.params, "======");
+    console.log("==DeviceProps==", props.route.params, "======");
     var accountProperties = props.route.params.currDevice;
     setIsLoading(true);
 
@@ -199,6 +203,79 @@ function DeviceProps(props) {
       });
   }
 
+  const stopSharing = async () => {
+    props.stopSharing(
+      props.route.params.accObject.login_credentials_id,
+      props.route.params.idToken
+    );
+    props.navigation.pop();
+  };
+
+  let removeUserModal = (
+    <Modal
+      isVisible={removeModal}
+      backdropColor={"#00000090"}
+      hasBackdrop={true}
+      backdropOpacity={10}
+      onBackdropPress={() => toggleRemoveModal(false)}
+    >
+      <View style={propstyle.modalContainer}>
+        <Icon type="font-awesome" name="exclamation-triangle" size={60} />
+        <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center" }}>
+          Are you sure you wish to remove this user?
+        </Text>
+        <Text style={{ marginTop: 10, textAlign: "center", fontSize: 15 }}>
+          In order for them to access the device, you will have to invite them
+          again!
+        </Text>
+        <View style={propstyle.buttonContainer}>
+          <TouchableOpacity
+            onPress={() => toggleRemoveModal(false)}
+            style={{
+              // backgroundColor: "green",
+              borderWidth: 2,
+              borderColor: "green",
+              width: 100,
+              height: 50,
+              borderRadius: 10,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                color: "green",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              CANCEL
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => stopSharing()}
+            style={{
+              backgroundColor: "#ea5f5f",
+              borderRadius: 10,
+              width: 100,
+              height: 50,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                color: "white",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              REMOVE
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
+
   ////////////////////////////////////////////////////////////////////////////////////////////
 
   ////////////////////////////////////////////////////////////////////////////////////////////
@@ -335,16 +412,18 @@ function DeviceProps(props) {
           <TouchableOpacity
             style={propstyle.redButton}
             onPress={() =>
-              deleteGuest(
-                props.route.params.user.login_credentials_id,
-                props.route.params.idToken
-              )
+              // deleteGuest(
+              //   props.route.params.user.login_credentials_id,
+              //   props.route.params.idToken
+              // )
+              toggleRemoveModal(true)
             }
           >
             <Text style={propstyle.redButtonText}>Revoke Access</Text>
           </TouchableOpacity>
         </View>
       }
+      {removeUserModal}
     </View>
   );
 }
@@ -374,6 +453,20 @@ const propstyle = StyleSheet.create({
     paddingBottom: 5,
     marginBottom: 5,
     marginRight: 25,
+  },
+  modalContainer: {
+    padding: 12,
+    flex: 0.45,
+    backgroundColor: "#F1F1F1",
+    borderRadius: 15,
+    justifyContent: "center",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    // alignSelf: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 50,
+    paddingTop: 40,
   },
   devicecard: {
     justifyContent: "center",
@@ -472,8 +565,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    dosomething: () => {},
-    getHub: (idToken) => dispatch(getHubInfoAction(idToken)),
+    stopSharing: (login_id, idToken) => {
+      dispatch(stopSharingAction(login_id, idToken));
+    },
   };
 };
 

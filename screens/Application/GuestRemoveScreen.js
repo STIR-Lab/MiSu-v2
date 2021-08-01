@@ -53,7 +53,7 @@ const GuestRemoveScreen = (props) => {
         <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center" }}>
           Are you sure you wish to remove this user?
         </Text>
-        <Text style={{ textAlign: "center", fontSize: 15 }}>
+        <Text style={{ marginTop: 10, textAlign: "center", fontSize: 15 }}>
           In order for them to access the device, you will have to invite them
           again!
         </Text>
@@ -83,7 +83,7 @@ const GuestRemoveScreen = (props) => {
           <TouchableOpacity
             onPress={() => stopSharing()}
             style={{
-              backgroundColor: "red",
+              backgroundColor: "#ea5f5f",
               borderRadius: 10,
               width: 100,
               height: 50,
