@@ -207,7 +207,11 @@ function ProfileStack() {
         component={AccountScreen}
         options={{ headerShown: false }}
       />
-      <ProfileNav.Screen name="Hub" component={HubScreen} />
+      <ProfileNav.Screen
+        name="Hub"
+        component={HubScreen}
+        options={{ headerShown: false }}
+      />
       <ProfileNav.Screen
         name="ChangePassword"
         component={ChangePasswordScreen}
