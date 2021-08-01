@@ -9,8 +9,9 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import { connect } from "react-redux";
+import Modal from "react-native-modal";
 import { Icon } from "react-native-elements";
+import { connect } from "react-redux";
 import appStyle from "../../styles/AppStyle";
 import { deleteASharedAccount } from "../../services/deleteService";
 import { stopSharingAction } from "../../redux/Action/stopSharing";
@@ -20,23 +21,90 @@ import Header from "../../components/app/Header.js";
 
 const GuestRemoveScreen = (props) => {
   const [deviceList, setDeviceList] = useState(props.route.params.user.devices);
+  const [removeModal, toggleRemoveModal] = useState(false);
 
   useEffect(() => {
     // console.log('==Guest Remove Screen== ', props);
     // console.log('==Guest Remove Screen DeviceList= ', props.route.params.user.devices);
-  });
+  }, [props]);
 
-  // async function deleteGuest(id, idToken) {
-  //   await deleteASharedAccount(id, idToken)
-  //     .then((response) => {})
-  //     .then(
-  //       setTimeout(() => {
-  //         props.route.params.delete(idToken);
-  //       }, 1000)
-  //     )
-  //     .then(props.navigation.pop())
-  //     .catch((err) => console.log(err));
-  // }
+  const stopSharing = async () => {
+    props.stopSharing(
+      props.route.params.user.login_credentials_id,
+      props.route.params.idToken
+    );
+    props.navigation.pop();
+  };
+
+  const removeUserHandler = async () => {
+    toggleRemoveModal(true);
+  };
+
+  let removeUserModal = (
+    <Modal
+      isVisible={removeModal}
+      backdropColor={"#00000090"}
+      hasBackdrop={true}
+      backdropOpacity={10}
+      onBackdropPress={() => toggleRemoveModal(false)}
+    >
+      <View style={styles.modalContainer}>
+        <Icon type="font-awesome" name="exclamation-triangle" size={60} />
+        <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center" }}>
+          Are you sure you wish to remove this user?
+        </Text>
+        <Text style={{ textAlign: "center", fontSize: 15 }}>
+          In order for them to access the device, you will have to invite them
+          again!
+        </Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={() => toggleRemoveModal(false)}
+            style={{
+              // backgroundColor: "green",
+              borderWidth: 2,
+              borderColor: "green",
+              width: 100,
+              height: 50,
+              borderRadius: 10,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                color: "green",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              CANCEL
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => stopSharing()}
+            style={{
+              backgroundColor: "red",
+              borderRadius: 10,
+              width: 100,
+              height: 50,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                color: "white",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              REMOVE
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
+
   return (
     <View style={appStyle.container}>
       <View style={styles.rowInformation}>
@@ -59,16 +127,11 @@ const GuestRemoveScreen = (props) => {
       {/* <LastActionCard screen={'GuestCard'} /> */}
       <TouchableOpacity
         style={styles.redButton}
-        onPress={async () => {
-          props.stopSharing(
-            props.route.params.user.login_credentials_id,
-            props.route.params.idToken
-          );
-          props.navigation.pop();
-        }}
+        onPress={() => removeUserHandler()}
       >
         <Text style={styles.redButtonText}>Revoke Access</Text>
       </TouchableOpacity>
+      {removeUserModal}
     </View>
   );
 };
@@ -78,6 +141,20 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     marginLeft: 8,
+  },
+  modalContainer: {
+    padding: 12,
+    flex: 0.45,
+    backgroundColor: "#F1F1F1",
+    borderRadius: 15,
+    justifyContent: "center",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    // alignSelf: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 50,
+    paddingTop: 40,
   },
   rowInformation: {
     flexDirection: "row",
