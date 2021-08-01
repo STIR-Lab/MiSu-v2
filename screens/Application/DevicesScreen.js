@@ -29,7 +29,7 @@ function DevicesScreen(props) {
   }, [props, isFocused]);
 
   async function fetchData(idToken) {
-    console.log("Fetching devicesScreen data");
+    // console.log("Fetching devicesScreen data");
     await getListofSharedAccountsDevicesScreen(props.sessionData.idToken)
       .then((response) => {
         // console.log("Devices Screen", response);
