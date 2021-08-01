@@ -25,7 +25,7 @@ import SetScheduleCard from "../../components/cards/SetScheduleCard";
 import { set } from "react-native-reanimated";
 
 // imorting gps functionality
-import GPS from "../../components/gps.js";
+import GPS from "../../components/GPS.js";
 import * as Location from "expo-location";
 import haversine from "haversine";
 import { ActivityIndicator } from "react-native";

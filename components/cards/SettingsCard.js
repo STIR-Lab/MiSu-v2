@@ -16,10 +16,8 @@ function SettingsCard(props) {
   const [isRoleVisible, setIsRoleVisible] = useState(false);
   const [accessLevel, setAccess] = useState(props.user.user_type);
   const [initialRole, setInitialRole] = useState(props.user.user_type);
-  const [sliderValue, setSliderValue] = useState(1);
-  // =========================================================================
-
-  // console.log(props)
+  const [sliderValue, setSliderValue] = useState(props.user.geofencing_range);
+  // ===========================================================================
   async function handleClick() {
     if (initialRole != accessLevel) {
       await changeRole(accessLevel, props.idToken).then(
@@ -27,7 +25,6 @@ function SettingsCard(props) {
           props.getHub(props.idToken);
         }, 1500)
       );
-
       setIsRoleVisible(false);
       // console.log("HANDLE CLICK :", props);
       props.navigation.navigate("Loading");
@@ -35,7 +32,7 @@ function SettingsCard(props) {
       setIsRoleVisible(false);
     }
   }
-
+  // ===========================================================================
   async function handleRadius() {
     var radius = sliderValue;
 
@@ -47,7 +44,7 @@ function SettingsCard(props) {
 
     setIsDistanceVisible(false);
   }
-
+  // =============================================================================
   let radiusModal = (
     <Modal
       isVisible={isDistanceVisible}
@@ -58,11 +55,13 @@ function SettingsCard(props) {
       backdropOpacity={10}
     >
       <View style={styles.modal}>
-        <Text>Set Geofencing Radius</Text>
+        <Text style={styles.radiusTitle}>Set Geofencing Radius</Text>
 
-        <View>
+        <View style={styles.sliderContainer}>
           <Slider
-            value={0}
+            thumbTintColor={"#44ABFF"}
+            minimumTrackTintColor={"#5BD3FF"}
+            value={sliderValue}
             style={styles.slider}
             step={5}
             minimumValue={0}
@@ -72,7 +71,9 @@ function SettingsCard(props) {
         </View>
 
         <View>
-          <Text>{sliderValue == 0 ? 1 : sliderValue}</Text>
+          <Text style={styles.miles}>
+            {sliderValue == 0 ? "1 miles" : sliderValue + " miles"}
+          </Text>
         </View>
 
         <TouchableOpacity
@@ -107,13 +108,20 @@ function SettingsCard(props) {
               style={[
                 styles.roleButton,
                 {
-                  borderWidth: accessLevel == 0 ? 1 : 0,
-                  backgroundColor: accessLevel == 0 ? "#5BD3FF" : "white",
+                  backgroundColor: accessLevel == 0 ? "#44ABFF" : "white",
+                  elevation: accessLevel == 0 ? 7 : 0,
                 },
               ]}
             >
-              <Icon name="user" size={35} type="feather" color="#3E3E3E" />
-              <Text style={{ color: "#3E3E3E" }}>Guest</Text>
+              <Icon
+                name="user"
+                size={35}
+                type="feather"
+                color={accessLevel == 0 ? "white" : "#3E3E3E"}
+              />
+              <Text style={{ color: accessLevel == 0 ? "white" : "#3E3E3E" }}>
+                Guest
+              </Text>
             </View>
           </TouchableOpacity>
 
@@ -132,13 +140,20 @@ function SettingsCard(props) {
               style={[
                 styles.roleButton,
                 {
-                  borderWidth: accessLevel == 1 ? 1 : 0,
-                  backgroundColor: accessLevel == 1 ? "#5BD3FF" : "white",
+                  backgroundColor: accessLevel == 1 ? "#44ABFF" : "white",
+                  elevation: accessLevel == 1 ? 7 : 0,
                 },
               ]}
             >
-              <Icon name="home" type="font-awesom" size={35} color="#3E3E3E" />
-              <Text style={{ color: "#3E3E3E" }}>Owner</Text>
+              <Icon
+                name="home"
+                type="font-awesom"
+                size={35}
+                color={accessLevel == 1 ? "white" : "#3E3E3E"}
+              />
+              <Text style={{ color: accessLevel == 1 ? "white" : "#3E3E3E" }}>
+                Owner
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -146,7 +161,7 @@ function SettingsCard(props) {
           style={styles.confirmButton}
           onPress={() => handleClick()}
         >
-          <Text style={{ color: "#3E3E3E", fontSize: 25 }}>Confirm</Text>
+          <Text style={{ color: "#FEFEFE", fontSize: 25 }}>Confirm</Text>
         </TouchableOpacity>
       </View>
     </Modal>
@@ -280,10 +295,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 1,
     elevation: 10,
-    height: 40,
+    height: 50,
   },
   slider: {
     width: 200,
+  },
+  radiusTitle: {
+    fontSize: 25,
+    marginBottom: 50,
+  },
+  miles: {
+    fontSize: 20,
+    marginTop: 20,
   },
 });
 
