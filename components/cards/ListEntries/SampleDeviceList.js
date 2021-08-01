@@ -17,7 +17,7 @@ import { Icon } from "react-native-elements";
 import Modal from "react-native-modal";
 import DeviceElement from "../../DeviceElement";
 import GuestElement from "../../GuestElement";
-import UserAvatar from 'react-native-user-avatar';
+import UserAvatar from "react-native-user-avatar";
 
 import {
   createADevice,
@@ -65,7 +65,9 @@ function SampleDeviceList(props) {
       setDeviceList(props.guests);
       // console.log("SHARED ACCOUNTS ON DEVICE SCREEN LIST", props.sharedAccountsData.sharedAccounts);
       // console.log("GUESTS ON DEVICE SCREEN LIST", props.guests);
-      const results = props.sharedAccountsData.sharedAccounts.filter(({ name: id1 }) => !props.guests.some(({ name: id2 }) => id2 === id1));
+      const results = props.sharedAccountsData.sharedAccounts.filter(
+        ({ name: id1 }) => !props.guests.some(({ name: id2 }) => id2 === id1)
+      );
       setAddGuestList(results);
       // console.log("==SAMPLE DEVICE LIST PROPS:", props.sharedAccountsData.sharedAccounts);
       // console.log(results);
@@ -96,7 +98,7 @@ function SampleDeviceList(props) {
       setSelected(i);
       // console.log(i);
     }
-  }
+  };
 
   function getType(stringToParse) {
     const tmp = stringToParse.split(".");
@@ -107,19 +109,32 @@ function SampleDeviceList(props) {
   function grabProperties(id) {
     // console.log(id);
     // console.log("==SAMPLE DEVICE LIST PROPS:", props.entityId);
-    var elementPos = props.sharedAccountsData.sharedAccounts.map(function(x) {return x.login_credentials_id; }).indexOf(id);
+    var elementPos = props.sharedAccountsData.sharedAccounts
+      .map(function (x) {
+        return x.login_credentials_id;
+      })
+      .indexOf(id);
     var objectFound = props.sharedAccountsData.sharedAccounts[elementPos];
     // console.log("FOUND OBJECT:", objectFound)
 
     // console.log("FOUND PROPERTIES:", objectFound.devices[0].properties);
-    var elementPos2 = (objectFound != undefined && objectFound.devices != undefined) ? objectFound.devices.map(function(x) {return x.entity_id; }).indexOf(props.entityId) : null;
-    var objectFound2 = (objectFound != undefined && objectFound.devices != undefined) ? objectFound.devices[elementPos2] : null;
+    var elementPos2 =
+      objectFound != undefined && objectFound.devices != undefined
+        ? objectFound.devices
+            .map(function (x) {
+              return x.entity_id;
+            })
+            .indexOf(props.entityId)
+        : null;
+    var objectFound2 =
+      objectFound != undefined && objectFound.devices != undefined
+        ? objectFound.devices[elementPos2]
+        : null;
     // console.log("FOUND OBJECT2:", objectFound2)
-    
+
     let ret = null;
 
-    if (objectFound2 != undefined && objectFound2 != null)
-    {
+    if (objectFound2 != undefined && objectFound2 != null) {
       ret = objectFound2.properties;
     }
 
@@ -130,11 +145,15 @@ function SampleDeviceList(props) {
     if (selected == null) {
       console.log("Selected cannot be null");
       return;
-    }
-    else
-    {
-      shareDevice(selected.login_credentials_id, props.title, props.entityId, props.deviceType);
-      setIsVisible(false)
+    } else {
+      // TODO: this has to be converted redux
+      shareDevice(
+        selected.login_credentials_id,
+        props.title,
+        props.entityId,
+        props.deviceType
+      );
+      setIsVisible(false);
     }
   };
 
@@ -142,10 +161,13 @@ function SampleDeviceList(props) {
     if (selected == null) {
       console.log("Selected cannot be null");
       return;
-    }
-    else
-    {
-      shareDevice(props.user.login_credentials_id, selected.attributes.friendly_name, selected.entity_id, selected.type);
+    } else {
+      shareDevice(
+        props.user.login_credentials_id,
+        selected.attributes.friendly_name,
+        selected.entity_id,
+        selected.type
+      );
     }
   };
 
@@ -159,31 +181,24 @@ function SampleDeviceList(props) {
   //    .catch(err => console.log(err));
   //  }
 
-
-  async function shareDevice(login_id, devName, entity_id, type ) {
-    await createADevice(
-      login_id,
-      props.sessionData.idToken,
-      {
-        title: devName,
-        entity_id: entity_id,
-        type: type,
-      }
-    ).then(response => {
+  async function shareDevice(login_id, devName, entity_id, type) {
+    await createADevice(login_id, props.sessionData.idToken, {
+      title: devName,
+      entity_id: entity_id,
+      type: type,
+    }).then((response) => {
       // console.log("API SHARE DEVICE RETURN:");
       // console.log("===", response);
-      if (response.statusCode == 200)
-      {
+      if (response.statusCode == 200) {
         setTimeout(() => {
-          props.refresh(props.sessionData.idToken)
-        }, 1000)
+          props.refresh(props.sessionData.idToken);
+        }, 1000);
       }
     });
 
     // console.log(apiRet);
     setIsVisibleDevices(false);
-  };
-
+  }
 
   function addButton() {
     return (
@@ -214,29 +229,34 @@ function SampleDeviceList(props) {
         </View>
 
         <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
-        <ScrollView>
-        {addGuestList &&
-          addGuestList.map((entry, i) => (
-            <View key={i} style={styles.cardCon}>
-              <TouchableOpacity onPress={() => selectUser(entry)}>
-                <View
-                  style={{
-                    paddingLeft: 10,
-                    paddingVertical: 6,
-                    flexDirection: "row",
-                    borderRadius: 10,
-                    elevation: selected == entry ? 2 : 0,
-                    backgroundColor: selected == entry ? "white" : "#F1F1F1",
-                  }}
-                >
-                  <UserAvatar size={40} borderRadius={41} name={entry.name} />
-                  <Text style={styles.cardText}>{entry.name}</Text>
+          <ScrollView>
+            {addGuestList &&
+              addGuestList.map((entry, i) => (
+                <View key={i} style={styles.cardCon}>
+                  <TouchableOpacity onPress={() => selectUser(entry)}>
+                    <View
+                      style={{
+                        paddingLeft: 10,
+                        paddingVertical: 6,
+                        flexDirection: "row",
+                        borderRadius: 10,
+                        elevation: selected == entry ? 2 : 0,
+                        backgroundColor:
+                          selected == entry ? "white" : "#F1F1F1",
+                      }}
+                    >
+                      <UserAvatar
+                        size={40}
+                        borderRadius={41}
+                        name={entry.name}
+                      />
+                      <Text style={styles.cardText}>{entry.name}</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <View style={styles.seperator}></View>
                 </View>
-              </TouchableOpacity>
-              <View style={styles.seperator}></View>
-            </View>
-          ))}
-        </ScrollView>
+              ))}
+          </ScrollView>
         </View>
 
         {/* <View style={styles.cardCon}>
@@ -368,48 +388,56 @@ function SampleDeviceList(props) {
         <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
           <ScrollView>
             {tempDevices &&
-              tempDevices.filter(({entity_id : id1}) => !deviceList.some(({entity_id: id2}) => id2 === id1)).map((entry, i) => (
-                <View key={i} style={styles.cardCon}>
-                  <TouchableOpacity onPress={() => selectUser(entry)}>
-                    <View
-                      style={{
-                        paddingLeft: 10,
-                        paddingVertical: 6,
-                        flexDirection: "row",
-                        borderRadius: 10,
-                        elevation: selected == entry ? 2 : 0,
-                        backgroundColor: selected == entry ? "white" : "#F1F1F1",
-                      }}
-                    >
-                      {entry.type == "lock" ? 
-                      <Icon
-                        name="lock"
-                        type="feather"
-                        containerStyle={{
-                          padding: 4,
-                          borderColor: "#60b8ff",
-                          borderWidth: 2,
-                          borderRadius: 4,
+              tempDevices
+                .filter(
+                  ({ entity_id: id1 }) =>
+                    !deviceList.some(({ entity_id: id2 }) => id2 === id1)
+                )
+                .map((entry, i) => (
+                  <View key={i} style={styles.cardCon}>
+                    <TouchableOpacity onPress={() => selectUser(entry)}>
+                      <View
+                        style={{
+                          paddingLeft: 10,
+                          paddingVertical: 6,
+                          flexDirection: "row",
+                          borderRadius: 10,
+                          elevation: selected == entry ? 2 : 0,
+                          backgroundColor:
+                            selected == entry ? "white" : "#F1F1F1",
                         }}
-                      /> :
-                      <Icon
-                        name="file-text"
-                        type="feather"
-                        containerStyle={{
-                          padding: 4,
-                          borderColor: "#60b8ff",
-                          borderWidth: 2,
-                          borderRadius: 4,
-                        }}
-                      />}
-                      <Text style={styles.cardText}>
-                        {entry.attributes.friendly_name}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                  <View style={styles.seperator}></View>
-                </View>
-              ))}
+                      >
+                        {entry.type == "lock" ? (
+                          <Icon
+                            name="lock"
+                            type="feather"
+                            containerStyle={{
+                              padding: 4,
+                              borderColor: "#60b8ff",
+                              borderWidth: 2,
+                              borderRadius: 4,
+                            }}
+                          />
+                        ) : (
+                          <Icon
+                            name="file-text"
+                            type="feather"
+                            containerStyle={{
+                              padding: 4,
+                              borderColor: "#60b8ff",
+                              borderWidth: 2,
+                              borderRadius: 4,
+                            }}
+                          />
+                        )}
+                        <Text style={styles.cardText}>
+                          {entry.attributes.friendly_name}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                    <View style={styles.seperator}></View>
+                  </View>
+                ))}
           </ScrollView>
         </View>
         <View style={{ marginBottom: 30, justifyContent: "flex-end" }}>
@@ -449,7 +477,7 @@ function SampleDeviceList(props) {
     <View style={styles.container} transparent={true}>
       {deviceList.map((d, i) => (
         <View style={styles.iconAndName} key={i}>
-          {screen === 'Devices' ? (
+          {screen === "Devices" ? (
             <GuestElement
               guestName={d.name}
               currGuest={d}
@@ -672,70 +700,69 @@ const mapDispatchToProps = (dispatch) => {
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SampleDeviceList);
 
-
-  // let modalDevices = (
-  //   <Modal
-  //     visible={isVisibleDevices}
-  //     transparent={true}
-  //     onBackdropPress={() => setIsVisibleDevices(false)}
-  //   >
-  //     <View style={styles.modal}>
-  //       <View style={styles.topGuestModal}>
-  //         <Icon name="codesandbox" type="feather" color="black" />
-  //         <Text style={{ marginLeft: 10, fontSize: 20 }}>Add Device</Text>
-  //       </View>
-  //       <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
-  //         <ScrollView>
-  //           {props.sharedAccountsData.sharedAccounts &&
-  //             props.sharedAccountsData.sharedAccounts.map((entry, i) => (
-  //               <View key={i} style={styles.cardCon}>
-  //                 <TouchableOpacity onPress={() => setSelected(entry)}>
-  //                   <View
-  //                     style={{
-  //                       paddingLeft: 10,
-  //                       paddingVertical: 6,
-  //                       flexDirection: "row",
-  //                       borderRadius: 10,
-  //                       elevation: selected == entry ? 2 : 0,
-  //                       backgroundColor:
-  //                         selected == entry ? "white" : "#F1F1F1",
-  //                     }}
-  //                   >
-  //                     <Image source={require("../../../assets/people.png")} />
-  //                     <Text style={styles.cardText}>{entry.name}</Text>
-  //                   </View>
-  //                 </TouchableOpacity>
-  //                 <View style={styles.seperator}></View>
-  //               </View>
-  //             ))}
-  //         </ScrollView>
-  //       </View>
-  //       <View style={{ flex: 1, marginBottom: 30, justifyContent: "flex-end" }}>
-  //         <TouchableOpacity onPress={() => propsClick()}>
-  //           <View
-  //             style={{
-  //               marginTop: 20,
-  //               backgroundColor: "#289EFF",
-  //               borderRadius: 10,
-  //               width: 150,
-  //               height: 40,
-  //               alignItems: "center",
-  //               justifyContent: "center",
-  //             }}
-  //           >
-  //             <Text
-  //               style={{
-  //                 textAlign: "center",
-  //                 fontSize: 22,
-  //                 fontWeight: "bold",
-  //                 color: "white",
-  //               }}
-  //             >
-  //               Add Device
-  //             </Text>
-  //           </View>
-  //         </TouchableOpacity>
-  //       </View>
-  //     </View>
-  //   </Modal>
-  // );
+// let modalDevices = (
+//   <Modal
+//     visible={isVisibleDevices}
+//     transparent={true}
+//     onBackdropPress={() => setIsVisibleDevices(false)}
+//   >
+//     <View style={styles.modal}>
+//       <View style={styles.topGuestModal}>
+//         <Icon name="codesandbox" type="feather" color="black" />
+//         <Text style={{ marginLeft: 10, fontSize: 20 }}>Add Device</Text>
+//       </View>
+//       <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
+//         <ScrollView>
+//           {props.sharedAccountsData.sharedAccounts &&
+//             props.sharedAccountsData.sharedAccounts.map((entry, i) => (
+//               <View key={i} style={styles.cardCon}>
+//                 <TouchableOpacity onPress={() => setSelected(entry)}>
+//                   <View
+//                     style={{
+//                       paddingLeft: 10,
+//                       paddingVertical: 6,
+//                       flexDirection: "row",
+//                       borderRadius: 10,
+//                       elevation: selected == entry ? 2 : 0,
+//                       backgroundColor:
+//                         selected == entry ? "white" : "#F1F1F1",
+//                     }}
+//                   >
+//                     <Image source={require("../../../assets/people.png")} />
+//                     <Text style={styles.cardText}>{entry.name}</Text>
+//                   </View>
+//                 </TouchableOpacity>
+//                 <View style={styles.seperator}></View>
+//               </View>
+//             ))}
+//         </ScrollView>
+//       </View>
+//       <View style={{ flex: 1, marginBottom: 30, justifyContent: "flex-end" }}>
+//         <TouchableOpacity onPress={() => propsClick()}>
+//           <View
+//             style={{
+//               marginTop: 20,
+//               backgroundColor: "#289EFF",
+//               borderRadius: 10,
+//               width: 150,
+//               height: 40,
+//               alignItems: "center",
+//               justifyContent: "center",
+//             }}
+//           >
+//             <Text
+//               style={{
+//                 textAlign: "center",
+//                 fontSize: 22,
+//                 fontWeight: "bold",
+//                 color: "white",
+//               }}
+//             >
+//               Add Device
+//             </Text>
+//           </View>
+//         </TouchableOpacity>
+//       </View>
+//     </View>
+//   </Modal>
+// );
