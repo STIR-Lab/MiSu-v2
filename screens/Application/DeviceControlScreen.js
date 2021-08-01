@@ -6,41 +6,38 @@ import { getHubInfoAction } from "../../redux/Action/getHubInfoAction";
 import { registerHubAction } from "../../redux/Action/registerHubAction";
 import appStyle from "../../styles/AppStyle";
 
-
 function DeviceControlScreen(props) {
   const [deviceTitle, setDeviceTitle] = useState("Unknown");
   const [toggledOn, setToggle] = useState(false);
   const [hubOffline, setHubOffline] = useState(false);
-  const [errorMsg, setErrorMsg] =useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const [reoccuringDays, setReoccuringDays] = useState("");
 
   useEffect(() => {
     // console.log("DEVICE CONTROL", props.route.params.device);
-    if (props.route.params.device.properties[0].access_type == 2)
-    {
+    if (props.route.params.device.properties[0].access_type == 2) {
       // console.log("==============")
       let daysOfWeek = "";
       if (props.route.params.device.properties[0].days_reoccuring[0])
-        daysOfWeek+= "Sun, "
+        daysOfWeek += "Sun, ";
       if (props.route.params.device.properties[0].days_reoccuring[1])
-        daysOfWeek+= "Mon, "
+        daysOfWeek += "Mon, ";
       if (props.route.params.device.properties[0].days_reoccuring[2])
-        daysOfWeek+= "Tues, "
+        daysOfWeek += "Tues, ";
       if (props.route.params.device.properties[0].days_reoccuring[3])
-        daysOfWeek+= "Wed, "
+        daysOfWeek += "Wed, ";
       if (props.route.params.device.properties[0].days_reoccuring[4])
-        daysOfWeek+= "Thurs, "
+        daysOfWeek += "Thurs, ";
       if (props.route.params.device.properties[0].days_reoccuring[5])
-        daysOfWeek+= "Fri, "
+        daysOfWeek += "Fri, ";
       if (props.route.params.device.properties[0].days_reoccuring[6])
-        daysOfWeek+= "Sat, "
+        daysOfWeek += "Sat, ";
       daysOfWeek = daysOfWeek.slice(0, -2);
       setReoccuringDays(daysOfWeek);
     }
-    if (props.route.params.device.type == "lock")
-      fetchValues();
-    else setDeviceTitle(props.route.params.device.name)
+    if (props.route.params.device.type == "lock") fetchValues();
+    else setDeviceTitle(props.route.params.device.name);
   }, []);
 
   async function fetchValues() {
@@ -61,11 +58,13 @@ function DeviceControlScreen(props) {
       .then((response) => response.json())
       .then((data) => {
         // console.log("DATA ON DEVICE CONTROL", data);
-        if (data.message.attributes.friendly_name != null && data.message.attributes.friendly_name != undefined) {
+        if (
+          data.message.attributes.friendly_name != null &&
+          data.message.attributes.friendly_name != undefined
+        ) {
           setDeviceTitle(data.message.attributes.friendly_name);
         }
-        if (data.message.statusCode == 401)
-        {
+        if (data.message.statusCode == 401) {
           setHubOffline(true);
         }
 
@@ -78,7 +77,10 @@ function DeviceControlScreen(props) {
   // tpyeyType is 0 for lock 1 for Script
   async function handleClick(value, typeyType) {
     // Handles the action for when button is currently toggled
-    if (typeyType == 0 && (value == "unlock" && toggledOn) || (value == "lock" && !toggledOn)) {
+    if (
+      (typeyType == 0 && value == "unlock" && toggledOn) ||
+      (value == "lock" && !toggledOn)
+    ) {
       return;
     }
 
@@ -96,21 +98,19 @@ function DeviceControlScreen(props) {
           action: value,
         }),
       }
-    ).then((response) => response.json())
-    .then((data) => {
-      console.log("USE DEVICE RETURN:", data);
-      if (data.statusCode == 407 || data.statusCode == 408)
-        setErrorMsg(data.message)
-      else if (data.statusCode == 200)
-      {
-        setErrorMsg("");
-        if (typeyType == 0)
-          setToggle(!toggledOn)
-      }
-      return data;
-    })
-    .catch((err) => console.log("ERROR", err));
-
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("USE DEVICE RETURN:", data);
+        if (data.statusCode == 407 || data.statusCode == 408)
+          setErrorMsg(data.message);
+        else if (data.statusCode == 200) {
+          setErrorMsg("");
+          if (typeyType == 0) setToggle(!toggledOn);
+        }
+        return data;
+      })
+      .catch((err) => console.log("ERROR", err));
   }
 
   return (
@@ -133,99 +133,144 @@ function DeviceControlScreen(props) {
         </View>
 
         <View style={styles.card}>
-          {props.route.params.device.type == "lock" ? 
-          <View
-            style={{
-              alignSelf: "center",
-              justifyContent: "center",
-              alignContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Image source={require("../../assets/DeviceIcons/Lock.png")} />
+          {props.route.params.device.type == "lock" ? (
+            <View
+              style={{
+                alignSelf: "center",
+                justifyContent: "center",
+                alignContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Image source={require("../../assets/DeviceIcons/Lock.png")} />
 
-            {toggledOn ? (
-              <View style={styles.row}>
-                <Icon
-                  name="circle"
-                  type="feather"
-                  color="red"
-                  size={17}
-                  style={{ marginRight: 5 }}
-                />
-                <Text style={{ color: "red", fontWeight: "bold" }}>Unlocked</Text>
-              </View>
-            ) : (
-              <View style={styles.row}>
-                <Icon
-                  name="circle"
-                  type="feather"
-                  color="green"
-                  size={17}
-                  style={{ marginRight: 5 }}
-                />
-                <Text style={{ color: "green", fontWeight: "bold" }}>Locked</Text>
-              </View>
-            )}
-          </View>
-          :
-          <View
-            style={{
-              alignSelf: "center",
-              justifyContent: "center",
-              alignContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Icon
-              name="home-assistant"
-              type="material-community"
-              color="#5bd3ff"
-              size={120}
-              style={{ marginRight: 5 }}
-            />
-          </View>
-          }
+              {toggledOn ? (
+                <View style={styles.row}>
+                  <Icon
+                    name="circle"
+                    type="feather"
+                    color="red"
+                    size={17}
+                    style={{ marginRight: 5 }}
+                  />
+                  <Text style={{ color: "red", fontWeight: "bold" }}>
+                    Unlocked
+                  </Text>
+                </View>
+              ) : (
+                <View style={styles.row}>
+                  <Icon
+                    name="circle"
+                    type="feather"
+                    color="green"
+                    size={17}
+                    style={{ marginRight: 5 }}
+                  />
+                  <Text style={{ color: "green", fontWeight: "bold" }}>
+                    Locked
+                  </Text>
+                </View>
+              )}
+            </View>
+          ) : (
+            <View
+              style={{
+                alignSelf: "center",
+                justifyContent: "center",
+                alignContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Icon
+                name="home-assistant"
+                type="material-community"
+                color="#5bd3ff"
+                size={120}
+                style={{ marginRight: 5 }}
+              />
+            </View>
+          )}
         </View>
 
-        {!hubOffline ?
-        <View style={styles.scheduleContainer}>
-          <View style={styles.scheduleRow}>
-            <Icon name="schedule" type="material" size={25} style={styles.icons} />
-            <View style={styles.scheduleDataCont}>
-              { props.route.params.device.properties[0].reoccuring_type == 1 && <Text style={styles.scheduleText}>{reoccuringDays}</Text>}
-              {(props.route.params.device.properties[0].time_end != null && props.route.params.device.properties[0].time_start != null) ?
-              <Text style={styles.scheduleText}>{props.route.params.device.properties[0].time_start.slice(0, -3)} - {props.route.params.device.properties[0].time_end.slice(0, -3)}</Text> :
-              props.route.params.device.properties[0].access_type == 0 ?
-              <Text style={styles.scheduleText}>Never</Text> : <Text style={styles.scheduleText}>All Day</Text>}
+        {!hubOffline ? (
+          <View style={styles.scheduleContainer}>
+            <View style={styles.scheduleRow}>
+              <Icon
+                name="schedule"
+                type="material"
+                size={25}
+                style={styles.icons}
+              />
+              <View style={styles.scheduleDataCont}>
+                {props.route.params.device.properties[0].reoccuring_type ==
+                  1 && (
+                  <Text style={styles.scheduleText}>{reoccuringDays}</Text>
+                )}
+                {props.route.params.device.properties[0].time_end != null &&
+                props.route.params.device.properties[0].time_start != null ? (
+                  <Text style={styles.scheduleText}>
+                    {props.route.params.device.properties[0].time_start.slice(
+                      0,
+                      -3
+                    )}{" "}
+                    -{" "}
+                    {props.route.params.device.properties[0].time_end.slice(
+                      0,
+                      -3
+                    )}
+                  </Text>
+                ) : props.route.params.device.properties[0].access_type == 0 ? (
+                  <Text style={styles.scheduleText}>Never</Text>
+                ) : (
+                  <Text style={styles.scheduleText}>All Day</Text>
+                )}
+              </View>
+            </View>
+            <View style={styles.scheduleRow}>
+              <Icon
+                name="replay"
+                type="material"
+                size={25}
+                style={styles.icons}
+              />
+              <View style={styles.scheduleDataCont}>
+                {props.route.params.device.properties[0].reoccuring_type ==
+                  0 && <Text style={styles.scheduleText}>Not recurring</Text>}
+                {props.route.params.device.properties[0].reoccuring_type ==
+                  1 && (
+                  <Text style={styles.scheduleText}>Recurring Weekly</Text>
+                )}
+              </View>
+            </View>
+            <View style={styles.scheduleRow}>
+              <Icon
+                name="date-range"
+                type="material"
+                size={25}
+                style={styles.icons}
+              />
+              <View style={styles.scheduleDataCont}>
+                {props.route.params.device.properties[0].date_start != null &&
+                  props.route.params.device.properties[0].date_end != null && (
+                    <Text style={styles.scheduleText}>
+                      {props.route.params.device.properties[0].date_start} -{" "}
+                      {props.route.params.device.properties[0].date_end}
+                    </Text>
+                  )}
+                {props.route.params.device.properties[0].access_type == 0 && (
+                  <Text style={styles.scheduleText}>Never</Text>
+                )}
+                {props.route.params.device.properties[0].access_type == 1 && (
+                  <Text style={styles.scheduleText}>Always</Text>
+                )}
+              </View>
             </View>
           </View>
-          <View style={styles.scheduleRow}>
-            <Icon name="replay" type="material" size={25} style={styles.icons} />
-            <View style={styles.scheduleDataCont}>
-              {props.route.params.device.properties[0].reoccuring_type == 0 &&
-              <Text style={styles.scheduleText}>Not recurring</Text>}
-              {props.route.params.device.properties[0].reoccuring_type == 1 &&
-              <Text style={styles.scheduleText}>Recurring Weekly</Text>}
-            </View>
+        ) : (
+          <View style={styles.scheduleContainer}>
+            <Text style={styles.offlineText}>Device Offline</Text>
           </View>
-          <View style={styles.scheduleRow}>
-            <Icon name="date-range" type="material" size={25} style={styles.icons} />
-            <View style={styles.scheduleDataCont}>            
-              {props.route.params.device.properties[0].date_start != null && props.route.params.device.properties[0].date_end != null &&
-              <Text style={styles.scheduleText}>{props.route.params.device.properties[0].date_start} - {props.route.params.device.properties[0].date_end}</Text>}
-              {props.route.params.device.properties[0].access_type == 0 &&
-              <Text style={styles.scheduleText}>Never</Text>}
-              {props.route.params.device.properties[0].access_type == 1 &&
-              <Text style={styles.scheduleText}>Always</Text>}
-            </View>
-          </View>
-        </View> 
-        :
-        <View style={styles.scheduleContainer}>
-          <Text style={styles.offlineText}>Device Offline</Text>
-        </View>
-        } 
+        )}
 
         <View style={styles.col}>
           <Text style={{ fontSize: 23, fontWeight: "bold", color: "#353535" }}>
@@ -233,45 +278,47 @@ function DeviceControlScreen(props) {
           </Text>
 
           <View style={[styles.lineContainer, { marginTop: 10 }]} />
-          { props.route.params.device.type == "lock" ? 
-          <View style={[styles.row, { justifyContent: "space-between" }]}>
-            <TouchableOpacity onPress={() => handleClick("lock", 0)}>
-              <View
-                style={[
-                  styles.button,
-                  { backgroundColor: toggledOn == true ? "#5bd3ff" : "#f5f5f5" },
-                ]}
-              >
-                <Text
-                  style={{ fontWeight: "bold", color: "black", fontSize: 30 }}
+          {props.route.params.device.type == "lock" ? (
+            <View style={[styles.row, { justifyContent: "space-between" }]}>
+              <TouchableOpacity onPress={() => handleClick("lock", 0)}>
+                <View
+                  style={[
+                    styles.button,
+                    {
+                      backgroundColor:
+                        toggledOn == true ? "#5bd3ff" : "#ccf1ff",
+                    },
+                  ]}
                 >
-                  Lock
-                </Text>
-              </View>
-            </TouchableOpacity>
+                  <Text
+                    style={{ fontWeight: "bold", color: "black", fontSize: 30 }}
+                  >
+                    Lock
+                  </Text>
+                </View>
+              </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => handleClick("unlock", 0)}>
-              <View
-                style={[
-                  styles.button,
-                  { backgroundColor: toggledOn == true ? "#f5f5f5" : "#5bd3ff" },
-                ]}
-              >
-                <Text
-                  style={{ fontWeight: "bold", color: "black", fontSize: 30 }}
+              <TouchableOpacity onPress={() => handleClick("unlock", 0)}>
+                <View
+                  style={[
+                    styles.button,
+                    {
+                      backgroundColor:
+                        toggledOn == true ? "#ccf1ff" : "#5bd3ff",
+                    },
+                  ]}
                 >
-                  Unlock
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          :
-          <TouchableOpacity onPress={() => handleClick(null, 1)}>
-              <View
-                style={[
-                  styles.scriptButton,
-                ]}
-              >
+                  <Text
+                    style={{ fontWeight: "bold", color: "black", fontSize: 30 }}
+                  >
+                    Unlock
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <TouchableOpacity onPress={() => handleClick(null, 1)}>
+              <View style={[styles.scriptButton]}>
                 <Text
                   style={{ fontWeight: "bold", color: "black", fontSize: 30 }}
                 >
@@ -279,7 +326,7 @@ function DeviceControlScreen(props) {
                 </Text>
               </View>
             </TouchableOpacity>
-          }
+          )}
         </View>
         <Text style={styles.error}>{errorMsg}</Text>
       </View>
@@ -311,12 +358,11 @@ const styles = StyleSheet.create({
   },
   appbar: {
     marginTop: 10,
-    paddingBottom: 0,
+    marginBottom: -40,
     alignSelf: "flex-start",
     flexDirection: "row",
   },
   title: {
-    marginTop: 10,
     marginBottom: 20,
   },
   row: {
@@ -351,7 +397,7 @@ const styles = StyleSheet.create({
   scheduleContainer: {
     height: 180,
     width: 330,
-    
+
     alignSelf: "center",
     backgroundColor: "#FFFFFF",
     borderRadius: 15,
@@ -369,12 +415,12 @@ const styles = StyleSheet.create({
   },
   scheduleRow: {
     backgroundColor: "#FFFFFF",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
     width: "100%",
     height: 60,
-    borderRadius:15
+    borderRadius: 15,
   },
   scheduleDataCont: {
     height: 60,
@@ -382,15 +428,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "85%",
     backgroundColor: "#FFFFFF",
-    borderRadius: 15
+    borderRadius: 15,
   },
   scheduleText: {
-    fontSize: 18
+    fontSize: 18,
   },
   offlineText: {
     fontSize: 28,
     alignSelf: "center",
-    paddingTop: 60
+    paddingTop: 60,
   },
   icons: {
     marginLeft: 10,
@@ -407,7 +453,7 @@ const styles = StyleSheet.create({
     color: "red",
     paddingTop: 10,
     paddingBottom: 10,
-  }
+  },
 });
 
 export default DeviceControlScreen;

@@ -1,5 +1,5 @@
 import { Auth } from "aws-amplify";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TouchableWithoutFeedback,
   StyleSheet,
@@ -10,43 +10,35 @@ import {
   ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
 import SearchBar from "../../components/SearchBar";
 import DeviceInfoCard from "../../components/cards/DeviceInfoCard";
 import { getHubInfoAction } from "../../redux/Action/getHubInfoAction";
 import { registerHubAction } from "../../redux/Action/registerHubAction";
 import appStyle from "../../styles/AppStyle";
 
-import {getListofSharedAccountsDevicesScreen} from "../../services/listDevice";
-
-function useForceUpdate(){
-  const [value, setValue] = useState(0); // integer state
-  return () => setValue(value => value + 1); // update the state to force render
-}
+import { getListofSharedAccountsDevicesScreen } from "../../services/listDevice";
 
 function DevicesScreen(props) {
+  const isFocused = useIsFocused();
   const [searchParam, setSearchParam] = useState("");
   const [sharedAccs, setSharedAccs] = useState(null);
 
   useEffect(() => {
     fetchData();
-  }, []);
-
-  function forceUpdate(){
-    useForceUpdate();
-  }
+  }, [props, isFocused]);
 
   async function fetchData(idToken) {
-    // console.log("refreshing");
+    console.log("Fetching devicesScreen data");
     await getListofSharedAccountsDevicesScreen(props.sessionData.idToken)
-      .then(response => {
+      .then((response) => {
         // console.log("Devices Screen", response);
-        if(response.statusCode == 200)
-        {
+        if (response.statusCode == 200) {
           // console.log("changine");
           setSharedAccs(response);
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }
 
   return (
@@ -55,22 +47,23 @@ function DevicesScreen(props) {
         <View style={styles.header}>
           <SearchBar setSearchParam={setSearchParam} screen={"Devices"} />
         </View>
-        
+
         <ScrollView style={styles.cardContainer}>
           {sharedAccs &&
-            sharedAccs.message.filter(guest => guest.name.includes(searchParam)).map((entry, i) => (
-              <DeviceInfoCard
-                key={i}
-                type={'DeviceCard'}
-                title={entry.name}
-                guests={entry.guests}
-                deviceType={entry.type}
-                entityId={entry.entity_id}
-                navigation={props.navigation}
-                refresh={fetchData}
-                
-              />
-            ))}
+            sharedAccs.message
+              .filter((guest) => guest.name.includes(searchParam))
+              .map((entry, i) => (
+                <DeviceInfoCard
+                  key={i}
+                  type={"DeviceCard"}
+                  title={entry.name}
+                  guests={entry.guests}
+                  deviceType={entry.type}
+                  entityId={entry.entity_id}
+                  navigation={props.navigation}
+                  refresh={fetchData}
+                />
+              ))}
         </ScrollView>
       </View>
     </TouchableWithoutFeedback>
