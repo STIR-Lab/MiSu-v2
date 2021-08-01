@@ -1,4 +1,4 @@
-import { deleteASharedAccount } from "../../services/deleteService";
+import { deleteASharedAccount, deleteADevice } from "../../services/deleteService";
 import { getSharedAccountsAction } from "../Action/getSharedAccountsAction";
 import { getSharedDevicesAction } from "../Action/getSharedDevicesAction";
 
@@ -7,12 +7,21 @@ const stopSharingStart = (payload) => ({
   payload,
 });
 
-export const stopSharingAction = (login_id, idToken) => {
+export const stopSharingAction = (login_id, idToken, type, sharedDevicesId) => {
+  console.log("TYPE", type)
+  console.log("LOG", login_id)
+  console.log("idtok", idToken)
+  console.log("SHRDDEVID", sharedDevicesId)
   return async (dispatch) => {
     try {
       dispatch(stopSharingStart({ loading: true }));
 
-      await deleteASharedAccount(login_id, idToken);
+      if (type == 1) {
+        await deleteADevice(login_id, sharedDevicesId, idToken);
+      }
+      else {
+        await deleteASharedAccount(login_id, idToken);
+      }
 
       dispatch(stopSharingStart({ loading: false }));
       dispatch(getSharedAccountsAction(idToken));

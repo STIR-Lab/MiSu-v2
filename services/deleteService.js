@@ -5,15 +5,21 @@ export const deleteADevice = async (login_id, device, idToken) => {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + idToken,
+        "Content-type": "application/json",
+        Accept: "*/*",
       },
       body: JSON.stringify({
         account: login_id,
         device: device,
       }),
     }
-  );
-  const val = response.json();
-  return val;
+  ).then((response) => response.json())
+  .then((data) => {
+    console.log("YO", data);
+
+    return data;
+  })
+  .catch((err) => console.log(err));;
 };
 
 export const deleteASharedAccount = async (id, idToken) => {
