@@ -211,7 +211,7 @@ function SettingsCard(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.25,
+    flex: 0.20,
     flexDirection: "column",
     width: "100%",
     paddingTop: 0,

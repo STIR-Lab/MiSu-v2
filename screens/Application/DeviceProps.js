@@ -56,7 +56,7 @@ function DeviceProps(props) {
 
   useEffect(() => {
     // console.log("Entered deviceProps");
-    // console.log("==DeviceProps==", props.route.params.currDevice.shared_device_properties_id, "======");
+    // console.log("==DeviceProps==", props.route.params.currDevice.type, "======");
     var accountProperties = props.route.params.currDevice;
     setIsLoading(true);
 
@@ -373,7 +373,7 @@ function DeviceProps(props) {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={{ fontSize: 20 }}>Lock/Unlock</Text>
+                <Text style={{ fontSize: 20 }}>{props.route.params.currDevice.type == "lock" ? "Lock/Unlock" : "Run Script"}</Text>
               </View>
 
               <Text style={{ marginTop: 20, fontSize: 26, fontWeight: "bold" }}>
