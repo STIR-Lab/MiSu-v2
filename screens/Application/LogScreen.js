@@ -57,7 +57,7 @@ function LogScreen(props) {
           );
           setUsageLogs(sortedLogs);
           setLoading(false);
-          console.log("Successful usageLogs");
+          
         }
       })
       .catch((error) => {
@@ -93,7 +93,7 @@ function LogScreen(props) {
           );
           setAccessLogs(sortedLogs);
           setLoading(false);
-          console.log("Successful accessLogs");
+          
         }
       })
       .catch((error) => {
