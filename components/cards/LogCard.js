@@ -84,7 +84,7 @@ function LogCard(props) {
         </View>
 
         {props.type === "Activity" && (
-          <View>
+          <View style={styles.devicesHeader}>
             <View style={styles.textHeader}>
               <Icon name="codesandbox" type="feather" color="black" />
               <Text style={styles.textHeader}>Devices</Text>
@@ -101,7 +101,9 @@ function LogCard(props) {
               </TouchableOpacity>
             </View>
 
+            <ScrollView>
             {props.logs.map((entry, i) => (
+              <TouchableOpacity>
               <Collapsible
                 collapsed={collapsed}
                 style={styles.expanded}
@@ -109,12 +111,13 @@ function LogCard(props) {
               >
                 <View style={styles.input}>
                   <Text>
-                    {" "}
-                    {props.type == "Access" ? entry.device_name : "TODO"}{" "}
+                    {props.type == "Access" ? entry.device_name : "TODO"}
                   </Text>
                 </View>
               </Collapsible>
+              </TouchableOpacity>
             ))}
+            </ScrollView>
           </View>
         )}
 
@@ -260,11 +263,16 @@ const styles = StyleSheet.create({
     elevation: 6,
     borderRadius: 10,
     width: 300,
-    maxHeight: 450,
+    maxHeight: 600,
     alignSelf: "center",
     alignItems: "center",
   },
-
+  devicesHeader: {
+    width: 300,
+    maxHeight: 220,
+    alignSelf: "center",
+    alignItems: "center"
+  },
   textHeader: {
     justifyContent: "flex-start",
     alignSelf: "flex-start",
@@ -297,7 +305,7 @@ const styles = StyleSheet.create({
   },
 
   filterheader: {
-    alignSelf: "stretch",
+    width: 255,
     flexDirection: "column",
     borderRadius: 8,
     elevation: 5,

@@ -10,6 +10,7 @@ import { ScrollView } from "react-native";
 import { deleteASharedAccount } from "../../services/deleteService";
 import { updateInvitation } from "../../services/invitationService";
 
+
 function YourHubCard(props) {
   const [registering, setRegistering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -18,7 +19,8 @@ function YourHubCard(props) {
     useState(false);
   const [hubEntryName, setHubEntryName] = useState("");
   const [selected, setSelected] = useState(null);
-  const [retVal, setRetVal] = useState(null);
+
+
 
   useEffect(() => {
     if (props.hub_url == "") {
@@ -26,6 +28,7 @@ function YourHubCard(props) {
     } else {
       setRegistering(true);
     }
+    // console.log(props.sharedData)
   }, [props.hub_url]);
 
   registerHub = () => {
@@ -108,7 +111,7 @@ function YourHubCard(props) {
     >
       <View style={style.disconnectModal}>
         <View style={style.disconnectHeader}>
-          <Text style={{ marginLeft: 10, fontSize: 20 }}>Disconnect Guest</Text>
+          <Text style={{ marginLeft: 10, fontSize: 20 }}>Disconnect from Hub</Text>
         </View>
         <Text
           style={{
@@ -119,20 +122,19 @@ function YourHubCard(props) {
             marginRight: 5,
           }}
         >
-          Are you sure you want to disconnect from {hubEntryName.name}'s hub?
+          Are you sure you want to disconnect from {hubEntryName.sharer_name}'s hub?
         </Text>
 
         <TouchableOpacity
           onPress={
             () => {
-              {
-                retVal = updateInvitation(
-                  hubEntryName.login_credentials_id,
-                  2,
-                  props.idToken
-                );
-                console.log(retVal);
-              }
+              updateInvitation(
+                hubEntryName.login_credentials_id,
+                2,
+                props.idToken
+              );
+              props.refreshFunc(props.idToken)
+              setIsVisibleGuestsDisconnect(false);
             }
             //Share(idToken, guestEmail, device, shareProperties, shareOptions)
           }
@@ -296,35 +298,34 @@ function YourHubCard(props) {
           </TouchableOpacity>
         </View>
       )}
-      <ScrollView>
-        {registering == false && props.user.user_type == 0 && (
-          <View>
-            {props.sharedData != null && props.sharedData != undefined &&
-              props.sharedData.map((entry, i) => (
-                <View key={i} style={style.verticleCentralColumns}>
-                  <View style={style.horizonalRows}>
-                    <View>
-                      <Text style={style.guestHubText}>{entry.name}'s hub</Text>
-                    </View>
 
-                    <View style={style.redButton}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          console.log(entry);
-                          openGuestDisconnectModal(entry);
-                        }}
-                      >
-                        <View>
-                          <Text style={style.guestRedButtonText}>
-                            Disconnect
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
+      <ScrollView>
+        {props.user.user_type == 0 && 
+            props.sharedData != null && props.sharedData != undefined &&
+              props.sharedData.map((entry, i) => (
+              <View key={i} style={style.verticleCentralColumns}>
+                <View style={style.horizonalRows}>
+                  <View>
+                    <Text style={style.guestHubText}>{entry.sharer_name}'s hub</Text>
+                  </View>
+
+                  <View style={style.redButton}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setHubEntryName(entry);
+                        openGuestDisconnectModal(entry);
+                      }}
+                    >
+                      <View>
+                        <Text style={style.guestRedButtonText}>
+                          Disconnect
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
                   </View>
                 </View>
-              ))}
-          </View>
+              </View>
+              )        
         )}
       </ScrollView>
       {disconnectModal}
@@ -336,7 +337,7 @@ function YourHubCard(props) {
 
 const style = StyleSheet.create({
   container: {
-    flex: 0.25,
+    flex: 0.30,
     flexDirection: "column",
     borderBottomColor: "#828282",
     borderBottomWidth: 0.9,
@@ -474,6 +475,7 @@ const style = StyleSheet.create({
   },
   userHubInfo: {
     flexDirection: "row",
+    marginTop: 10,
     height: "60%",
     alignItems: "center",
     justifyContent: "center",

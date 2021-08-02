@@ -1,5 +1,5 @@
 import { Auth } from "aws-amplify";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ToastAndroid,
   TouchableOpacity,
@@ -7,6 +7,7 @@ import {
   Text,
   ScrollView,
 } from "react-native";
+import { useIsFocused, useFocusEffect } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { connect } from "react-redux";
 import AppText from "../../components/app/AppText";
@@ -18,6 +19,7 @@ import { getHubInfoAction } from "../../redux/Action/getHubInfoAction";
 import { registerHubAction } from "../../redux/Action/registerHubAction";
 import appStyle from "../../styles/AppStyle";
 import * as SecureStore from "expo-secure-store";
+import { getSharedDevicesAction } from "../../redux/Action/getSharedDevicesAction";
 
 function AccountScreen(props) {
   // console.log("--------------------");
@@ -36,6 +38,8 @@ function AccountScreen(props) {
   // 	),
   // 	headerRight: () => <View></View>
   // });
+  const [sharedAccs, setSharedAccs] = useState(null);
+  const isFocused = useIsFocused();
 
   async function deleteStorage() {
     await SecureStore.deleteItemAsync("username");
@@ -70,7 +74,25 @@ function AccountScreen(props) {
   // }
 
   // REFER TO GUEST SCREEN USE EFFECT
-  // useEffect(() => {console.log(props)}, []);
+  useEffect(() => {
+    const idToken = props.sessionData.idToken;
+    fetchData(idToken);
+    // console.log("ACC SCREEN", sharedAccs)
+  }, [props, isFocused]);
+
+
+  function getResults(results) {
+    setSharedAccs(results);
+    return;
+  }
+
+  async function fetchData(idToken) {
+    await props
+      .getList(idToken)
+      .then((res) => getResults(res))
+      .catch((err) => console.log(err));
+  }
+
 
   return (
     <View style={appStyle.container}>
@@ -82,15 +104,16 @@ function AccountScreen(props) {
         idToken={props.sessionData.idToken}
         user={props.hubInfoData}
       />
-      <YourHubCard
-        sharedData ={props.sharedAccountsData.sharedAccounts}
+      {sharedAccs != null && sharedAccs != undefined && <YourHubCard
+        sharedData ={sharedAccs.message}
         register={props.register}
         idToken={props.sessionData.idToken}
         user={props.hubInfoData}
         hub_url={props.hubInfoData.hub_url}
         hub_email={props.hubInfoData.hub_email}
         navigation={props.navigation}
-      />
+        refreshFunc={fetchData}
+      />}
       <SettingsCard
         idToken={props.sessionData.idToken}
         user={props.hubInfoData}
@@ -109,7 +132,7 @@ function AccountScreen(props) {
         <TouchableOpacity
           style={[
             {
-              marginBottom: 15,
+              marginBottom: 45,
               flex: 0,
               flexDirection: "row",
               width: 160,
@@ -137,6 +160,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     register: (data, idToken) => dispatch(registerHubAction(data, idToken)),
     getHub: (idToken) => dispatch(getHubInfoAction(idToken)),
+    getList: (idToken) => dispatch(getSharedDevicesAction(idToken)),
   };
 };
 
