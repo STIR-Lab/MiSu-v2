@@ -172,21 +172,7 @@ function SettingsCard(props) {
       <View style={styles.headerLine}>
         <Text style={styles.header}>Settings</Text>
       </View>
-      <TouchableOpacity
-        style={styles.setting}
-        onPress={() => props.navigation.navigate("ChangePassword")}
-      >
-        <Text style={styles.settingFont}>Change Password</Text>
-
-        <View style={styles.icon}>
-          <Icon
-            type="material-icons"
-            name="chevron-right"
-            size={32}
-            style={{}}
-          />
-        </View>
-      </TouchableOpacity>
+      <View>
       <TouchableOpacity
         onPress={() => setIsDistanceVisible(true)}
         style={styles.setting}
@@ -216,6 +202,7 @@ function SettingsCard(props) {
           />
         </View>
       </TouchableOpacity>
+      </View>
       {roleModal}
       {radiusModal}
     </View>

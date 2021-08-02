@@ -168,7 +168,7 @@ function YourHubCard(props) {
         <View style={style.item}></View>
         <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
           <ScrollView>
-            {props.sharedData != null &&
+            {props.sharedData != null && props.sharedData != undefined &&
               props.sharedData.map((entry, i) => (
                 <View key={i} style={style.cardCon}>
                   <TouchableOpacity
@@ -299,7 +299,7 @@ function YourHubCard(props) {
       <ScrollView>
         {registering == false && props.user.user_type == 0 && (
           <View>
-            {props.sharedData != null &&
+            {props.sharedData != null && props.sharedData != undefined &&
               props.sharedData.map((entry, i) => (
                 <View key={i} style={style.verticleCentralColumns}>
                   <View style={style.horizonalRows}>
