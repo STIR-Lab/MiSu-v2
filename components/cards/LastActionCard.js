@@ -29,10 +29,32 @@ function LastActionCard(props) {
     }
   };
 
+  const checkIconScripts = (name) => {
+    let temp = name.toLowerCase();
+    if (temp.includes("bulb")) {
+      return "lightbulb";
+    } else if (name.includes("lock")) {
+      return "lock";
+    } else if (name.includes("unlock")) {
+      return "unlock";
+    } else {
+      return "file";
+    }
+  };
+
   const checkColor = (action) => {
     if (action == "lock") {
       return "#57E455";
     } else if (action == "unlock") {
+      return "#FF5722";
+    } else return "black";
+  };
+
+  const checkColorScripts = (name) => {
+    let temp = name.toLowerCase();
+    if (temp.includes("lock") || temp.includes("turn on")) {
+      return "#57E455";
+    } else if (temp.includes("unlock") || temp.includes("turn off")) {
       return "#FF5722";
     } else return "black";
   };
@@ -55,34 +77,75 @@ function LastActionCard(props) {
 
       {lastAction != null && (
         <View style={styles.headerStyle}>
-          <View
-            style={
-              props.screen == "GuestCard"
-                ? [
-                    styles.squareIconHolder,
-                    { borderColor: checkColor(lastAction.device_action) },
-                  ]
-                : styles.iconHolder
-            }
-          >
-            <Icon
-              name={checkIcon(lastAction.device_action)}
-              type="feather"
-              size={32}
-              color={checkColor(lastAction.device_action)}
-            />
-          </View>
-          <View>
-            <Text style={styles.text}>
-              {" "}
-              {capitalize(lastAction.device_action)}ed the{" "}
-              {lastAction.device_name}{" "}
-            </Text>
-            <Text style={styles.dateText}>
-              {" "}
-              {lastAction.date} at {lastAction.time}{" "}
-            </Text>
-          </View>
+          {lastAction.device_action != null && (
+            <React.Fragment>
+              <View
+                style={
+                  props.screen == "GuestCard"
+                    ? [
+                        styles.squareIconHolder,
+                        { borderColor: checkColor(lastAction.device_action) },
+                      ]
+                    : styles.iconHolder
+                }
+              >
+                <Icon
+                  name={checkIcon(lastAction.device_action)}
+                  type="feather"
+                  size={32}
+                  color={checkColor(lastAction.device_action)}
+                />
+              </View>
+              <View>
+                <Text style={styles.text}>
+                  {" "}
+                  {capitalize(lastAction.device_action)}ed the{" "}
+                  {lastAction.device_name}{" "}
+                </Text>
+                <Text style={styles.dateText}>
+                  {" "}
+                  {lastAction.date} at {lastAction.time}{" "}
+                </Text>
+              </View>
+            </React.Fragment>
+          )}
+
+          {/* Handles scripts [completley different log type] */}
+          {lastAction.device_action == null && (
+            <React.Fragment>
+              <View
+                style={
+                  props.screen == "GuestCard"
+                    ? [
+                        styles.squareIconHolder,
+                        {
+                          borderColor: checkColorScripts(
+                            lastAction.device_name
+                          ),
+                        },
+                      ]
+                    : styles.iconHolder
+                }
+              >
+                <Icon
+                  name={checkIconScripts(lastAction.device_name)}
+                  type="font-awesome-5"
+                  size={32}
+                  color={checkColorScripts(lastAction.device_name)}
+                />
+              </View>
+              <View>
+                <Text style={styles.text}>
+                  {" "}
+                  {capitalize(lastAction.device_name)}
+                </Text>
+                <Text style={styles.dateText}>
+                  {" "}
+                  {lastAction.date} at {lastAction.time}{" "}
+                </Text>
+              </View>
+            </React.Fragment>
+          )}
         </View>
       )}
     </View>
