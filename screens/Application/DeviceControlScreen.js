@@ -322,7 +322,7 @@ function DeviceControlScreen(props) {
                 <Text
                   style={{ fontWeight: "bold", color: "black", fontSize: 30 }}
                 >
-                  Run Script
+                  Execute
                 </Text>
               </View>
             </TouchableOpacity>

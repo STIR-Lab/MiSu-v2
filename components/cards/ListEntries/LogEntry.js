@@ -5,6 +5,7 @@ import appStyle from "../../../styles/AppStyle";
 import LogStyle from "../../../styles/LogStyle";
 
 const formatImage = (log) => {
+  
   if (log.operation !== undefined) {
     if (log.operation === "Create")
       return (
@@ -75,7 +76,24 @@ const formatImage = (log) => {
           type="feather"
         />
       );
-    } else
+    } 
+    else if (log.operation === "Left") {
+      return (
+        <Icon
+          containerStyle={{
+            alignItems: "flex-start",
+            marginTop: 10,
+            marginLeft: 5
+          }}
+          size={45}
+          color="#ea5f5f"
+          rounded
+          name="sign-out"
+          type="font-awesome"
+        />
+      );
+    } 
+    else
       return (
         <Icon
           containerStyle={{
@@ -89,7 +107,34 @@ const formatImage = (log) => {
           type="feather"
         />
       );
-  } else
+  }
+  else if (log.operation === undefined)
+  {
+    if (log.device_type === "script") 
+    return (
+    <Icon containerStyle={{
+      alignItems: "flex-start",
+      marginTop: 15,
+    }} name="script-text-outline" type="material-community" size={45} color="#60B8FF"/>
+    )
+
+    else
+    return (
+      <Icon
+        containerStyle={{
+          alignItems: "flex-start",
+          marginTop: 10,
+        }}
+        size={45}
+        color="#7DEA7B"
+        rounded
+        name="unlock"
+        type="antdesign"
+      />
+    );
+
+  }
+  else
     return (
       <Icon
         containerStyle={{
@@ -106,6 +151,7 @@ const formatImage = (log) => {
 };
 
 const formatEntryText = (log) => {
+  console.log(log);
   if (log.operation !== undefined) {
     if (log.operation === "Create")
       return (
@@ -167,7 +213,36 @@ const formatEntryText = (log) => {
           declined {log.primary_user}'s invitation
         </Text>
       );
-    } else return log.operation;
+    }
+    else if (log.operation === "Left") {
+      return (
+        <Text>
+          <Text
+            onPress={() => {}}
+            style={{ fontWeight: "bold", color: "#2393FB" }}
+          >
+            {log.primary_user}
+          </Text>
+           {" "}left your hub
+        </Text>
+      );
+    }
+    else return log.operation;
+  }
+
+  else if (log.operation === undefined){
+     if (log.device_type === "script") {
+      return (
+        <Text>
+           <Text onPress={() => {}} style={{ fontWeight: "bold", color: "#2393FB" }}>
+                {log.secondary_user}{" "}
+            </Text>
+          ran the command {log.device_name}
+      
+        </Text>
+      );
+    }
+
   }
   return (
     <Text>
