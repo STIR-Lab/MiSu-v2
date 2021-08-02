@@ -7,7 +7,7 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import { useIsFocused } from "@react-navigation/native";
 import { connect } from "react-redux";
 import { getHubInfoAction } from "../../redux/Action/getHubInfoAction";
 import { registerHubAction } from "../../redux/Action/registerHubAction";
@@ -17,6 +17,7 @@ import AppText from "../../components/app/AppText";
 import AppHeaderText from "../../components/app/AppHeaderText";
 
 function LogScreen(props) {
+  const isFocused = useIsFocused();
   const [usageLogs, setUsageLogs] = useState([]);
   const [accessLogs, setAccessLogs] = useState([]);
   const [isLoading, setLoading] = useState(true);
@@ -25,6 +26,8 @@ function LogScreen(props) {
   useEffect(() => {
     getAccessLogs();
     getUsageLogs();
+
+    // console.log("LogScreen" + JSON.stringify(props));
   }, [props]);
 
   // Gets the logs for the devices the user has shared

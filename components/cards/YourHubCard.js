@@ -168,31 +168,37 @@ function YourHubCard(props) {
         <View style={style.item}></View>
         <View style={{ minHeight: "25%", maxHeight: "50%", width: "100%" }}>
           <ScrollView>
-            {props.sharedData.map((entry, i) => (
-              <View key={i} style={style.cardCon}>
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log(entry);
-                    setSelected(entry);
-                  }}
-                >
-                  <View
-                    style={{
-                      paddingLeft: 10,
-                      paddingVertical: 6,
-                      flexDirection: "row",
-                      borderRadius: 10,
-                      elevation: selected == entry ? 2 : 0,
-                      backgroundColor: selected == entry ? "white" : "#F1F1F1",
+            {props.sharedData != null && props.sharedData != undefined &&
+              props.sharedData.map((entry, i) => (
+                <View key={i} style={style.cardCon}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      console.log(entry);
+                      setSelected(entry);
                     }}
                   >
-                    <UserAvatar size={40} borderRadius={41} name={entry.name} />
-                    <Text style={style.cardText}>{entry.name}</Text>
-                  </View>
-                </TouchableOpacity>
-                <View style={style.seperator}></View>
-              </View>
-            ))}
+                    <View
+                      style={{
+                        paddingLeft: 10,
+                        paddingVertical: 6,
+                        flexDirection: "row",
+                        borderRadius: 10,
+                        elevation: selected == entry ? 2 : 0,
+                        backgroundColor:
+                          selected == entry ? "white" : "#F1F1F1",
+                      }}
+                    >
+                      <UserAvatar
+                        size={40}
+                        borderRadius={41}
+                        name={entry.name}
+                      />
+                      <Text style={style.cardText}>{entry.name}</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <View style={style.seperator}></View>
+                </View>
+              ))}
           </ScrollView>
         </View>
 
@@ -293,28 +299,31 @@ function YourHubCard(props) {
       <ScrollView>
         {registering == false && props.user.user_type == 0 && (
           <View>
-            {props.sharedData && props.sharedData.map((entry, i) => (
-              <View key={i} style={style.verticleCentralColumns}>
-                <View style={style.horizonalRows}>
-                  <View>
-                    <Text style={style.guestHubText}>{entry.name}'s hub</Text>
-                  </View>
+            {props.sharedData != null && props.sharedData != undefined &&
+              props.sharedData.map((entry, i) => (
+                <View key={i} style={style.verticleCentralColumns}>
+                  <View style={style.horizonalRows}>
+                    <View>
+                      <Text style={style.guestHubText}>{entry.name}'s hub</Text>
+                    </View>
 
-                  <View style={style.redButton}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        console.log(entry);
-                        openGuestDisconnectModal(entry);
-                      }}
-                    >
-                      <View>
-                        <Text style={style.guestRedButtonText}>Disconnect</Text>
-                      </View>
-                    </TouchableOpacity>
+                    <View style={style.redButton}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          console.log(entry);
+                          openGuestDisconnectModal(entry);
+                        }}
+                      >
+                        <View>
+                          <Text style={style.guestRedButtonText}>
+                            Disconnect
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
-              </View>
-            ))}
+              ))}
           </View>
         )}
       </ScrollView>

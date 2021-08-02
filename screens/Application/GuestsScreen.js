@@ -39,9 +39,7 @@ function GuestsScreen(props) {
   const [opacity, setOpacity] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // openModal = () => {
-  //   setIsVisible(!isVisible);
-  // };
+  const [usageLogs, setUsageLogs] = useState([]);
 
   openModal2 = () => {
     setIsVisible2(!isVisible2);
@@ -68,36 +66,45 @@ function GuestsScreen(props) {
   // 	// await this.setState({ refreshingUsers: false });
   // };
 
-  // Called when when the screen is about to load, grabs all the info to display
-  // THE LACK OF THE [] IN THE SECOND PARAMETER CAUSES INFINITE CONSOLE LOGGING OR RERENDERING IN ACCOUNT SCREEN
-  // REQUIRES FURTHER INVESTIGATION
   useEffect(() => {
-    // if (props.sessionData != null)
-    // 	props.navigation.setParams({
-    // 		name: props.sessionData.name
-    // 	});
-    // const { idToken } = props.sessionData;
-    // console.log("GuestsScreen:", props.sessionData.idToken);
-    const idToken = 0;
-    //getUsageLogs();
-    //getAccessLogs();
-    // onRefresh();
-    fetchData(idToken);
-  }, [props.sharedAccountsData.sharedAccounts, sharedAccs]);
+    // console.log("GuestsScreen:", props);
+    fetchData();
+    fetchLogs();
+  }, [props, sharedAccs]);
 
-  // console.log("GuestsScreen:", props.sessionData.idToken);
-  async function fetchData(idToken) {
-    // console.log('Fetching Data..');
-    // props.getHub(idToken);
-    // props.getDevices(idToken);
-    // props.getSharedDevices(idToken);
-    // props.getAccounts(idToken);
-    // console.log("PROPS", props)
+  async function fetchLogs() {
+    try {
+      await fetch(
+        "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/getusagelogs",
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + props.sessionData.idToken,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message.length > 0) {
+            var sortedLogs = data.message.sort((a, b) =>
+              a.date < b.date
+                ? 1
+                : a.date === b.date
+                ? a.time < b.time
+                  ? 1
+                  : -1
+                : -1
+            );
+            setUsageLogs(sortedLogs);
+            // console.log(sortedLogs);
+            console.log("Successful usageLogs");
+          }
+        });
+    } catch {}
+  }
+
+  function fetchData() {
     setSharedAccs(props.sharedAccountsData.sharedAccounts);
-    // console.log('Data Fetched.');
-
-    // console.log("==SHARED ACCS:", sharedAccs);
-    // console.log("== GUESTS SCREEN== ", props);
   }
 
   async function addNewGuest() {
@@ -122,18 +129,6 @@ function GuestsScreen(props) {
       })
       .catch((err) => console.log(err));
   }
-
-  // let modal = (
-  //   <Modal
-  //     visible={isVisible}
-  //     transparent={true}
-  //     onBackdropPress={() => setIsVisible(false)}
-  //   >
-  //     <View style={styles.modal}>
-  //       <Text>Test</Text>
-  //     </View>
-  //   </Modal>
-  // );
 
   let modal2 = (
     <Modal
@@ -211,6 +206,9 @@ function GuestsScreen(props) {
                   myDevices={props.devicesData.devices}
                   idToken={props.sessionData.idToken}
                   delete={props.getAccounts}
+                  lastAction={usageLogs.filter(
+                    (item) => item.guest_email == entry.guest_email
+                  )}
                 />
               ))}
         </ScrollView>

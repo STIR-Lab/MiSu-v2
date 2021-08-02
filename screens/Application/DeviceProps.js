@@ -25,7 +25,7 @@ import SetScheduleCard from "../../components/cards/SetScheduleCard";
 import { set } from "react-native-reanimated";
 
 // imorting gps functionality
-import GPS from "../../components/GPS.js";
+import GPS from "../../components/gps";
 import * as Location from "expo-location";
 import haversine from "haversine";
 import { ActivityIndicator } from "react-native";
@@ -56,7 +56,7 @@ function DeviceProps(props) {
 
   useEffect(() => {
     // console.log("Entered deviceProps");
-    console.log("==DeviceProps==", props.route.params, "======");
+    // console.log("==DeviceProps==", props.route.params.currDevice.shared_device_properties_id, "======");
     var accountProperties = props.route.params.currDevice;
     setIsLoading(true);
 
@@ -105,7 +105,7 @@ function DeviceProps(props) {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setIsLoading(false);
         if (data.properties != null) {
           setProperties(data.properties);
@@ -206,7 +206,9 @@ function DeviceProps(props) {
   const stopSharing = async () => {
     props.stopSharing(
       props.route.params.accObject.login_credentials_id,
-      props.route.params.idToken
+      props.route.params.idToken,
+      1,
+      props.route.params.currDevice.shared_device_properties_id
     );
     props.navigation.pop();
   };
@@ -565,8 +567,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    stopSharing: (login_id, idToken) => {
-      dispatch(stopSharingAction(login_id, idToken));
+    stopSharing: (login_id, idToken, type, sharedDevicesId) => {
+      dispatch(stopSharingAction(login_id, idToken, type, sharedDevicesId));
     },
   };
 };

@@ -136,14 +136,23 @@ function DeviceInfoCard(props) {
           <View style={styles.devIcon2}>
             <Icon name="home" type="feather" size={45} />
           </View>
-        ) : (
-          props.deviceType == "lock" ?
-          <View style={styles.devIcon} >
-            <Icon name="lock" type="simple-line-icon" size={45} color="#60B8FF"/>
+        ) : props.deviceType == "lock" ? (
+          <View style={styles.devIcon}>
+            <Icon
+              name="lock"
+              type="simple-line-icon"
+              size={45}
+              color="#60B8FF"
+            />
           </View>
-          :
-          <View style={styles.devIcon} >
-            <Icon name="script-text-outline" type="material-community" size={45} color="#60B8FF"/>
+        ) : (
+          <View style={styles.devIcon}>
+            <Icon
+              name="script-text-outline"
+              type="material-community"
+              size={45}
+              color="#60B8FF"
+            />
           </View>
         )}
 
@@ -152,8 +161,10 @@ function DeviceInfoCard(props) {
         </View>
 
         {/* Device Icons */}
-        {(props.type == "GuestCard" && props.user.accepted != 0) && deviceIcons()}
-        {props.type == "GuestCard" && props.user.accepted == 0 && <Text style={styles.pending}>Pending</Text>}
+        {props.type == "GuestCard" && props.user.accepted != 0 && deviceIcons()}
+        {props.type == "GuestCard" && props.user.accepted == 0 && (
+          <Text style={styles.pending}>Pending</Text>
+        )}
 
         <TouchableOpacity style={styles.dropDownButtom} onPress={alter}>
           {collapsed ? (
@@ -170,7 +181,14 @@ function DeviceInfoCard(props) {
           </Text>
         </View>
         <View style={styles.guestList}>{list}</View>
-        {props.type != "HubCard" && <LastActionCard screen={props.type} />}
+        {props.type != "HubCard" && (
+          <LastActionCard
+            screen={props.type}
+            user={props.user}
+            navigation={props.navigation}
+            lastAction={props.lastAction}
+          />
+        )}
       </Collapsible>
     </View>
   );
@@ -265,8 +283,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 5,
-    borderColor: "red"
-  }
+    borderColor: "red",
+  },
 });
 
 export default DeviceInfoCard;
