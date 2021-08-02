@@ -26,8 +26,11 @@ function LogCard(props) {
   const [collapsed, setCollapsed] = useState(true);
   const [collapsedGuests, setCollapsedGuests] = useState(true);
   const [guestToMap, setGuestToMap] = useState(null);
-  const [filterSel, setFilterSel] = useState("None");
+  const [deviceToMap, setDeviceToMap] = useState(null);
+  const [filterSel, setFilterSel] = useState("");
   const [truePersonFil, setTruePersonFil] = useState("");
+  const [filterDevSel, setFilterDevSel] = useState("");
+  const [trueDevFil, setTrueDevFil] = useState("");
 
   useEffect(() => {
     if (props.type == "Access") {
@@ -46,12 +49,20 @@ function LogCard(props) {
         ...new Map(props.logs.map((item) => [item[key], item])).values(),
       ];
 
-      // console.log("NEW ARRAY", arrayUniqueByKey);
+      const key2 = "device_name";
+
+      const arrayUniqueByKey2 = [
+        ...new Map(props.logs.map((item) => [item[key2], item])).values(),
+      ];
+
+      // console.log("NEW ARRAY", arrayUniqueByKey2);
       setGuestToMap(arrayUniqueByKey);
+      setDeviceToMap(arrayUniqueByKey2);
     }
+
+    // console.log(guestToMap)
   }, [props.logs]);
 
-  // console.log("LOG CARD", props)
   const openModal = () => {
     // setSelected(false);
 
@@ -91,7 +102,7 @@ function LogCard(props) {
             </View>
 
             <View style={styles.filterheader}>
-              <Text style={styles.middleText}>None</Text>
+              <Text style={styles.middleText}>{filterDevSel == "" ? "None" : filterDevSel}</Text>
 
               <TouchableOpacity
                 style={styles.dropDownButtom}
@@ -102,8 +113,13 @@ function LogCard(props) {
             </View>
 
             <ScrollView>
-            {props.logs.map((entry, i) => (
-              <TouchableOpacity>
+            {deviceToMap != null && deviceToMap.map((entry, i) => (
+              <TouchableOpacity
+                key={i}
+                  onPress={() =>
+                    setFilterDevSel(entry.device_name)
+                  }
+              >
               <Collapsible
                 collapsed={collapsed}
                 style={styles.expanded}
@@ -111,7 +127,7 @@ function LogCard(props) {
               >
                 <View style={styles.input}>
                   <Text>
-                    {props.type == "Access" ? entry.device_name : "TODO"}
+                    {entry.device_name}
                   </Text>
                 </View>
               </Collapsible>
@@ -130,7 +146,7 @@ function LogCard(props) {
           )}
         </View>
         <View style={styles.filterheader}>
-          <Text style={styles.middleText}>{filterSel}</Text>
+          <Text style={styles.middleText}>{filterSel == "" ? "None" : filterSel}</Text>
 
           <TouchableOpacity style={styles.dropDownButtom} onPress={alterGuests}>
             <Icon name="chevron-down" type="feather" color="white" />
@@ -163,21 +179,43 @@ function LogCard(props) {
               </TouchableOpacity>
             ))}
         </ScrollView>
+        <View style={{flexDirection: "row", paddingHorizontal: 20, width: "100%", justifyContent: "space-between"}}>
+          <TouchableOpacity 
+          onPress={() => {
+            setTruePersonFil("");
+            setTrueDevFil("")}}>
+            <View style={styles.resetButton}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 22,
+                  fontWeight: "bold",
+                  color: "#44ABFF",
+                }}
+              >
+                Reset
+              </Text>
+            </View>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => setTruePersonFil(filterSel)}>
-          <View style={styles.submitButton}>
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 22,
-                fontWeight: "bold",
-                color: "white",
-              }}
-            >
-              Apply
-            </Text>
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity 
+          onPress={() => {
+            setTruePersonFil(filterSel);
+            setTrueDevFil(filterDevSel)}}>
+            <View style={styles.submitButton}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 22,
+                  fontWeight: "bold",
+                  color: "white",
+                }}
+              >
+                Apply
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </Modal>
   );
@@ -202,7 +240,7 @@ function LogCard(props) {
                 return <LogEntry log={entry} key={index} />;
               })
           : props.logs
-              .filter((guest) => guest.secondary_user.includes(truePersonFil))
+              .filter((guest) => guest.secondary_user.includes(truePersonFil)).filter((guest) => guest.device_name.includes(trueDevFil))
               .map((entry, index) => {
                 return <LogEntry log={entry} key={index} />;
               })}
@@ -303,7 +341,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
+  resetButton :{
+    marginTop: 35,
+    backgroundColor: "#F1F1F1",
+    borderRadius: 10,
+    marginBottom: 25,
+    width: 120,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "#44ABFF",
+    backgroundColor: "#F1F1F1",
+    borderWidth: 2,
+  },
   filterheader: {
     width: 255,
     flexDirection: "column",

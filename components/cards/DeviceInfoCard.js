@@ -156,7 +156,7 @@ function DeviceInfoCard(props) {
           </View>
         )}
 
-        <View>
+        <View style={{maxWidth: "30%"}}> 
           <Text style={styles.userName}>{props.title}</Text>
         </View>
 

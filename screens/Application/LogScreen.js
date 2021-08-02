@@ -27,7 +27,7 @@ function LogScreen(props) {
     getAccessLogs();
     getUsageLogs();
 
-    // console.log("LogScreen" + JSON.stringify(props));
+    // console.log("LogScreen", JSON.stringify(props));
   }, [props]);
 
   // Gets the logs for the devices the user has shared

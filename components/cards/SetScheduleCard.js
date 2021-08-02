@@ -79,12 +79,13 @@ const SetScheduleCard = (props) => {
   return (
     <View
       style={{
-        height: 180,
+        height: 200,
         marginTop: 10,
         backgroundColor: "white",
         borderRadius: 10,
         flexDirection: "row",
         justifyContent: "space-between",
+        width: "100%"
       }}
     >
       <View style={styles.contentContainer}>
@@ -160,6 +161,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     height: 60,
+    width: 200
   },
   icons: {
     flexBasis: 50,
@@ -169,6 +171,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   scheduleDataCont: {
-    flexDirection: "column",
+    flexDirection: "column"
   },
 });
