@@ -35,13 +35,20 @@ const GPS = ({ token, hubLong, hubLat }) => {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestBackgroundPermissionsAsync();
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      //let { a } = await Location.getBackgroundPermissionsAsync();
+      //console.log("PERMISSSSSIONSSS=================", a);
+
       if (status !== "granted") {
         setErrorMsg("Permission Denied");
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
+
+      let backPerm = await Location.requestBackgroundPermissionsAsync();
+      console.log(backPerm);
+
       //Changes
       setLatitude(location.coords.latitude);
       setLongitude(location.coords.longitude);
