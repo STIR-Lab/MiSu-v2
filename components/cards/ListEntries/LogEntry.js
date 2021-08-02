@@ -151,7 +151,7 @@ const formatImage = (log) => {
 };
 
 const formatEntryText = (log) => {
-  console.log(log);
+  
   if (log.operation !== undefined) {
     if (log.operation === "Create")
       return (
