@@ -641,6 +641,12 @@ const SetScheduleScreen = (props) => {
       </View>
       <Text style={styles.errorText}>{error}</Text>
       <View style={styles.saveContainer}>
+        <TouchableOpacity
+          style={styles.cancelBtn}
+          onPress={() => props.navigation.pop()}
+        >
+          <Text style={styles.cancelText}>Cancel</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.saveBtn} onPress={() => handleSave()}>
           <Text style={styles.saveText}>Save</Text>
         </TouchableOpacity>
@@ -864,7 +870,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   saveBtn: {
-    width: "25%",
+    width: "45%",
     height: 50,
     backgroundColor: "#44ABFF",
     borderRadius: 10,
@@ -872,6 +878,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     elevation: 10,
+  },
+  cancelBtn: {
+    width: "45%",
+    height: 50,
+    borderColor: "#44ABFF",
+    backgroundColor: "#F1F1F1",
+    borderWidth: 2,
+    borderRadius: 10,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 10,
+  },
+  cancelText: {
+    fontSize: 20,
+    color: "#44ABFF",
   },
   saveText: {
     fontSize: 20,
@@ -902,8 +924,10 @@ const styles = StyleSheet.create({
   },
   saveContainer: {
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "stretch",
+    justifyContent: "space-between",
+    marginHorizontal: 80,
     marginBottom: 0,
   },
   errorText: {
