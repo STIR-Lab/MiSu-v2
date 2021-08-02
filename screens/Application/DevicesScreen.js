@@ -23,9 +23,11 @@ function DevicesScreen(props) {
   const isFocused = useIsFocused();
   const [searchParam, setSearchParam] = useState("");
   const [sharedAccs, setSharedAccs] = useState(null);
+  const [usageLogs, setUsageLogs] = useState([]);
 
   useEffect(() => {
     fetchData();
+    fetchLogs();
   }, [props, isFocused]);
 
   async function fetchData(idToken) {
@@ -39,6 +41,37 @@ function DevicesScreen(props) {
         }
       })
       .catch((err) => console.log(err));
+  }
+
+  async function fetchLogs() {
+    try {
+      await fetch(
+        "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/getusagelogs",
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + props.sessionData.idToken,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.message.length > 0) {
+            var sortedLogs = data.message.sort((a, b) =>
+              a.date < b.date
+                ? 1
+                : a.date === b.date
+                ? a.time < b.time
+                  ? 1
+                  : -1
+                : -1
+            );
+            setUsageLogs(sortedLogs);
+            // console.log(sortedLogs);
+            console.log("Successful usageLogs");
+          }
+        });
+    } catch {}
   }
 
   return (
@@ -62,6 +95,9 @@ function DevicesScreen(props) {
                   entityId={entry.entity_id}
                   navigation={props.navigation}
                   refresh={fetchData}
+                  lastAction={usageLogs.filter(
+                    (item) => item.device_name == entry.name
+                  )}
                 />
               ))}
         </ScrollView>
