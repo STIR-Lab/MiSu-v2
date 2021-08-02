@@ -454,6 +454,7 @@ function SampleDeviceList(props) {
                 height: 40,
                 alignItems: "center",
                 justifyContent: "center",
+                marginTop: 30
               }}
             >
               <Text
@@ -587,6 +588,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     elevation: 10,
+    maxHeight: "55%"
   },
   addGuestmodal: {
     backgroundColor: "#F1F1F1",
