@@ -81,7 +81,8 @@ function LastActionCard(props) {
             <React.Fragment>
               <View
                 style={
-                  props.screen == "GuestCard"
+                  // props.screen == "GuestCard"
+                  true
                     ? [
                         styles.squareIconHolder,
                         { borderColor: checkColor(lastAction.device_action) },
@@ -96,17 +97,31 @@ function LastActionCard(props) {
                   color={checkColor(lastAction.device_action)}
                 />
               </View>
-              <View>
-                <Text style={styles.text}>
-                  {" "}
-                  {capitalize(lastAction.device_action)}ed the{" "}
-                  {lastAction.device_name}{" "}
-                </Text>
-                <Text style={styles.dateText}>
-                  {" "}
-                  {lastAction.date} at {lastAction.time}{" "}
-                </Text>
-              </View>
+              {props.screen == "GuestCard" ? (
+                <View>
+                  <Text style={styles.text}>
+                    {" "}
+                    {capitalize(lastAction.device_action)}ed the{" "}
+                    {lastAction.device_name}{" "}
+                  </Text>
+                  <Text style={styles.dateText}>
+                    {" "}
+                    {lastAction.date} at {lastAction.time}{" "}
+                  </Text>
+                </View>
+              ) : (
+                <View>
+                  <Text style={styles.text}>
+                    {" "}
+                    {lastAction.secondary_user} {lastAction.device_action}ed the{" "}
+                    {lastAction.device_name}{" "}
+                  </Text>
+                  <Text style={styles.dateText}>
+                    {" "}
+                    {lastAction.date} at {lastAction.time}{" "}
+                  </Text>
+                </View>
+              )}
             </React.Fragment>
           )}
 
