@@ -34,7 +34,7 @@ function DevicesScreen(props) {
       .then((response) => {
         // console.log("Devices Screen", response);
         if (response.statusCode == 200) {
-          console.log("changine", response);
+          // console.log("changine", response);
           setSharedAccs(response);
         }
       })
