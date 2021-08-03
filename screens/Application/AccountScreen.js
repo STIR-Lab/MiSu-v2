@@ -49,7 +49,6 @@ function AccountScreen(props) {
 
   // Signs the user out and sends them back to the login screen
   signOut = async () => {
-   
     // props.screenProps.setLoadingTrue();
     ToastAndroid.show("Signing out!", ToastAndroid.LONG);
     Auth.signOut()
@@ -77,9 +76,8 @@ function AccountScreen(props) {
   useEffect(() => {
     const idToken = props.sessionData.idToken;
     fetchData(idToken);
-    // console.log("ACC SCREEN", sharedAccs)
+    // console.log("ACC SCREEN", props.sharedAccountsData.sharedAccounts);
   }, [props, isFocused]);
-
 
   function getResults(results) {
     setSharedAccs(results);
@@ -93,7 +91,6 @@ function AccountScreen(props) {
       .catch((err) => console.log(err));
   }
 
-
   return (
     <View style={appStyle.container}>
       <AccountCard
@@ -104,16 +101,19 @@ function AccountScreen(props) {
         idToken={props.sessionData.idToken}
         user={props.hubInfoData}
       />
-      {sharedAccs != null && sharedAccs != undefined && <YourHubCard
-        sharedData ={sharedAccs.message}
-        register={props.register}
-        idToken={props.sessionData.idToken}
-        user={props.hubInfoData}
-        hub_url={props.hubInfoData.hub_url}
-        hub_email={props.hubInfoData.hub_email}
-        navigation={props.navigation}
-        refreshFunc={fetchData}
-      />}
+      {sharedAccs != null && sharedAccs != undefined && (
+        <YourHubCard
+          sharedData={sharedAccs.message}
+          sharedDataUsers={props.sharedAccountsData.sharedAccounts}
+          register={props.register}
+          idToken={props.sessionData.idToken}
+          user={props.hubInfoData}
+          hub_url={props.hubInfoData.hub_url}
+          hub_email={props.hubInfoData.hub_email}
+          navigation={props.navigation}
+          refreshFunc={fetchData}
+        />
+      )}
       <SettingsCard
         idToken={props.sessionData.idToken}
         user={props.hubInfoData}
