@@ -32,7 +32,7 @@ const Header = (props) => {
       .then((response) => response.json())
       .then((data2) => {
         // console.log("====Before filter: ", data2);
-        if (data2 != null && data2.length > 0 && data2.message != null) {
+        if (data2 != null && data2.message != null) {
           setData(data2.message.filter((tmp) => tmp.accepted == 0));
         }
         // console.log("====After filter: ", data);

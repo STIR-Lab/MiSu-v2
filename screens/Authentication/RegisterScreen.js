@@ -282,7 +282,7 @@ function RegisterScreen(props) {
       style={authStyle.container}
     >
       <ScrollView
-        style={(authStyle.container, { marginTop: 20 })}
+        style={(authStyle.container, { marginTop: 50 })}
         bounces={false}
       >
         {/* Render the loading element */}
@@ -352,7 +352,7 @@ function RegisterScreen(props) {
             style={authStyle.authFormButton}
             onPress={handleSignUp}
           >
-            <Text style={{ color: "#FFF", fontWeight: "bold", fontSize: 25 }}>
+            <Text style={{ color: "#FFF", fontWeight: "700", fontSize: 22 }}>
               Create Account
             </Text>
           </TouchableOpacity>

@@ -102,7 +102,9 @@ function LogCard(props) {
             </View>
 
             <View style={styles.filterheader}>
-              <Text style={styles.middleText}>{filterDevSel == "" ? "None" : filterDevSel}</Text>
+              <Text style={styles.middleText}>
+                {filterDevSel == "" ? "None" : filterDevSel}
+              </Text>
 
               <TouchableOpacity
                 style={styles.dropDownButtom}
@@ -113,26 +115,23 @@ function LogCard(props) {
             </View>
 
             <ScrollView>
-            {deviceToMap != null && deviceToMap.map((entry, i) => (
-              <TouchableOpacity
-                key={i}
-                  onPress={() =>
-                    setFilterDevSel(entry.device_name)
-                  }
-              >
-              <Collapsible
-                collapsed={collapsed}
-                style={styles.expanded}
-                key={i}
-              >
-                <View style={styles.input}>
-                  <Text>
-                    {entry.device_name}
-                  </Text>
-                </View>
-              </Collapsible>
-              </TouchableOpacity>
-            ))}
+              {deviceToMap != null &&
+                deviceToMap.map((entry, i) => (
+                  <TouchableOpacity
+                    key={i}
+                    onPress={() => setFilterDevSel(entry.device_name)}
+                  >
+                    <Collapsible
+                      collapsed={collapsed}
+                      style={styles.expanded}
+                      key={i}
+                    >
+                      <View style={styles.input}>
+                        <Text>{entry.device_name}</Text>
+                      </View>
+                    </Collapsible>
+                  </TouchableOpacity>
+                ))}
             </ScrollView>
           </View>
         )}
@@ -146,7 +145,9 @@ function LogCard(props) {
           )}
         </View>
         <View style={styles.filterheader}>
-          <Text style={styles.middleText}>{filterSel == "" ? "None" : filterSel}</Text>
+          <Text style={styles.middleText}>
+            {filterSel == "" ? "None" : filterSel}
+          </Text>
 
           <TouchableOpacity style={styles.dropDownButtom} onPress={alterGuests}>
             <Icon name="chevron-down" type="feather" color="white" />
@@ -179,11 +180,21 @@ function LogCard(props) {
               </TouchableOpacity>
             ))}
         </ScrollView>
-        <View style={{flexDirection: "row", paddingHorizontal: 20, width: "100%", justifyContent: "space-between"}}>
-          <TouchableOpacity 
-          onPress={() => {
-            setTruePersonFil("");
-            setTrueDevFil("")}}>
+        <View
+          style={{
+            flexDirection: "row",
+            paddingHorizontal: 20,
+            width: "100%",
+            justifyContent: "space-between",
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              setTruePersonFil("");
+              setTrueDevFil("");
+              setIsVisible(false);
+            }}
+          >
             <View style={styles.resetButton}>
               <Text
                 style={{
@@ -198,10 +209,12 @@ function LogCard(props) {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity 
-          onPress={() => {
-            setTruePersonFil(filterSel);
-            setTrueDevFil(filterDevSel)}}>
+          <TouchableOpacity
+            onPress={() => {
+              setTruePersonFil(filterSel);
+              setTrueDevFil(filterDevSel);
+            }}
+          >
             <View style={styles.submitButton}>
               <Text
                 style={{
@@ -240,7 +253,8 @@ function LogCard(props) {
                 return <LogEntry log={entry} key={index} />;
               })
           : props.logs
-              .filter((guest) => guest.secondary_user.includes(truePersonFil)).filter((guest) => guest.device_name.includes(trueDevFil))
+              .filter((guest) => guest.secondary_user.includes(truePersonFil))
+              .filter((guest) => guest.device_name.includes(trueDevFil))
               .map((entry, index) => {
                 return <LogEntry log={entry} key={index} />;
               })}
@@ -309,7 +323,7 @@ const styles = StyleSheet.create({
     width: 300,
     maxHeight: 220,
     alignSelf: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   textHeader: {
     justifyContent: "flex-start",
@@ -341,7 +355,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  resetButton :{
+  resetButton: {
     marginTop: 35,
     backgroundColor: "#F1F1F1",
     borderRadius: 10,

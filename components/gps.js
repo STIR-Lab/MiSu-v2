@@ -43,11 +43,13 @@ const GPS = ({ token, hubLong, hubLat }) => {
         setErrorMsg("Permission Denied");
         return;
       }
-      let location = await Location.getCurrentPositionAsync({});
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High,
+      });
       setLocation(location);
 
       let backPerm = await Location.requestBackgroundPermissionsAsync();
-      console.log(backPerm);
+      // console.log(backPerm);
 
       //Changes
       setLatitude(location.coords.latitude);
