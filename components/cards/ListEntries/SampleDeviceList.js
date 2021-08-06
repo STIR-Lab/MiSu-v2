@@ -44,15 +44,36 @@ function SampleDeviceList(props) {
   //   },
   // ];
 
+
+  function filtyFilter() {
+    if (props.listType === "Routines")
+    {
+      return filter(o => {return o.type==="script"})
+    }
+    else if (props.listType === "Devices")
+    {
+      return filter(o => {return o.type!=="script"})
+    }
+    else
+      return filter(o => {return true})
+  }
+
   useEffect(() => {
-    // console.log("==SAMPLE DEVICE LIST PROPS:", props);
+    console.log("==SAMPLE DEVICE LIST PROPS:", deviceList);
     // console.log("===DEVICES: ", props.devices);
     // console.log("===MY DEVICES: ", props.myDevices);
     // console.log("===Bearer ID:", deviceList);
 
     if (props.screen == "Guests") {
       setScreen("Guests");
-      setDeviceList(props.devices);
+      if (props.listType === "Routines")
+      {
+        setDeviceList(props.devices.filter(o => {return o.type==="script"}));
+      }
+      else if (props.listType === "Devices")
+      {
+        setDeviceList(props.devices.filter(o => {return o.type!=="script"}));
+      }
       // console.log("DEVICELICT", deviceList);
       // console.log("TEMP DEVICES", tempDevices);
       setChoice(props.myDevices[0]);
@@ -73,7 +94,14 @@ function SampleDeviceList(props) {
       // console.log(results);
     } else if (props.screen == "Hubs") {
       setScreen("Hubs");
-      setDeviceList(props.devices);
+      if (props.listType === "Routines")
+      {
+        setDeviceList(props.devices.filter(o => {return o.type==="script"}));
+      }
+      else if (props.listType === "Devices")
+      {
+        setDeviceList(props.devices.filter(o => {return o.type!=="script"}));
+      }
       // console.log("====== HUB SAMPLE DEVICE LIST", props);
     } else console.log("Invalid screen prop passed.");
   }, [props.guests]);
@@ -522,7 +550,7 @@ function SampleDeviceList(props) {
           )}
         </View>
       ))}
-      {screen != "Hubs" && addButton()}
+      {screen != "Hubs" && props.listType != "Routines" &&addButton()}
 
       {/* {props.device &&
         props.device.map((entry, i) => (
