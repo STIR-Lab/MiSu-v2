@@ -91,6 +91,7 @@ function DeviceInfoCard(props) {
         sharedAccs={props.sharedAccs}
         navigation={props.navigation}
         fetch={props.fetch}
+        listType="Devices"
       />
     );
   else if (props.type == "GuestCard")
@@ -108,6 +109,7 @@ function DeviceInfoCard(props) {
         navigation={props.navigation}
         refresh={props.delete}
         refreshNum={0}
+        listType="Devices"
       />
     );
   else if (props.type == "DeviceCard")
@@ -122,6 +124,41 @@ function DeviceInfoCard(props) {
         navigation={props.navigation}
         refresh={props.refresh}
         refreshNum={props.refreshNum}
+      />
+    );
+
+  let routineList;
+
+  if (props.type == "HubCard")
+    routineList = (
+      <SampleDeviceList
+        screen="Hubs"
+        title={props.title}
+        devices={props.devices}
+        entityId={props.entityId}
+        deviceType={props.deviceType}
+        sharedAccs={props.sharedAccs}
+        navigation={props.navigation}
+        fetch={props.fetch}
+        listType="Routines"
+      />
+    );
+  else if (props.type == "GuestCard")
+    routineList = (
+      <SampleDeviceList
+        screen="Guests"
+        // Name of the guest
+        title={props.title}
+        // Entire entry of the guest
+        user={props.user}
+        // Devices is subset of guests user entry
+        devices={props.device}
+        myDevices={props.myDevices}
+        // sharedAccs={props.sharedAccs} attempting to use redux instead
+        navigation={props.navigation}
+        refresh={props.delete}
+        refreshNum={0}
+        listType="Routines"
       />
     );
 
@@ -181,6 +218,15 @@ function DeviceInfoCard(props) {
           </Text>
         </View>
         <View style={styles.guestList}>{list}</View>
+        {props.type != "DeviceCard" && 
+        <View>
+        <View style={styles.activeGuests}>
+          <Text style={styles.text}>
+            Routines
+          </Text>
+        </View>
+        <View style={styles.guestList}>{routineList}</View>
+        </View>}
         {props.type != "HubCard" && (
           <LastActionCard
             screen={props.type}
