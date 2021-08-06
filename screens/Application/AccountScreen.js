@@ -66,12 +66,6 @@ function AccountScreen(props) {
     props.navigation.navigate("Log");
   };
 
-  // UNSAFE_componentWillReceiveProps(props) {
-  // 	if (props.registerData) {
-  // 		this.props.getHub(this.props.sessionData.idToken);
-  // 	}
-  // }
-
   // REFER TO GUEST SCREEN USE EFFECT
   useEffect(() => {
     const idToken = props.sessionData.idToken;
@@ -124,9 +118,10 @@ function AccountScreen(props) {
         style={{
           alignItems: "center",
           justifyContent: "center",
-          marginTop: 25,
+          backgroundColor: "transparent",
+          marginTop: 65,
           paddingBottom: 0,
-          flex: 0.1,
+          flex: 0.05,
         }}
       >
         <TouchableOpacity

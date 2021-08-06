@@ -79,6 +79,10 @@ const SetScheduleScreen = (props) => {
       setError("Please select a start time and end time.");
     } else if (accessDigit == 2 && (startDate == null || endDate == null)) {
       setError("Please select a start date and end date.");
+    } else if (accessDigit == 2 && startDate > endDate) {
+      setError("Cannot set end date before start date.");
+    } else if (accessDigit == 2 && startTime > endTime) {
+      setError("Cannt set end time before start time.");
     } else {
       setError("");
       editProperties(weekDays).then(() => {
@@ -108,20 +112,24 @@ const SetScheduleScreen = (props) => {
       setAccessType("Always");
       setAccessDigit(1);
       setCurrentAccessLevel(
-        "Guest will have unrestricted access to this device"
+        "Guest will have unrestricted access to this device. Click on Never to change."
       );
       return;
     }
     if (accessType === "Always") {
       setAccessType("Schedule");
       setAccessDigit(2);
-      setCurrentAccessLevel("Please configure a schedule for your guest.");
+      setCurrentAccessLevel(
+        "Please configure a schedule for your guest. Click on Schedule to change."
+      );
       return;
     }
     if (accessType === "Schedule") {
       setAccessType("Never");
       setAccessDigit(0);
-      setCurrentAccessLevel("Guest will not have access to this device.");
+      setCurrentAccessLevel(
+        "Guest will not have access to this device. Click on Never to change."
+      );
       setStartDate(null);
       setEndDate(null);
       setStartTime(null);
@@ -268,11 +276,14 @@ const SetScheduleScreen = (props) => {
     return (
       <TouchableOpacity onPress={() => handleAccessType()}>
         <View style={styles.propertyChip}>
-          {/* <Image
-            style={styles.propertyBadge}
-            source={require("../../assets/icons/user.png")}
-          /> */}
           <Text style={styles.propertyText}> {accessType}</Text>
+          <Icon
+            type="font-awesome-5"
+            name="caret-right"
+            color="white"
+            style={{ marginLeft: 5 }}
+            size={23}
+          />
         </View>
       </TouchableOpacity>
     );
@@ -630,7 +641,7 @@ const SetScheduleScreen = (props) => {
         <PropertyBadge />
       </View>
       <Text style={styles.accessText}>{currentAccessLevel}</Text>
-      <View style={styles.setTime}>
+      <ScrollView style={styles.setTime}>
         <Recurring />
         {weekly && <WeekDays />}
         <AllDay val={allDay} zIndex={-1000} />
@@ -638,19 +649,19 @@ const SetScheduleScreen = (props) => {
         <StartDate />
         <EndTime />
         <EndDate />
-      </View>
-      <Text style={styles.errorText}>{error}</Text>
-      <View style={styles.saveContainer}>
-        <TouchableOpacity
-          style={styles.cancelBtn}
-          onPress={() => props.navigation.pop()}
-        >
-          <Text style={styles.cancelText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.saveBtn} onPress={() => handleSave()}>
-          <Text style={styles.saveText}>Save</Text>
-        </TouchableOpacity>
-      </View>
+        <Text style={styles.errorText}>{error}</Text>
+        <View style={styles.saveContainer}>
+          <TouchableOpacity
+            style={styles.cancelBtn}
+            onPress={() => props.navigation.pop()}
+          >
+            <Text style={styles.cancelText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.saveBtn} onPress={() => handleSave()}>
+            <Text style={styles.saveText}>Save</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -696,16 +707,17 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     flexDirection: "row",
     justifyContent: "space-between",
+
     alignContent: "space-between",
-    marginRight: 55,
-    marginLeft: 55,
-    flex: 0.15,
     alignItems: "flex-end",
     alignSelf: "stretch",
+    marginRight: 25,
+    marginLeft: 25,
+    flex: 0.15,
     paddingBottom: 15,
   },
   setTime: {
-    flex: 0.78,
+    flex: 0.85,
     flexDirection: "column",
     width: "100%",
   },
@@ -720,8 +732,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   timeText: {
-    paddingLeft: 60,
-    fontSize: 14,
+    paddingLeft: 30,
+    fontSize: 17,
     fontWeight: "bold",
   },
   picker: {
@@ -783,11 +795,12 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 3,
+      height: 2,
     },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
-    elevation: 6,
+    shadowOpacity: 0.25,
+    shadowRadius: 4.84,
+
+    elevation: 5,
   },
 
   propertyBadge: {
@@ -813,7 +826,7 @@ const styles = StyleSheet.create({
     zIndex: -10000,
   },
   timeBtnGray: {
-    backgroundColor: "gray",
+    backgroundColor: "#d8d8d8",
     width: 110,
     height: 45,
     elevation: 10,
@@ -839,7 +852,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   dateBtnGray: {
-    backgroundColor: "gray",
+    backgroundColor: "#d8d8d8",
     width: 160,
     height: 45,
     elevation: 10,
@@ -927,8 +940,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "stretch",
     justifyContent: "space-between",
-    marginHorizontal: 80,
-    marginBottom: 0,
+    marginHorizontal: 50,
+    marginBottom: 20,
   },
   errorText: {
     alignSelf: "center",
@@ -938,8 +951,10 @@ const styles = StyleSheet.create({
   },
   accessText: {
     alignSelf: "center",
+    textAlign: "center",
     color: "black",
     paddingBottom: 10,
+    marginHorizontal: 30,
   },
 });
 
