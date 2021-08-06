@@ -6,6 +6,7 @@ import {
   View,
   Text,
   Slider,
+  ScrollView,
 } from "react-native";
 import { Icon } from "react-native-elements";
 import Modal from "react-native-modal";
@@ -173,35 +174,35 @@ function SettingsCard(props) {
         <Text style={styles.header}>Settings</Text>
       </View>
       <View>
-      <TouchableOpacity
-        onPress={() => setIsDistanceVisible(true)}
-        style={styles.setting}
-      >
-        <Text style={styles.settingFont}>Modify Geofencing Radius</Text>
+        <TouchableOpacity
+          onPress={() => setIsDistanceVisible(true)}
+          style={styles.setting}
+        >
+          <Text style={styles.settingFont}>Modify Geofencing Radius</Text>
 
-        <View style={styles.icon}>
-          <Icon
-            type="material-icons"
-            name="chevron-right"
-            size={32}
-            style={{}}
-          />
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.setting}
-        onPress={() => setIsRoleVisible(true)}
-      >
-        <Text style={styles.settingFont}>Modify Role</Text>
-        <View style={styles.icon}>
-          <Icon
-            type="material-icons"
-            name="chevron-right"
-            size={32}
-            style={{}}
-          />
-        </View>
-      </TouchableOpacity>
+          <View style={styles.icon}>
+            <Icon
+              type="material-icons"
+              name="chevron-right"
+              size={32}
+              style={{}}
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.setting}
+          onPress={() => setIsRoleVisible(true)}
+        >
+          <Text style={styles.settingFont}>Modify Role</Text>
+          <View style={styles.icon}>
+            <Icon
+              type="material-icons"
+              name="chevron-right"
+              size={32}
+              style={{}}
+            />
+          </View>
+        </TouchableOpacity>
       </View>
       {roleModal}
       {radiusModal}
@@ -211,7 +212,7 @@ function SettingsCard(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.20,
+    flex: 0.2,
     flexDirection: "column",
     width: "100%",
     paddingTop: 0,
@@ -246,7 +247,6 @@ const styles = StyleSheet.create({
   },
   modal: {
     backgroundColor: "#F1F1F1",
-
     borderRadius: 10,
     width: 300,
     height: 300,

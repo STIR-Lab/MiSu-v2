@@ -23,6 +23,7 @@ const GPS = ({ token, hubLong, hubLat }) => {
   //const [hubLat, setHubLat] = useState(10.304313);
 
   const [theDistance, setTheDistance] = useState(null);
+  const [prevDistance, setPrevDistance] = useState(null);
 
   /*
     calcDistance = () => {
@@ -34,87 +35,92 @@ const GPS = ({ token, hubLong, hubLat }) => {
 */
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      //let { a } = await Location.getBackgroundPermissionsAsync();
-      //console.log("PERMISSSSSIONSSS=================", a);
+    setInterval(() => {
+      getLocation()
+        .then(() => {
+          calcDistance();
+        })
+        .then(() => {
+          postDistance();
+        });
+      // calcDistance();
+    }, 8000);
+  }, []);
 
-      if (status !== "granted") {
-        setErrorMsg("Permission Denied");
-        return;
+  async function getLocation() {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    let { a } = await Location.getBackgroundPermissionsAsync();
+    console.log("PERMISSSSSIONSSS=================", a);
+
+    if (status !== "granted") {
+      setErrorMsg("Permission Denied");
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.High,
+    });
+    setLocation(location);
+    console.log(location.coords);
+    let backPerm = await Location.requestBackgroundPermissionsAsync();
+    // console.log(backPerm);
+
+    //Changes
+    setLatitude(location.coords.latitude);
+    setLongitude(location.coords.longitude);
+    calcDistance();
+    return;
+  }
+
+  function calcDistance() {
+    console.log("Calculating distance");
+    if (prevDistance != null && prevDistance == theDistance) {
+      console.log("prevDistance = theDistance on calc");
+      return;
+    }
+    try {
+      //console.log(latitude + " " + longitude);
+      //console.log(hubLat + " " + hubLong);
+      setTheDistance(
+        haversine(
+          { latitude: hubLat, longitude: hubLong },
+          { latitude: latitude, longitude: longitude },
+          { unit: "mile" }
+        )
+      );
+      console.log("Distance: " + theDistance + " miles");
+    } catch (error) {
+      console.log(error);
+    }
+    return;
+  }
+
+  async function postDistance() {
+    console.log("postDistance");
+    if (theDistance == null) {
+      return;
+    }
+    const state = await fetch(
+      "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/gps",
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          distance: theDistance,
+        }),
       }
-      let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.High,
-      });
-      setLocation(location);
-
-      let backPerm = await Location.requestBackgroundPermissionsAsync();
-      // console.log(backPerm);
-
-      //Changes
-      setLatitude(location.coords.latitude);
-      setLongitude(location.coords.longitude);
-
-      const calcDistance = async () => {
-        try {
-          //console.log(latitude + " " + longitude);
-          //console.log(hubLat + " " + hubLong);
-          setTheDistance(
-            haversine(
-              { latitude: hubLat, longitude: hubLong },
-              { latitude: latitude, longitude: longitude },
-              { unit: "mile" }
-            )
-          );
-          //console.log("Distance: " + theDistance + " miles");
-
-          //============================================================
-          // Request
-
-          const postDistance = async () => {
-            const state = await fetch(
-              "https://c8zta83ta5.execute-api.us-east-1.amazonaws.com/test/gps",
-              {
-                method: "POST",
-                headers: {
-                  Authorization: "Bearer " + token,
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  distance: theDistance,
-                }),
-              }
-            )
-              .then((response) => response.json())
-              .then((data) => {
-                //console.log(data);
-              })
-              .catch((err) => console.log(err));
-          };
-
-          setInterval(() => {
-            postDistance();
-          }, 7000);
-
-          //
-          // END REQUEST
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      calcDistance();
-
-      // const interval = setTimeout(() => {
-      //   calcDistance();
-      // }, 10000);
-
-      // return () => {
-      //   clearInterval(interval);
-      // };
-    })();
-  });
-
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setPrevDistance(theDistance);
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
+    return;
+  }
   return null;
 };
 

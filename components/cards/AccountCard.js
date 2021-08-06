@@ -1,54 +1,41 @@
-import React, { useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
-import { connect } from 'react-redux';
-import AppHeaderText from '../app/AppHeaderText';
-import AppText from '../app/AppText';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React, { useState } from "react";
+import { Image, StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import { connect } from "react-redux";
+import AppHeaderText from "../app/AppHeaderText";
+import AppText from "../app/AppText";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 function AccountCard(props) {
   // Holds all of our global variables
   const [registering, setRegistering] = useState(false);
 
-
   registerHub = () => {
     setRegistering(true);
   };
-  
+
   return (
     <View style={style.container}>
-
-      
-     
-
-      <View style= {{}}>
-        {/* Show user's name */}
-        <Text style={style.name}>
-          Profile
-        </Text>
-
-        
-      </View>
+      {/* Show user's name */}
+      <Text style={style.name}>Profile</Text>
     </View>
   );
 }
 
 const style = StyleSheet.create({
   container: {
-    flex: 0.20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
+    flex: 0.15,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    width: "100%",
     paddingTop: 0,
-
   },
   info: {
     fontSize: 17,
   },
   name: {
     fontSize: 36,
-    fontWeight: 'bold',
-    
+    fontWeight: "bold",
   },
   icon: {
     height: 80,

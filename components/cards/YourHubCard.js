@@ -261,28 +261,52 @@ function YourHubCard(props) {
                 style={style.raspPi}
                 source={require("../../assets/icons/raspberry.png")}
               />
-              <View>
+              <View style={{ paddingRight: 10 }}>
                 <Text style={style.hardwareType}>Raspberry Pi</Text>
                 <Text style={style.softwareType}>Home Assistant</Text>
               </View>
+              <View
+                style={{
+                  borderLeftColor: "#fcfcfc",
+                  borderLeftWidth: 1.5,
+                  height: "80%",
+                  justifyContent: "center",
+                }}
+              >
+                <View
+                  style={{
+                    alignSelf: "center",
+                    marginLeft: 5,
+                    alignContent: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Icon type="font-awesome-5" name="check" color="white" />
+                  <Text
+                    style={{
+                      color: "white",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Connected
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View style={style.verticleMiddleColumns}>
+            <View style={style.redButton}>
+              <TouchableOpacity onPress={() => openRemoveGuestsModal()}>
+                <View>
+                  <Text style={style.redButtonText}>Remove Guests</Text>
+                </View>
+              </TouchableOpacity>
             </View>
             <View style={style.redButtonDisconnect}>
               <TouchableOpacity onPress={() => openModal()}>
                 <View>
                   <Text style={style.redButtonText}>Disconnect</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={style.verticleMiddleColumns}>
-            <View style={style.hubStats}>
-              <Text style={style.status}>Connected</Text>
-            </View>
-
-            <View style={style.redButton}>
-              <TouchableOpacity onPress={() => openRemoveGuestsModal()}>
-                <View>
-                  <Text style={style.redButtonText}>Remove Guests</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -345,6 +369,7 @@ const style = StyleSheet.create({
     borderBottomColor: "#828282",
     borderBottomWidth: 0.9,
     marginBottom: 10,
+    alignItems: "flex-start",
     width: "100%",
   },
   connectButton: {
@@ -381,7 +406,7 @@ const style = StyleSheet.create({
   },
   redButtonDisconnect: {
     backgroundColor: "#ea5f5f",
-    marginTop: 10,
+    marginTop: 5,
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
@@ -396,7 +421,7 @@ const style = StyleSheet.create({
     shadowRadius: 2.62,
     borderWidth: 1.4,
     borderColor: "#cc9797",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     elevation: 6,
     marginLeft: 23,
   },
@@ -422,6 +447,7 @@ const style = StyleSheet.create({
   redButton: {
     backgroundColor: "#ea5f5f",
     marginTop: 10,
+    marginRight: 15,
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
@@ -435,7 +461,7 @@ const style = StyleSheet.create({
     shadowRadius: 2.62,
     borderWidth: 1.4,
     borderColor: "#cc9797",
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     elevation: 6,
   },
   raspPi: {
@@ -470,7 +496,9 @@ const style = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    marginLeft: 30,
+    marginRight: 8,
+    marginLeft: 15,
+    marginBottom: 20,
   },
   newColumn: {
     width: "100%",
@@ -478,7 +506,7 @@ const style = StyleSheet.create({
   },
   userHubInfo: {
     flexDirection: "row",
-    marginTop: 10,
+    marginTop: 0,
     height: "60%",
     alignItems: "center",
     justifyContent: "center",
@@ -486,9 +514,10 @@ const style = StyleSheet.create({
   hubDisplay: {
     backgroundColor: "#61B8FF",
     borderRadius: 15,
-    height: "60%",
-    width: "107%",
-
+    height: "80%",
+    width: "95%",
+    padding: 5,
+    marginLeft: 20,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
