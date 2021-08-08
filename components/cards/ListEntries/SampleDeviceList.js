@@ -239,10 +239,12 @@ function SampleDeviceList(props) {
         >
           <Icon name="plus" type="font-awesome" color="#FFFFFF" size={38} />
         </TouchableOpacity>
-        <Text>{screen == "Devices" ? "Add Guest" : "Add Device"}</Text>
+        <Text style={{width: 73, fontSize:10.5, textAlign: "center"}}>{screen == "Devices" ? "Add Guest" : props.listType=="Routines" ? "Add Routine": "Add Device"}</Text>
       </View>
     );
   }
+
+
 
   let modal = (
     <Modal
@@ -550,7 +552,8 @@ function SampleDeviceList(props) {
           )}
         </View>
       ))}
-      {screen != "Hubs" && props.listType != "Routines" &&addButton()}
+      {screen != "Hubs" &&addButton()}
+     
 
       {/* {props.device &&
         props.device.map((entry, i) => (
@@ -588,7 +591,7 @@ const styles = StyleSheet.create({
   iconAndName: {
     backgroundColor: "transparent",
     marginVertical: 8,
-    marginHorizontal: 10,
+    marginHorizontal: 8,
   },
   text: {
     fontSize: 10,
