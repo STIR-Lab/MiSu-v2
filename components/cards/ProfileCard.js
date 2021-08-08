@@ -11,7 +11,7 @@ function ProfileCard(props) {
       </View>
       <View style={style.rowInformation}>
         <View style={style.profileIcon}>
-          <UserAvatar size={50} borderRadius={25} name={props.user.name} />
+          <UserAvatar size={70} borderRadius={41} name={props.user.name} />
         </View>
         <View style={style.infoLine}>
           <Text style={style.name}>
@@ -48,8 +48,8 @@ const style = StyleSheet.create({
     marginRight: 5,
   },
   profileIcon: {
-    width: "25%",
-    height: "100%",
+    
+    marginTop: 1,
   },
   name: {
     fontSize: 26,
