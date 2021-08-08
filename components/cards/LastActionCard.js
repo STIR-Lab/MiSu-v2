@@ -139,7 +139,7 @@ function LastActionCard(props) {
                           ),
                         },
                       ]
-                    : styles.iconHolder
+                    : styles.squareIconHolder
                 }
               >
                 <Icon

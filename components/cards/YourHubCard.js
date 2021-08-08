@@ -218,7 +218,9 @@ function YourHubCard(props) {
             } else if (rettyVal.statusCode === 400) {
               //Print out something went wrong''
             }
-          }}
+            
+            setIsVisibleGuests(false);}
+        }
         >
           <View style={style.submitButton}>
             <Text
@@ -373,8 +375,8 @@ const style = StyleSheet.create({
     backgroundColor: "white",
     elevation: 10,
     margin: 10,
-    height: "38%",
-    width: "45%",
+    height: 50,
+    width: 180,
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
@@ -577,6 +579,7 @@ const style = StyleSheet.create({
     height: "60%",
     alignItems: "center",
     justifyContent: "center",
+    marginLeft: 95,
   },
 
   disconnectModal: {

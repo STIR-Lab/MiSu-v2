@@ -28,7 +28,7 @@ const SetScheduleScreen = (props) => {
   const [accessType, setAccessType] = useState("Schedule");
   const [accessDigit, setAccessDigit] = useState(2);
   const [currentAccessLevel, setCurrentAccessLevel] = useState(
-    "Please configure a schedule for your guest."
+    "Please configure a schedule for your guest. Click the button above to chance access"
   );
   const [allDay, setAllDay] = useState(false);
   const [weekly, setWeekly] = useState(false);
@@ -82,7 +82,7 @@ const SetScheduleScreen = (props) => {
     } else if (accessDigit == 2 && startDate > endDate) {
       setError("Cannot set end date before start date.");
     } else if (accessDigit == 2 && startTime > endTime) {
-      setError("Cannt set end time before start time.");
+      setError("Cannot set end time before start time.");
     } else {
       setError("");
       editProperties(weekDays).then(() => {
