@@ -242,15 +242,7 @@ function YourHubCard(props) {
       <View style={style.headerLine}>
         <Text style={style.header}>Your Hub</Text>
 
-        {false && (
-          <View style={style.editBox}>
-            <Image
-              style={style.gear}
-              source={require("../../assets/icons/Setting.png")}
-            />
-            <Text>Edit</Text>
-          </View>
-        )}
+       
       </View>
 
       {registering == true && props.user.user_type == 1 && (
@@ -327,6 +319,7 @@ function YourHubCard(props) {
       )}
 
       <ScrollView>
+       <View style={{marginBottom: 10}}>
         {props.user.user_type == 0 &&
           props.sharedData != null &&
           props.sharedData != undefined &&
@@ -354,7 +347,9 @@ function YourHubCard(props) {
               </View>
             </View>
           ))}
+          </View>
       </ScrollView>
+      
       {disconnectModal}
       {removeGuestsModal}
       {guestDisconnectModal}
@@ -443,6 +438,7 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
+    marginLeft: 70, 
   },
   redButton: {
     backgroundColor: "#ea5f5f",

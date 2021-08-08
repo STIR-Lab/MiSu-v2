@@ -112,7 +112,7 @@ const SetScheduleScreen = (props) => {
       setAccessType("Always");
       setAccessDigit(1);
       setCurrentAccessLevel(
-        "Guest will have unrestricted access to this device. Click on Never to change."
+        "Guest will have unrestricted access to this device. Click on Always to change access."
       );
       return;
     }
@@ -120,7 +120,7 @@ const SetScheduleScreen = (props) => {
       setAccessType("Schedule");
       setAccessDigit(2);
       setCurrentAccessLevel(
-        "Please configure a schedule for your guest. Click on Schedule to change."
+        "Please configure a schedule for your guest. Click on Schedule to change access."
       );
       return;
     }
@@ -128,7 +128,7 @@ const SetScheduleScreen = (props) => {
       setAccessType("Never");
       setAccessDigit(0);
       setCurrentAccessLevel(
-        "Guest will not have access to this device. Click on Never to change."
+        "Guest will not have access to this device. Click on Never to change access."
       );
       setStartDate(null);
       setEndDate(null);
